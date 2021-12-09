@@ -25,6 +25,8 @@
 // export default App;
 
 import { useState, useEffect } from "react";
+import { LoginUserForm } from "./features/users/LoginUserForm";
+import { SignupUserForm } from "./features/users/SignupUserForm"
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,6 +40,8 @@ function App() {
   return (
     <div className="App">
       <h1>Page Count: {count}</h1>
+      <LoginUserForm />
+      <SignupUserForm />
     </div>
   );
 }

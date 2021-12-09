@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 5.0', '>= 5.0.2'
   gem "rack_session_access"
   gem "database_cleaner"
+  gem "binding_of_caller"
 end
 
 group :development do
@@ -39,6 +40,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'better_errors', '~> 2.9', '>= 2.9.1'
+  gem 'faker'
 end
 
 group :test do
