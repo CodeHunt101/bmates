@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  # wrap_parameters :user, include: [:password]
   
   def index
     users = User.all
@@ -11,7 +10,7 @@ class UsersController < ApplicationController
     user = User.create(user_params)
     if user.valid?
       message = "#{user.username} has been successfully created with and email #{user.email}."
-      render json: {message: message}
+      render json: {message: message, user: user}, except: [:created_at, :updated_at, :password_digest]
     end
   end
 

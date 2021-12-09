@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export const LoginUserForm = () => {
+export const SigninUserForm = () => {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -26,7 +26,7 @@ export const LoginUserForm = () => {
 
   return (
     <section>
-      <h2>Log In</h2>
+      <h2>Sign In</h2>
       <form onSubmit={handleOnSubmit}>
         <label>Email:</label>
         <input
