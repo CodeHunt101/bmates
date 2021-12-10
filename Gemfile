@@ -40,7 +40,6 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   gem 'better_errors', '~> 2.9', '>= 2.9.1'
-  gem 'faker'
 end
 
 group :test do
@@ -63,3 +62,5 @@ gem 'omniauth-github', github: 'omniauth/omniauth-github', branch: 'master'
 gem 'omniauth-rails_csrf_protection'
 gem 'dotenv-rails'
 gem 'thin'
+
+gem 'faker'
