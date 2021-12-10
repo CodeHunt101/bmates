@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router'
 
 export const SignupUserForm = () => {
+  const navigate = useNavigate()
+  
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [gender, setGender] = useState('')
@@ -10,7 +13,6 @@ export const SignupUserForm = () => {
   const [isMate, setIsMate] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
-
 
   const onFirstNameChanged = e => setFirstName(e.target.value)
   const onLastNameChanged = e => setLastName(e.target.value)
@@ -45,6 +47,9 @@ export const SignupUserForm = () => {
         }
       })
     })
+    .then(resp => resp.json())
+    .then(resp => console.log(resp))
+    .then(navigate('/'))
   }
 
   return (
@@ -116,9 +121,5 @@ export const SignupUserForm = () => {
         </button>
       </form>
     </section>
-
-    
-  )
-
-  
+  )  
 }

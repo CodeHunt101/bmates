@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom"
 
-export const SigninUserForm = () => {
-
+export const SigninUserForm = ({fetchCurrentUser}) => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -10,6 +11,7 @@ export const SigninUserForm = () => {
   
   const handleOnSubmit = (e) => {
     e.preventDefault()
+    
     fetch("/login", {
       method: "POST",
       headers: {
@@ -20,8 +22,8 @@ export const SigninUserForm = () => {
         password,
       })
     })
-    .then(resp => resp.json())
-    .then(response => console.log(response.message))
+    .then(fetchCurrentUser)
+    .then(navigate('/'))
   }
 
   return (
