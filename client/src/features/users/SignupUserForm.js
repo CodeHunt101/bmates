@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 
-export const SignupUserForm = () => {
+export const SignupUserForm = ({fetchCurrentUser}) => {
   const navigate = useNavigate()
   
   const [firstName, setFirstName] = useState('')
@@ -47,9 +47,21 @@ export const SignupUserForm = () => {
         }
       })
     })
-    .then(resp => resp.json())
-    .then(resp => console.log(resp))
-    .then(navigate('/'))
+    .then(
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        })
+      })
+      .then(fetchCurrentUser)
+      .then(navigate('/'))
+    )
+    
   }
 
   return (

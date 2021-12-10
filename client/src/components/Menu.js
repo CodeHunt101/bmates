@@ -7,15 +7,15 @@ export const Menu = ({currentUser}) => {
           <Link to="/">
             <b>Home</b>
           </Link>
-          {!currentUser && <Link to="/signin">
-            <b>Sign In</b>
+          {!currentUser && <Link to="/login">
+            <b>Log In</b>
           </Link>}
           {!currentUser && <Link to="/signup">
             <b>Sign Up</b>
           </Link>}
-          <Link to="/signout">
-            <b>Sign Up</b>
-          </Link>
+          {currentUser && <Link to="/logout">
+            <b>Log Out</b>
+          </Link>}
         </nav>
   )
 }

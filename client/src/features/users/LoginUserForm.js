@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
-export const SigninUserForm = ({fetchCurrentUser}) => {
+export const LoginUserForm = ({fetchCurrentUser}) => {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -28,7 +28,7 @@ export const SigninUserForm = ({fetchCurrentUser}) => {
 
   return (
     <section>
-      <h2>Sign In</h2>
+      <h2>Log In</h2>
       <form onSubmit={handleOnSubmit}>
         <label>Email:</label>
         <input

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Menu } from "./components/Menu";
-import { SigninUserForm } from "./features/users/SigninUserForm"
+import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
+import { LogoutUser } from "./features/users/LogoutUser";
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { WelcomeUser } from "./features/users/WelcomeUser";
 
@@ -25,8 +26,9 @@ function App() {
       <WelcomeUser currentUser={currentUser} />
       <Routes>
         <Route exact path="/" element={<h1>HOME PAGE!!</h1>} />
-        {!currentUser && <Route exact path="/signin" element={<SigninUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
-        {!currentUser && <Route exact path="/signup" element={<SignupUserForm />} />}
+        {!currentUser && <Route exact path="/login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+        {!currentUser && <Route exact path="/signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+        {currentUser && <Route exact path="/logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>}
       </Routes>
     </BrowserRouter>
   );
