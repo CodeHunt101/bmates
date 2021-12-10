@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Menu } from "./components/Menu";
+import { Listings } from "./features/listings/Listings";
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser";
@@ -26,6 +27,7 @@ function App() {
       <WelcomeUser currentUser={currentUser} />
       <Routes>
         <Route exact path="/" element={<h1>HOME PAGE!!</h1>} />
+        {currentUser && <Route exact path="/listings" element={<Listings/>}/>}
         {!currentUser && <Route exact path="/login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
         {!currentUser && <Route exact path="/signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
         {currentUser && <Route exact path="/logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>}

@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom"
 
 export const Menu = ({currentUser}) => {
+  
   return (
-    
+        
         <nav>
           <Link to="/">
             <b>Home</b>
           </Link>
+          {currentUser && !currentUser.mate && <Link to="/listings">
+            <b>Listings</b>
+          </Link>}
           {!currentUser && <Link to="/login">
             <b>Log In</b>
           </Link>}
