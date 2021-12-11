@@ -4,8 +4,6 @@ import { useNavigate } from "react-router"
 export const LogoutUser = ({fetchCurrentUser}) => {
   const navigate = useNavigate()
   
-  
-
   const handleLogout = () => {
     fetch('/logout')
       .then(fetchCurrentUser)

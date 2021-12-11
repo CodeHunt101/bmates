@@ -8,7 +8,16 @@ export const Menu = ({currentUser}) => {
           <Link to="/">
             <b>Home</b>
           </Link>
-          {currentUser && !currentUser.mate && <Link to="/listings">
+          {currentUser && <Link to="/mates">
+            <b>Mates</b>
+          </Link>}
+          {currentUser && <Link to="/members">
+            <b>Members</b>
+          </Link>}
+          {currentUser && <Link to={"/mates/"+currentUser.id+"/listings"}>
+            <b>My listings</b>
+          </Link>}
+          {currentUser && <Link to="/listings">
             <b>Listings</b>
           </Link>}
           {!currentUser && <Link to="/login">
