@@ -22,35 +22,60 @@ function App() {
   useEffect(()=>{
     fetchCurrentUser()
   },[])
-  
 
   return (
     <BrowserRouter>
       <Menu currentUser={currentUser}/>
       <WelcomeUser currentUser={currentUser} />
       <Routes>
+        {/* {TODO: protect routes when not current user} */}
         <Route path="/" element={<h1>HOME PAGE!!</h1>} />
-        {currentUser && 
-          <>
-          <Route path="/mates" element={<Users isMate={true}/>}>
+          <Route path="mates" element={<Users isMate={true}/>}>
             <Route path=":userId" element={<User/>} >
-            </Route>
           </Route>
-          <Route path="/mates/:userId/listings" element={<Listings/>}/>
-          <Route path="/members" element={<Users isMate={false}/>}>
+        </Route>
+          <Route path="mates/:userId/listings" element={<Listings/>}/>
+          <Route path="members" element={<Users isMate={false}/>}>
             <Route path=":userId" element={<User/>} />
           </Route>
-          <Route path="/listings" element={<Listings/>}>
+          <Route path="listings" element={<Listings/>}>
             <Route path=":listingId" element={<Listing />} />
           </Route>
-          <Route path="/logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
-          </>
-        }
-        {!currentUser && <Route path="/login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
-        {!currentUser && <Route path="/signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+          <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
+        {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+        {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
       </Routes>
     </BrowserRouter>
   );
 }
+
+// return (
+//   <BrowserRouter>
+//     <Menu currentUser={currentUser}/>
+//     <WelcomeUser currentUser={currentUser} />
+//     <Routes>
+//       <Route path="/" element={<h1>HOME PAGE!!</h1>} />
+//       {currentUser && 
+//         <>
+//         <Route path="mates" element={<Users isMate={true}/>}>
+//           <Route path=":userId" element={<User/>} >
+//           </Route>
+//         </Route>
+//         <Route path="mates/:userId/listings" element={<Listings/>}/>
+//         <Route path="members" element={<Users isMate={false}/>}>
+//           <Route path=":userId" element={<User/>} />
+//         </Route>
+//         <Route path="listings" element={<Listings/>}>
+//           <Route path=":listingId" element={<Listing />} />
+//         </Route>
+//         <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
+//         </>
+//       }
+//       {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+//       {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+//     </Routes>
+//   </BrowserRouter>
+// );
+
 
 export default App;

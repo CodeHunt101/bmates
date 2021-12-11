@@ -11,7 +11,8 @@ export const Users = ({isMate}) => {
   },[])
   
   const renderUsers = (isMate) => (
-      users.filter(user => user.mate === isMate).map(user => <User key={user.id} user={user}/>)
+      users.filter(user => user.mate === isMate)
+      .map(user => <User key={user.id} user={user}/>)
   )
 
   return(
