@@ -8,9 +8,9 @@ import { Listing } from "./features/listings/Listing"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import { WelcomeUser } from "./features/users/WelcomeUser"
-import { RedirectToMain } from "./components/RedirectToMain"
+// import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -25,13 +25,12 @@ function App() {
   },[])
   
   return (
-
-    <BrowserRouter>
+    <Router>
       <Menu currentUser={currentUser}/>
       <WelcomeUser currentUser={currentUser} />
       <Routes>
         <Route path="/" element={<Home />} />
-        {currentUser && (
+          {currentUser && (
         <>
           <Route path="mates" element={<Users isMate={true}/>}>
             <Route path=":userId" element={<User/>} />
@@ -48,11 +47,12 @@ function App() {
         )}
         {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
         {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
-        {/* TODO: redirect to main when url is wrong */}
-        {/* <Route path="/*" element={<RedirectToMain />}/> */}
+          {/* TODO: redirect to main when url is wrong */}
+          {/* <Route path="/*" element={<RedirectToMain />}/> */}
+        
       </Routes>
-    </BrowserRouter>
-  );
+    </Router>
+  )
 }
 
 export default App;
