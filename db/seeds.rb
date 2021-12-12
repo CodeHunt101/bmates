@@ -19,7 +19,7 @@ harold = User.create({
 })
 
 harold_listing = Listing.create({
-  title: "Platonic Sugar Daddy",
+  title: "I want to be your cybermate",
   description: "bleh bleh",
   mate: harold
 })
@@ -67,8 +67,8 @@ mates = User.select{|u| u.mate}
 
 mates.each do |mate|
   Listing.create({
-    title: Faker::Quotes::Chiquito.sentence,
-    description: "bleh bleh",
+    title: Faker::Lorem.sentence,
+    description: Faker::Lorem.paragraph,
     mate: mate
   })
 end
