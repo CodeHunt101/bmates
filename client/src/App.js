@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
 import { Users } from "./features/users/Users"
 import { User } from "./features/users/User"
@@ -9,7 +10,7 @@ import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { WelcomeUser } from "./features/users/WelcomeUser"
-
+import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -22,71 +23,36 @@ function App() {
   useEffect(()=>{
     fetchCurrentUser()
   },[])
-
-  // const handleRoutes = () => {
-  //   if (currentUser) {
-  //     return (
-  //     <BrowserRouter>
-  //       <Menu currentUser={currentUser}/>
-  //       <WelcomeUser currentUser={currentUser} />
-  //       <Routes>
-  //         <Route path="/" element={<h1>HOME PAGE!!</h1>} />
-  //         <Route path="mates" element={<Users isMate={true}/>}>
-  //           <Route path=":userId" element={<User/>} />
-  //         </Route>
-  //         <Route path="mates/:userId/listings" element={<Listings/>}/>
-  //         <Route path="members" element={<Users isMate={false}/>}>
-  //           <Route path=":userId" element={<User/>} />
-  //         </Route>
-  //         <Route path="listings" element={<Listings/>}>
-  //           <Route path=":listingId" element={<Listing />} />
-  //         </Route>
-  //         <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
-  //       </Routes>
-  //     </BrowserRouter>
-  //     )
-  //   } else {
-  //     return (
-  //     <BrowserRouter>
-  //       <Menu currentUser={currentUser}/>
-  //       <Routes>
-  //         <Route path="/" element={<h1>HOME PAGE!!</h1>} />
-  //         <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>}/>
-  //         <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>}/>
-  //     </Routes>
-  //     </BrowserRouter>
-  //     )
-  //   }
-  // }
   
   return (
-    // handleRoutes()
-    // return (
+
     <BrowserRouter>
       <Menu currentUser={currentUser}/>
       <WelcomeUser currentUser={currentUser} />
       <Routes>
-        
-        <Route path="/" element={<h1>HOME PAGE!!</h1>} />
-        {currentUser && (<><Route path="mates" element={<Users isMate={true}/>}>
-          <Route path=":userId" element={<User/>} />
-        </Route>
-        <Route path="mates/:userId/listings" element={<Listings/>}/>
-        <Route path="members" element={<Users isMate={false}/>}>
-          <Route path=":userId" element={<User/>} />
-        </Route>
-        <Route path="listings" element={<Listings/>}>
-          <Route path=":listingId" element={<Listing />} />
-        </Route>
-        <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/></>)}
+        <Route path="/" element={<Home />} />
+        {currentUser && (
+        <>
+          <Route path="mates" element={<Users isMate={true}/>}>
+            <Route path=":userId" element={<User/>} />
+          </Route>
+          {currentUser.mate && <Route path="mates/:userId/listings" element={<Listings/>}/>}
+          <Route path="members" element={<Users isMate={false}/>}>
+            <Route path=":userId" element={<User/>} />
+          </Route>
+          <Route path="listings" element={<Listings/>}>
+            <Route path=":listingId" element={<Listing />} />
+          </Route>
+          <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
+          </>
+        )}
         {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
         {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
+        {/* TODO: redirect to main when url is wrong */}
+        {/* <Route path="/*" element={<RedirectToMain />}/> */}
       </Routes>
     </BrowserRouter>
   );
 }
-
-
-
 
 export default App;

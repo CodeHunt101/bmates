@@ -13,13 +13,13 @@ export const Listings = () => {
   },[])
 
   const renderListings = (userId) => (
-    listings.filter(listing => !!userId ? listing.mate_id === parseInt(userId) : listing)
-    .map(listing => <Listing key={listing.id} listing={listing}/>)
+    listings.filter(listing => !!userId ? listing.listing.mate_id === parseInt(userId) : listing.listing)
+    .map(listing => <Listing key={listing.listing.id} listing={listing}/>)
   )
 
   return(
     <>
-      <h2>Listings</h2>
+      <h2>{userId ? "My Listings":"Listings"}</h2>
       {renderListings(userId)}
     </>
   )

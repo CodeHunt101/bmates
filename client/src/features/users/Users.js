@@ -17,7 +17,7 @@ export const Users = ({isMate}) => {
 
   return(
     <>
-      <h2>Users</h2>
+      <h2>{isMate ? "Mates":"Members"}</h2>
       {renderUsers(isMate)}
     </>
   )

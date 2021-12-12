@@ -9,8 +9,9 @@ export const Listing = ({listing}) => {
     if (!listingId) {
       return ( 
       <>
-        <h3>{listing.title}</h3>
-        <p>{listing.description}</p>
+        <h3>{listing.listing.title}</h3>
+        <p>{listing.listing.description}</p>
+        <p>Mate: {listing.mate_info.username}</p>
       </>)
     } else {
       if (parseInt(listingId) === listing.id) {
