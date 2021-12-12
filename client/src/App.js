@@ -66,9 +66,9 @@ function App() {
       <Menu currentUser={currentUser}/>
       <WelcomeUser currentUser={currentUser} />
       <Routes>
-        {/* {TODO: if I refactor this, I'll get warnings and deployment won't work} */}
+        
         <Route path="/" element={<h1>HOME PAGE!!</h1>} />
-        <Route path="mates" element={<Users isMate={true}/>}>
+        {currentUser && (<><Route path="mates" element={<Users isMate={true}/>}>
           <Route path=":userId" element={<User/>} />
         </Route>
         <Route path="mates/:userId/listings" element={<Listings/>}/>
@@ -78,7 +78,7 @@ function App() {
         <Route path="listings" element={<Listings/>}>
           <Route path=":listingId" element={<Listing />} />
         </Route>
-        <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
+        <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/></>)}
         {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
         {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
       </Routes>
