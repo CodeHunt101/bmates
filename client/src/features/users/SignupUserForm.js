@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router'
 
 export const SignupUserForm = ({fetchCurrentUser}) => {
-  const navigate = useNavigate()
   
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -59,7 +57,6 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
         })
       })
       .then(fetchCurrentUser)
-      .then(navigate('/'))
     )
     
   }

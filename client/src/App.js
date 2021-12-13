@@ -2,13 +2,11 @@ import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
 import { Users } from "./features/users/Users"
-import { User } from "./features/users/User"
 import { Listings } from "./features/listings/Listings"
-import { Listing } from "./features/listings/Listing"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
 import { WelcomeUser } from "./features/users/WelcomeUser"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
@@ -28,29 +26,58 @@ function App() {
     <Router>
       <Menu currentUser={currentUser}/>
       <WelcomeUser currentUser={currentUser} />
-      <Routes>
-        <Route path="/" element={<Home />} />
-          {currentUser && (
-        <>
-          <Route path="mates" element={<Users isMate={true}/>}>
-            <Route path=":userId" element={<User/>} />
-          </Route>
-          {currentUser.mate && <Route path="mates/:userId/listings" element={<Listings/>}/>}
-          <Route path="members" element={<Users isMate={false}/>}>
-            <Route path=":userId" element={<User/>} />
-          </Route>
-          <Route path="listings" element={<Listings/>}>
-            <Route path=":listingId" element={<Listing />} />
-          </Route>
-          <Route path="logout" element={<LogoutUser fetchCurrentUser={fetchCurrentUser}/>}/>
-          </>
-        )}
-        {!currentUser && <Route path="login" element={<LoginUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
-        {!currentUser && <Route path="signup" element={<SignupUserForm fetchCurrentUser={fetchCurrentUser}/>} />}
-          {/* TODO: redirect to main when url is wrong */}
-          {/* <Route path="/*" element={<RedirectToMain />}/> */}
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+          
+        <Route exact path="/mates">
+          <Users isMate={true}/>
+        </Route>
         
-      </Routes>
+        <Route exact path="/mates/:userId">
+          <Users isMate={true}/>
+        </Route>
+        
+        <Route exact path="/mates/:userId/listings">
+          <Listings />
+        </Route>
+
+        {currentUser && currentUser.mate && <Route exact path="/members">
+          <Users isMate={false} />
+        </Route>}
+
+        <Route exact path="/members/:userId">
+          <Users isMate={false} />
+        </Route>
+
+        <Route exact path="/listings">
+          <Listings />
+        </Route>
+
+        <Route exact path="/listings/:listingId">
+          <Listings />
+        </Route>
+        
+        <Route exact path="/logout">
+          <LogoutUser fetchCurrentUser={fetchCurrentUser} />
+          <Redirect to="/"/>
+        </Route>
+        
+        <Route exact path="/login">
+          <LoginUserForm fetchCurrentUser={fetchCurrentUser}/>
+          {currentUser && <Redirect to="/"/>}
+        </Route>
+      
+        <Route exact path="/signup" >
+          <SignupUserForm fetchCurrentUser={fetchCurrentUser}/>
+          {currentUser && <Redirect to="/"/>}
+        </Route>
+        
+        {/* TODO: redirect to main when url is wrong */}
+        {/* <Route exact path="/*" element={<RedirectToMain />}/> */}
+        <Route render={() => <h1>Not found!</h1>} />
+      </Switch>
     </Router>
   )
 }

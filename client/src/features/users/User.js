@@ -17,8 +17,8 @@ export const User = ({user}) => {
   }
   
   return(
-    <div className="user">
+    <>
       {renderUser()}
-    </div>
+    </>
   )
 }
