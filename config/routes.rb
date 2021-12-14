@@ -12,4 +12,7 @@ Rails.application.routes.draw do
   #Listings
   get "/listings", to: "listings#index"
 
+  #Reservations
+  get "/reservations", to: "reservations#index"
+
 end

@@ -76,11 +76,13 @@ end
 members = User.select{|u| !u.mate}
 
 members.each do |member|
+  rand_checkin = rand(2.years).seconds.ago
+  rand_checkout = rand_checkin + 3600
   Reservation.create({
     listing: Listing.all[rand(0..Listing.all.count - 1)],
     member: member,
     status: "pending",
-    checkin: '2022-02-02 01:00:00',
-    checkout: '2022-02-02 02:00:00' 
+    checkin: rand_checkin,
+    checkout: rand_checkout 
   })
 end

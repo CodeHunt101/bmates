@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
+import { WelcomeUser } from "./features/users/WelcomeUser"
 import { Users } from "./features/users/Users"
 import { Listings } from "./features/listings/Listings"
+import { Reservations } from "./features/reservations/Reservations"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
-import { WelcomeUser } from "./features/users/WelcomeUser"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -53,6 +54,18 @@ function App() {
 
         <Route exact path="/listings">
           <Listings />
+        </Route>
+
+        <Route exact path="/listings/:listingId">
+          <Listings />
+        </Route>
+
+        <Route exact path="/members/:userId/reservations">
+          <Reservations isMate={false} />
+        </Route>
+
+        <Route exact path="/mates/:userId/reservations">
+          <Reservations isMate={true}/>
         </Route>
 
         <Route exact path="/listings/:listingId">
