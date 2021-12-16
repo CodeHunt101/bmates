@@ -14,7 +14,7 @@ export const Listings = () => {
 
   const renderListings = (userId) => (
     listings.filter(listing => !!userId ? listing.listing.user_provider_id === parseInt(userId) : listing.listing)
-    .map(listing => <Listing key={listing.listing.id} listing={listing}/>)
+    .map(listing => <Listing key={listing.listing.id} listing={listing} userId={userId}/>)
   )
 
   return(

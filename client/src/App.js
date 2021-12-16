@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
-import { WelcomeUser } from "./features/users/WelcomeUser"
+// import { WelcomeUser } from "./features/users/WelcomeUser"
 import { Users } from "./features/users/Users"
 import { Listings } from "./features/listings/Listings"
 import { Reservations } from "./features/reservations/Reservations"
@@ -26,10 +26,9 @@ function App() {
   return (
     <Router>
       <Menu currentUser={currentUser}/>
-      <WelcomeUser currentUser={currentUser} />
       <Switch>
         <Route exact path="/">
-          <Home />
+          <Home currentUser={currentUser}/>
         </Route>
           
         <Route exact path="/users">
@@ -58,10 +57,6 @@ function App() {
 
         <Route exact path="/users/:userId/received_reservations">
           <Reservations isProvider={true}/>
-        </Route>
-
-        <Route exact path="/listings/:listingId">
-          <Listings />
         </Route>
         
         <Route exact path="/logout">
