@@ -7,7 +7,7 @@ export const Reservations = ({isProvider}) => {
   
   const {userId} = useParams()
   useEffect(()=>{
-      fetch('/reservations')
+      fetch('/api/v1/reservations')
         .then(resp => resp.json())
         .then(resp => setReservations(resp.reservations))
   },[])

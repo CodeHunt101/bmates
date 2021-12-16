@@ -3,16 +3,21 @@ Rails.application.routes.draw do
   
   # get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 
-  #Users & Sessions
-  post "/login", to: "sessions#create"
-  get "/logout", to: "sessions#destroy"
-  get "/users", to: "users#index"
-  post "/signup", to: "users#create"
+  namespace :api do
+    namespace :v1 do
+      #Users & Sessions
+      post "/login", to: "sessions#create"
+      get "/login", to: "sessions#create"
+      get "/logout", to: "sessions#destroy"
+      post "/signup", to: "users#create"
+      resources :users, only: [:index]
 
-  #Listings
-  get "/listings", to: "listings#index"
+      #Listings
+      resources :listings, only: [:index]
 
-  #Reservations
-  get "/reservations", to: "reservations#index"
+      #Reservations
+      resources :reservations, only: [:index]
+    end
+  end
 
 end

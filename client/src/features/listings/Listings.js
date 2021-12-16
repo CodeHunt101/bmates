@@ -7,7 +7,7 @@ export const Listings = () => {
   
   const {userId} = useParams()
   useEffect(()=>{
-      fetch('/listings')
+      fetch('/api/v1/listings')
         .then(resp => resp.json())
         .then(resp => setListings(resp.listings))
   },[])

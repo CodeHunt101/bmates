@@ -5,7 +5,7 @@ export const Users = () => {
   const [users, setUsers] = useState([])
   
   useEffect(()=>{
-      fetch('/users')
+      fetch('/api/v1/users')
         .then(resp => resp.json())
         .then(resp => setUsers(resp.users))
   },[])

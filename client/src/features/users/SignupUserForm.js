@@ -22,7 +22,7 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
   
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    fetch("/signup", {
+    fetch("/api/v1/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -33,15 +33,15 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
           last_name: lastName,
           gender,
           bio,
-          username: username,
+          username,
           email,
-          password: password,
+          password,
           password_confirmation: passwordConfirmation
         }
       })
     })
     .then(()=>
-      fetch("/login", {
+      fetch("/api/v1/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

@@ -3,7 +3,7 @@ import React from "react"
 export const LogoutUser = ({fetchCurrentUser}) => {
   
   const handleLogout = () => {
-    fetch('/logout')
+    fetch('/api/v1/logout')
       .then(fetchCurrentUser)
   }
   

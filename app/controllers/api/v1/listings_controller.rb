@@ -1,4 +1,4 @@
-class ListingsController < ApplicationController
+class Api::V1::ListingsController < ApplicationController
   
   def index
     listings = Listing.listings_with_user_provider_details

@@ -11,7 +11,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
   const handleOnSubmit = (e) => {
     e.preventDefault()
     
-    fetch("/login", {
+    fetch("/api/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -21,6 +21,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
         password,
       })
     })
+    // .then(resp => resp.json()).then(resp => console.log(resp.message))
     .then(fetchCurrentUser)
   }
 

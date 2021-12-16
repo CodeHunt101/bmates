@@ -15,7 +15,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
 
   const fetchCurrentUser = () => {
-    fetch('/users')
+    fetch('/api/v1/users')
     .then(resp => resp.json())
     .then(users => setCurrentUser(users.current_user))
   }

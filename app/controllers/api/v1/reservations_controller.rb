@@ -1,4 +1,4 @@
-class ReservationsController < ApplicationController
+class Api::V1::ReservationsController < ApplicationController
   
   def index
     reservations = Reservation.reservations_with_listing_provider_and_receiver_details
