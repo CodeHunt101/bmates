@@ -6,9 +6,8 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
   const [lastName, setLastName] = useState('')
   const [gender, setGender] = useState('')
   const [bio, setBio] = useState('')
-  const [userName, setUserName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
-  const [isMate, setIsMate] = useState(false)
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
@@ -16,11 +15,8 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
   const onLastNameChanged = e => setLastName(e.target.value)
   const onGenderChanged = e => setGender(e.target.value)
   const onBioChanged = e => setBio(e.target.value)
-  const onUserNameChanged = e => setUserName(e.target.value)
+  const onUsernameChanged = e => setUsername(e.target.value)
   const onEmailChanged = e => setEmail(e.target.value)
-  const onIsMateChanged = e => (
-    e.target.checked ? setIsMate(true) : setIsMate(false)
-  )
   const onPasswordChanged = e => setPassword(e.target.value)
   const onPasswordConfirmationChanged = e => setPasswordConfirmation(e.target.value)
   
@@ -37,22 +33,21 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
           last_name: lastName,
           gender,
           bio,
-          username: userName,
+          username: username,
           email,
-          mate: isMate,
           password: password,
           password_confirmation: passwordConfirmation
         }
       })
     })
-    .then(
+    .then(()=>
       fetch("/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          email,
+          username,
           password,
         })
       })
@@ -91,11 +86,11 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
           value={bio}
           onChange={onBioChanged}
         />
-        <label>UserName:</label>
+        <label>Username:</label>
         <input
           name="username"
-          value={userName}
-          onChange={onUserNameChanged}
+          value={username}
+          onChange={onUsernameChanged}
         />
         <label>Email:</label>
         <input
@@ -103,13 +98,6 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
           name="email"
           value={email}
           onChange={onEmailChanged}
-        />
-        <label>Mate:</label>
-        <input
-          type="checkbox"
-          name="mate"
-          value={isMate}
-          onChange={onIsMateChanged}
         />
         <label>Password:</label>
         <input

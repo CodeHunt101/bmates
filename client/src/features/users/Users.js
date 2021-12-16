@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { User } from "./User"
 
-export const Users = ({isMate}) => {
+export const Users = () => {
   const [users, setUsers] = useState([])
   
   useEffect(()=>{
@@ -10,15 +10,14 @@ export const Users = ({isMate}) => {
         .then(resp => setUsers(resp.users))
   },[])
   
-  const renderUsers = (isMate) => (
-      users.filter(user => user.mate === isMate)
-      .map(user => <User key={user.id} user={user}/>)
+  const renderUsers = () => (
+      users.map(user => <User key={user.id} user={user}/>)
   )
 
   return(
     <>
-      <h2>{isMate ? "Mates":"Members"}</h2>
-      {renderUsers(isMate)}
+      <h2>Users</h2>
+      {renderUsers()}
     </>
   )
 }

@@ -25,7 +25,7 @@ class UsersController < ApplicationController
       :bio,
       :username,
       :email,
-      :mate,
+      :is_admin,
       :password,
       :password_confirmation
     )

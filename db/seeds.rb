@@ -13,7 +13,6 @@ harold = User.create({
   bio: "blah blah blah",
   username: "haroldtm55",
   email: "harold@example.com",
-  mate: true,
   password: "password",
   password_confirmation: "password"
 })
@@ -21,7 +20,7 @@ harold = User.create({
 harold_listing = Listing.create({
   title: "I want to be your cybermate",
   description: "bleh bleh",
-  mate: harold
+  user_provider: harold
 })
 
 siri = User.create({
@@ -31,24 +30,20 @@ siri = User.create({
   bio: "blah blah blah",
   username: "chongnang",
   email: "siri@example.com",
-  mate: false,
   password: "password",
   password_confirmation: "password"
 })
-
-mate = [true, false]
 gender = ['M', 'F']
 
-i=0
+i=2
 while i<100 do
   User.create(
-    first_name: i<=50 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
+    first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
-    gender: i <= 50 ? 'M' : 'F',
+    gender: i % 2 != 0 ? 'M' : 'F',
     bio: "blah blah blah",
     username: "user" + "#{i+1}",
     email: Faker::Internet.email,
-    mate: mate[rand(0..1)],
     password: "password",
     password_confirmation: "password"
   )
@@ -57,32 +52,34 @@ end
 
 siri_reservation = Reservation.create({
   listing: harold_listing,
-  member: siri,
+  user_receiver: siri,
   status: "pending",
   checkin: '2022-02-02 01:00:00',
   checkout: '2022-02-02 02:00:00' 
 })
 
-mates = User.select{|u| u.mate}
+users = User.all
 
-mates.each do |mate|
+i=0
+while i < 100 do
   Listing.create({
     title: Faker::Lorem.sentence,
     description: Faker::Lorem.paragraph,
-    mate: mate
+    user_provider: User.all[rand(0..User.all.count - 1)]
   })
+  i+=1
 end
 
-members = User.select{|u| !u.mate}
-
-members.each do |member|
+i=0
+while i < 100 do
   rand_checkin = rand(2.years).seconds.ago
   rand_checkout = rand_checkin + 3600
   Reservation.create({
     listing: Listing.all[rand(0..Listing.all.count - 1)],
-    member: member,
+    user_receiver: User.all[rand(0..User.all.count - 1)],
     status: "pending",
     checkin: rand_checkin,
     checkout: rand_checkout 
   })
+  i+=1
 end

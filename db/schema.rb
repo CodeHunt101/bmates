@@ -18,14 +18,14 @@ ActiveRecord::Schema.define(version: 2021_12_08_204710) do
   create_table "listings", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "mate_id"
+    t.integer "user_provider_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "reservations", force: :cascade do |t|
     t.integer "listing_id"
-    t.integer "member_id"
+    t.integer "user_receiver_id"
     t.string "status"
     t.datetime "checkin"
     t.datetime "checkout"
@@ -37,10 +37,10 @@ ActiveRecord::Schema.define(version: 2021_12_08_204710) do
     t.string "first_name"
     t.string "last_name"
     t.string "gender"
-    t.text "bio"
     t.string "username"
     t.string "email"
-    t.boolean "mate"
+    t.text "bio"
+    t.boolean "is_admin", default: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

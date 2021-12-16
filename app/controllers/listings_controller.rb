@@ -1,10 +1,10 @@
 class ListingsController < ApplicationController
   
   def index
-    listings = Listing.listings_with_mate_details
+    listings = Listing.listings_with_user_provider_details
     render json: {
       listings: listings
-      }, except: [:created_at, :updated_at, :password_digest, :mate]
+      }, except: [:created_at, :updated_at, :password_digest, :user_provider]
   end
 
   def create
@@ -24,7 +24,7 @@ class ListingsController < ApplicationController
     params.require(:listing).permit(
       :title,
       :description,
-      :mate_id,
+      :user_provider_id,
     )
   end
 end

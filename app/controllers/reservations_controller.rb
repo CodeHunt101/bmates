@@ -1,10 +1,10 @@
 class ReservationsController < ApplicationController
   
   def index
-    reservations = Reservation.reservations_with_listing_mate_and_member_details
+    reservations = Reservation.reservations_with_listing_provider_and_receiver_details
     render json: {
       reservations: reservations
-      }, except: [:created_at, :updated_at, :password_digest, :mate]
+      }, except: [:created_at, :updated_at, :password_digest, :user_receiver]
   end
 
   def create
@@ -23,7 +23,7 @@ class ReservationsController < ApplicationController
   def reservation_params
     params.require(:reservation).permit(
       :listing_id,
-      :member_id,
+      :user_receiver_id,
       :status,
       :checkin,
       :checkout

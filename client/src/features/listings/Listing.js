@@ -11,7 +11,7 @@ export const Listing = ({listing}) => {
         <>
           <h3>{listing.listing.title}</h3>
           <p>{listing.listing.description}</p>
-          <p>Mate: {listing.mate_info.username}</p>
+          <p>Mate: {listing.user_provider_info.username}</p>
         </>
       )
     } else {

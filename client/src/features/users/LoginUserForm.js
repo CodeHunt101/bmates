@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 
 export const LoginUserForm = ({fetchCurrentUser}) => {
 
-  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const onEmailChanged = e => setEmail(e.target.value)
+  const onUsernameChanged = e => setUsername(e.target.value)
   const onPasswordChanged = e => setPassword(e.target.value)
   
   const handleOnSubmit = (e) => {
@@ -17,7 +17,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        email,
+        username,
         password,
       })
     })
@@ -31,9 +31,9 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
         <label>Email:</label>
         <input
           type="text"
-          name="email"
-          value={email}
-          onChange={onEmailChanged}
+          name="username"
+          value={username}
+          onChange={onUsernameChanged}
         />
         <label>Password:</label>
         <input

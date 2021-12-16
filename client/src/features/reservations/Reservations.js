@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Reservation } from "./Reservation"
 import { useParams } from "react-router"
 
-export const Reservations = ({isMate}) => {
+export const Reservations = ({isProvider}) => {
   const [reservations, setReservations] = useState([])
   
   const {userId} = useParams()
@@ -13,15 +13,14 @@ export const Reservations = ({isMate}) => {
   },[])
 
   const renderReservations = (userId) => (
-    !isMate ?
-      reservations.filter(r => userId ? r.reservation.member_id === parseInt(userId) : r.reservation)
+    !isProvider ?
+      reservations.filter(r => userId ? r.reservation.user_receiver_id === parseInt(userId) : r.reservation)
       .map(r => <Reservation key={r.reservation.id} reservation={r}/>) 
     :
-      reservations.filter(r => userId ? r.mate_info.id === parseInt(userId) : r.reservation)
+      reservations.filter(r => userId ? r.user_provider_info.id === parseInt(userId) : r.reservation)
       .map(r => <Reservation key={r.reservation.id} reservation={r}/>)
       
   )
-  
 
   return(
     <>

@@ -32,24 +32,16 @@ function App() {
           <Home />
         </Route>
           
-        <Route exact path="/mates">
-          <Users isMate={true}/>
+        <Route exact path="/users">
+          <Users />
         </Route>
         
-        <Route exact path="/mates/:userId">
-          <Users isMate={true}/>
+        <Route exact path="/users/:userId">
+          <Users />
         </Route>
         
-        <Route exact path="/mates/:userId/listings">
+        <Route exact path="/users/:userId/listings">
           <Listings />
-        </Route>
-
-        {currentUser && currentUser.mate && <Route exact path="/members">
-          <Users isMate={false} />
-        </Route>}
-
-        <Route exact path="/members/:userId">
-          <Users isMate={false} />
         </Route>
 
         <Route exact path="/listings">
@@ -59,13 +51,13 @@ function App() {
         <Route exact path="/listings/:listingId">
           <Listings />
         </Route>
-
-        <Route exact path="/members/:userId/reservations">
-          <Reservations isMate={false} />
+     
+        <Route exact path="/users/:userId/made_reservations">
+          <Reservations isProvider={false} />
         </Route>
 
-        <Route exact path="/mates/:userId/reservations">
-          <Reservations isMate={true}/>
+        <Route exact path="/users/:userId/received_reservations">
+          <Reservations isProvider={true}/>
         </Route>
 
         <Route exact path="/listings/:listingId">
@@ -87,7 +79,6 @@ function App() {
           {currentUser && <Redirect to="/"/>}
         </Route>
         
-        {/* TODO: redirect to main when url is wrong */}
         {/* <Route exact path="/*" element={<RedirectToMain />}/> */}
         <Route render={() => <h1>Not found!</h1>} />
       </Switch>
