@@ -8,7 +8,7 @@ class Api::V1::ReservationsController < ApplicationController
   end
 
   def create
-    reservation = Reservation.create(user_params)
+    reservation = Reservation.create(reservation_params)
     if reservation.valid?
       message = "reservation has been successfully created"
       render json: {

@@ -8,7 +8,7 @@ class Api::V1::ListingsController < ApplicationController
   end
 
   def create
-    listing = Listing.create(user_params)
+    listing = Listing.create(listing_params)
     if listing.valid?
       message = "Listing has been successfully created"
       render json: {
@@ -22,9 +22,11 @@ class Api::V1::ListingsController < ApplicationController
 
   def listing_params
     params.require(:listing).permit(
+      :listing_type,
       :title,
       :description,
       :user_provider_id,
+      topic_ids: []
     )
   end
 end

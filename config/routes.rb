@@ -14,6 +14,10 @@ Rails.application.routes.draw do
 
       #Listings
       resources :listings, only: [:index]
+      post "listings/new", to: "listings#create"
+
+      #Topics
+      resources :topics, only: [:index]
 
       #Reservations
       resources :reservations, only: [:index]

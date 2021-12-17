@@ -4,6 +4,7 @@ import { Menu } from "./components/Menu"
 // import { WelcomeUser } from "./features/users/WelcomeUser"
 import { Users } from "./features/users/Users"
 import { Listings } from "./features/listings/Listings"
+import { ListingForm } from "./features/listings/ListingForm"
 import { Reservations } from "./features/reservations/Reservations"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
@@ -46,7 +47,13 @@ function App() {
         <Route exact path="/listings">
           <Listings />
         </Route>
-
+        
+        {/* If I change the order of listing/new and listing/userid, it won't work */}
+        
+        <Route exact path="/listings/new">
+          <ListingForm currentUser={currentUser} />
+        </Route>
+        
         <Route exact path="/listings/:listingId">
           <Listings />
         </Route>
