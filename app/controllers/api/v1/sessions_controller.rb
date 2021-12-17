@@ -2,24 +2,17 @@ class Api::V1::SessionsController < ApplicationController
   # skip_before_action :verified_user
 
   def create
-    user = current_user || User.find_by(username: params[:username])
-    # binding.pry
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+    if current_user
+      render json: { message: "loggen in" }
     else
-      if current_user
-        render json: { message: " loggen in" }
-      elsif !current_user && params[:password]
-        render json: { message: "The information provided is incorrect, please try again." }
+      user = User.find_by(username: params[:username])
+      if user && user.authenticate(params[:password])
+        session[:user_id] = user.id
+        render json: { message: "loggen in" }
       else
-        render json: { message: "No logged user" }
+        render json: { message: "The information provided is incorrect, please try again." }
       end
-      
-      
-       
-      
     end
-    
   end
 
   def destroy

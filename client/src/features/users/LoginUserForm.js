@@ -21,7 +21,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
         password,
       })
     })
-    // .then(resp => resp.json()).then(resp => console.log(resp.message))
+    .then(resp => resp.json()).then(resp => console.log(resp.message))
     .then(fetchCurrentUser)
   }
 
