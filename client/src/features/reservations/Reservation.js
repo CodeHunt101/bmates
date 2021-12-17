@@ -5,28 +5,20 @@ export const Reservation = ({reservation}) => {
   
   const {reservationId} = useParams()
   
+  const reservationInfo = () => (
+    <>
+      <p>ID:{reservation.reservation.id}</p>
+      <p>Status: {reservation.reservation.status}</p>
+      <p>Check-in: {new Date(reservation.reservation.checkin).toString()}</p>
+      <p>Check-out: {new Date(reservation.reservation.checkout).toString()}</p>
+    </>
+  )
+  
   const renderReservation = () => {
-    // TODO: Simplfy
-    if (!reservationId) {
+    if (!reservationId || parseInt(reservationId) === reservation.reservation.id) {
       return ( 
-        <>
-          <p>ID:{reservation.reservation.id}</p>
-          <p>Status: {reservation.reservation.status}</p>
-          <p>Check-in: {new Date(reservation.reservation.checkin).toString()}</p>
-          <p>Check-out: {new Date(reservation.reservation.checkout).toString()}</p>
-        </>
+        reservationInfo()
       )
-    } else {
-      if (parseInt(reservationId) === reservation.reservation.id) {
-        return (
-          <>
-            <p>ID:{reservation.reservation.id}</p>
-            <p>Status: {reservation.reservation.status}</p>
-            <p>Check-in: {new Date(reservation.reservation.checkin).toString()}</p>
-            <p>Check-out: {new Date(reservation.reservation.checkout).toString()}</p>
-          </>
-        )
-      }
     }
   }
   

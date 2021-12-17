@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_08_204710) do
+ActiveRecord::Schema.define(version: 2021_12_17_052939) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "listing_topics", force: :cascade do |t|
+    t.bigint "listing_id"
+    t.bigint "topic_id"
+    t.index ["listing_id"], name: "index_listing_topics_on_listing_id"
+    t.index ["topic_id"], name: "index_listing_topics_on_topic_id"
+  end
+
   create_table "listings", force: :cascade do |t|
+    t.string "listing_type"
     t.string "title"
     t.text "description"
     t.integer "user_provider_id"
@@ -29,6 +37,13 @@ ActiveRecord::Schema.define(version: 2021_12_08_204710) do
     t.string "status"
     t.datetime "checkin"
     t.datetime "checkout"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string "name"
+    t.string "listing_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -6,6 +6,79 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+mate_topics = [
+  'Aliens',
+  'Cooking',
+  'Beach',
+  'Biking',
+  'Books',
+  'Business',
+  'Cars',
+  'Coffee',
+  'Comedy',
+  'Crafts',
+  'Divorce',
+  'Goals',
+  'Food',
+  'Financial',
+  'Habits',
+  'Health',
+  'Leadership',
+  'Languages',
+  'Work',
+  'Hobbies',
+  'Studies',
+  'Mindfulness',
+  'Music',
+  'Movies',
+  'Other',
+  'Outdoor Events',
+  'Pets',
+  'Phone Friend',
+  'Photography',
+  'Reading',
+  'Psychology',
+  'Art',
+  'Podcasts',
+  'Playing Sports',
+  'Relationship',
+  'Religious',
+  'Travel',
+  'Television Shows',
+  'Stress',
+  'Sports',
+  'Web Design',
+  'Writing',
+  'Clubbing',
+  'Clothes',
+  'Children',
+  'Current Situation'
+]
+
+# coach_topics = [
+#   'Business',
+#   'Current Situation',
+#   'Divorce',
+#   'Education',
+#   'Financial',
+#   'Food',
+#   'Goals',
+#   'Habits',
+#   'Studies',
+#   'Tutoring'
+#   'Leadership',
+#   'Work',
+#   'Health',
+#   'Mindfulness',
+#   'Other',
+#   'Online dating',
+#   'Relationship',
+#   'Stress',
+# ]
+
+mate_topics.map {|t| Topic.create(name: t, listing_type: "Mate")}
+# coach_topics.map {|t| Topic.create(name: t, listing_type: "Coach")}
+
 harold = User.create({
   first_name: "Harold",
   last_name: "Torres",
@@ -19,9 +92,16 @@ harold = User.create({
 
 harold_listing = Listing.create({
   title: "I want to be your cybermate",
+  listing_type: "Mate",
   description: "bleh bleh",
   user_provider: harold
 })
+
+5.times do
+  random_topic = Topic.all[rand(0..Topic.all.count - 1)]
+  harold_listing.topics << random_topic if harold_listing.topics.all? {|t| t != random_topic}
+end
+
 
 siri = User.create({
   first_name: "Siri",
@@ -32,6 +112,14 @@ siri = User.create({
   email: "siri@example.com",
   password: "password",
   password_confirmation: "password"
+})
+
+siri_reservation = Reservation.create({
+  listing: harold_listing,
+  user_receiver: siri,
+  status: "pending",
+  checkin: '2022-02-02 01:00:00',
+  checkout: '2022-02-02 02:00:00' 
 })
 gender = ['M', 'F']
 
@@ -50,24 +138,22 @@ while i<100 do
   i+=1
 end
 
-siri_reservation = Reservation.create({
-  listing: harold_listing,
-  user_receiver: siri,
-  status: "pending",
-  checkin: '2022-02-02 01:00:00',
-  checkout: '2022-02-02 02:00:00' 
-})
-
 users = User.all
 
 i=0
 while i < 100 do
-  Listing.create({
+  listing = Listing.create({
     title: Faker::Lorem.sentence,
+    listing_type: "Mate",
     description: Faker::Lorem.paragraph,
     user_provider: User.all[rand(0..User.all.count - 1)]
   })
   i+=1
+
+  rand(3..10).times do
+    random_topic = Topic.all[rand(0..Topic.all.count - 1)]
+    listing.topics << random_topic if listing.topics.all? {|t| t != random_topic}
+  end
 end
 
 i=0
