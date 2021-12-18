@@ -77,12 +77,6 @@ export const ListingForm = ({currentUser}) => {
     
   }
 
-  if (createdListing) {
-    // TODO: FIX BUG
-    <Redirect push to={`localhost:4000/listings/${createdListing.listing.id}`}/>
-    console.log(`localhost:4000/listings/${createdListing.listing.id}`)
-  }
-  
   const [allTopicOptions, setAllTopicOptions] = useState([])
   useEffect(()=> {
     fetch("/api/v1/topics")
@@ -124,6 +118,9 @@ export const ListingForm = ({currentUser}) => {
     }
   }
 
+  if (createdListing) {
+    return <Redirect push to={`/listings/${createdListing.listing.id}`} />
+  }
 
   return (
     <section>
