@@ -26,7 +26,8 @@ class Api::V1::ListingsController < ApplicationController
       :title,
       :description,
       :user_provider_id,
-      topic_ids: []
+      topic_ids: [],
+      date_ids: []
     )
   end
 end

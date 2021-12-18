@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react"
 import { ListingAvailability } from "./ListingAvailability"
+import { Redirect } from "react-router"
 
 export const ListingForm = ({currentUser}) => {
+  const [createdListing, setCreatedListing] = useState(null)
+  
   const [formData, setFormData] = useState({
     listingType: "",
     title: "",
     description: "",
-    topics: []
+    topics: [],
+    selectedDates: []
   })
 
   const handleOnChange = (e) => (
@@ -18,7 +22,6 @@ export const ListingForm = ({currentUser}) => {
 
   const handleCheckBoxChange = (e) => {
     if (e.target.checked) {
-      
       const selectedTopics = [...formData.topics, e.target.value]
       setFormData({
         ...formData,
@@ -35,6 +38,7 @@ export const ListingForm = ({currentUser}) => {
   }
   
   const handleOnSubmit = (e) => {
+    // This creates a new listing and immediately appends available dates
     e.preventDefault()
     fetch("/api/v1/listings/new", {
       method: "POST",
@@ -51,6 +55,32 @@ export const ListingForm = ({currentUser}) => {
         }
       })
     })
+    .then(resp => resp.json())
+    .then(createdListing => {
+      formData.selectedDates.forEach(selectedDate => {
+        fetch("/api/v1/available_dates", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            available_date: {
+              available_date: selectedDate,
+              listing_id: createdListing.listing.id
+            }
+          })
+        })
+      })
+
+      setCreatedListing(createdListing)
+    })
+    
+  }
+
+  if (createdListing) {
+    // TODO: FIX BUG
+    <Redirect push to={`localhost:4000/listings/${createdListing.listing.id}`}/>
+    console.log(`localhost:4000/listings/${createdListing.listing.id}`)
   }
   
   const [allTopicOptions, setAllTopicOptions] = useState([])
@@ -68,8 +98,31 @@ export const ListingForm = ({currentUser}) => {
         <input  type="checkbox" name="topics" value={t.id} onChange={handleCheckBoxChange} />
         <label>{t.name}</label>
       </div>
-    )) 
+    ))
   )
+
+  const tileClassName = ({date,view}) => {
+    if (view === 'month') {
+      if (formData.selectedDates.find(dDate => dDate.toString() === date.toString())) {
+        return 'selected'
+      }
+    }
+  }
+
+  const handleOnClickDay = (value, event) => {
+    if (formData.selectedDates.find(date=> date.toString() === value.toString())) {
+      setFormData({
+        ...formData,
+        selectedDates: formData.selectedDates.filter(date => date.toString() !== value.toString())
+      })
+    } 
+    else {
+      setFormData({
+        ...formData,
+        selectedDates: [...formData.selectedDates, value]
+      })
+    }
+  }
 
 
   return (
@@ -96,7 +149,7 @@ export const ListingForm = ({currentUser}) => {
         />
         <label>Topics:</label>
         {renderTopics()}
-        <ListingAvailability />
+        <ListingAvailability tileClassName={tileClassName} handleOnClickDay={handleOnClickDay}/>
         <button type="submit">
           Create Listing
         </button>
@@ -104,4 +157,3 @@ export const ListingForm = ({currentUser}) => {
     </section>
   )  
 }
-

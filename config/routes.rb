@@ -21,6 +21,9 @@ Rails.application.routes.draw do
 
       #Reservations
       resources :reservations, only: [:index]
+
+      #Available_Dates
+      resources :available_dates, only: [:create]
     end
   end
 
