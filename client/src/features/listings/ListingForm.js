@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react"
+import { ListingAvailability } from "./ListingAvailability"
 
 export const ListingForm = ({currentUser}) => {
   const [formData, setFormData] = useState({
@@ -18,17 +19,17 @@ export const ListingForm = ({currentUser}) => {
   const handleCheckBoxChange = (e) => {
     if (e.target.checked) {
       
-      let copyOfTopics = [...formData.topics, e.target.value]
+      const selectedTopics = [...formData.topics, e.target.value]
       setFormData({
         ...formData,
-        topics: copyOfTopics
+        topics: selectedTopics
       })
     }
     else {
-      let copyOfTopics = formData.topics.filter(t => t !== e.target.value)
+      const selectedTopics = formData.topics.filter(t => t !== e.target.value)
       setFormData({
         ...formData,
-        topics: copyOfTopics
+        topics: selectedTopics
       })
     }
   }
@@ -65,7 +66,7 @@ export const ListingForm = ({currentUser}) => {
     allTopicOptions.map(t => (
       <div key={t.id}>
         <input  type="checkbox" name="topics" value={t.id} onChange={handleCheckBoxChange} />
-        <label>{t.name}</label><br/>
+        <label>{t.name}</label>
       </div>
     )) 
   )
@@ -95,6 +96,7 @@ export const ListingForm = ({currentUser}) => {
         />
         <label>Topics:</label>
         {renderTopics()}
+        <ListingAvailability />
         <button type="submit">
           Create Listing
         </button>
