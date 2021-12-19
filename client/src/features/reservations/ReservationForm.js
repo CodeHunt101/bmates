@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from "react"
 import { ListingAvailability } from "../listings/ListingAvailability"
-// import { Redirect } from "react-router"
+import { getFullDate } from "../../helper_functions"
+import { Redirect } from "react-router"
 
 export const ReservationForm = ({listing, currentUser}) => {
   
-  // const [createdReservation, setCreatedReservation] = useState(null)
+  const [createdReservations, setCreatedReservations] = useState(false)
   const [formData, setFormData] = useState({
     selectedDates: [],
     userReceiverId: ""
@@ -24,15 +25,6 @@ export const ReservationForm = ({listing, currentUser}) => {
     fetchCurrentUser()
   },[])
   
-  const getFullDate = (rawDate) => {
-    const date = typeof(rawDate) === "string" ? new Date(rawDate) : rawDate
-    const day = date.getDate()
-    const month = date.getMonth() + 1
-    const year = date.getFullYear()
-
-    return day + "/" + month + "/" + year
- 
-  }
   
   const tileClassNameToReserved = ({date, view}) => {
     if (view === "month") {
@@ -75,10 +67,14 @@ export const ReservationForm = ({listing, currentUser}) => {
             reservation_date: selectedDate
           }
         })
-      })
+      }).then(()=>setCreatedReservations(true))
     })
-    
   }
+
+  if (createdReservations) {
+    return <Redirect push to={`/users/${formData.userReceiverId}/made_reservations`} />
+  }
+
   
   return (
     <form onSubmit={handleOnSubmit}>

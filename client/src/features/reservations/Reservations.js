@@ -25,7 +25,7 @@ export const Reservations = ({isProvider}) => {
   return(
     <>
       <h2>Reservations</h2>
-      {renderReservations(userId)}
+      <ul>{renderReservations(userId)}</ul>
     </>
   )
 }

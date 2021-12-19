@@ -1,5 +1,6 @@
 import React from "react"
 import { useParams } from "react-router"
+// import { getFullDate } from "../../helper_functions"
 
 export const Reservation = ({reservation}) => {
   
@@ -7,10 +8,11 @@ export const Reservation = ({reservation}) => {
   
   const reservationInfo = () => (
     <>
-      <p>ID:{reservation.reservation.id}</p>
+      <p>ID: {reservation.reservation.id}</p>
+      <p>Listing: {reservation.listing_info.title}</p>
+      <p>User: {reservation.user_provider_info.username}</p>
       <p>Status: {reservation.reservation.status}</p>
-      <p>Check-in: {new Date(reservation.reservation.checkin).toString()}</p>
-      <p>Check-out: {new Date(reservation.reservation.checkout).toString()}</p>
+      <p>Reservation Date: {new Date(reservation.reservation.reservation_date).toString()}</p>
     </>
   )
   
@@ -23,8 +25,8 @@ export const Reservation = ({reservation}) => {
   }
   
   return(
-    <div className="reservation">
+    <li className="reservation">
       {renderReservation()}
-    </div>
+    </li>
   )
 }
