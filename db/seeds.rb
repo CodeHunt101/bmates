@@ -100,6 +100,7 @@ harold_listing = Listing.create({
 5.times do
   random_topic = Topic.all[rand(0..Topic.all.count - 1)]
   harold_listing.topics << random_topic if harold_listing.topics.all? {|t| t != random_topic}
+  random_available_date = AvailableDate.create(available_date: rand(2.months).seconds.from_now, listing: harold_listing)
 end
 
 
@@ -153,6 +154,7 @@ while i < 100 do
   rand(3..10).times do
     random_topic = Topic.all[rand(0..Topic.all.count - 1)]
     listing.topics << random_topic if listing.topics.all? {|t| t != random_topic}
+    random_available_date = AvailableDate.create(available_date: rand(2.months).seconds.from_now, listing: listing)
   end
 end
 

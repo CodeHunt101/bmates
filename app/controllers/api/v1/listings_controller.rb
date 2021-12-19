@@ -1,7 +1,7 @@
 class Api::V1::ListingsController < ApplicationController
   
   def index
-    listings = Listing.listings_with_user_provider_details
+    listings = Listing.listings_with_user_provider_details_topics_and_available_dates
     render json: {
       listings: listings
       }, except: [:created_at, :updated_at, :password_digest, :user_provider]

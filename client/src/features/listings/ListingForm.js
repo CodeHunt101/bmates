@@ -95,10 +95,10 @@ export const ListingForm = ({currentUser}) => {
     ))
   )
 
-  const tileClassName = ({date,view}) => {
+  const tileClassNameToAvailable = ({date,view}) => {
     if (view === 'month') {
       if (formData.selectedDates.find(dDate => dDate.toString() === date.toString())) {
-        return 'selected'
+        return 'available'
       }
     }
   }
@@ -146,7 +146,7 @@ export const ListingForm = ({currentUser}) => {
         />
         <label>Topics:</label>
         {renderTopics()}
-        <ListingAvailability tileClassName={tileClassName} handleOnClickDay={handleOnClickDay}/>
+        <ListingAvailability tileClassNameToAvailable={tileClassNameToAvailable} handleOnClickDay={handleOnClickDay}/>
         <button type="submit">
           Create Listing
         </button>

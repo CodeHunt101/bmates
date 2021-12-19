@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
-.selected {
-  background-color: red;
+button.available {
+  background-color: green;
+}
+
+.to-disable {
+  pointer-events: none;
+  background-color: silver;
+}
+
+.not-to-disable {
+  background-color: green;
 }

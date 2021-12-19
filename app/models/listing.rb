@@ -5,7 +5,12 @@ class Listing < ApplicationRecord
   has_many :topics, through: :listing_topics
   has_many :available_dates
 
-  def self.listings_with_user_provider_details
-    all.map{|l| {listing: l, user_provider_info:l.user_provider}}
+  def self.listings_with_user_provider_details_topics_and_available_dates
+    all.map{|l| {
+      listing: l, 
+      user_provider_info:l.user_provider,
+      topics: l.topics.select(:id,:name),
+      available_dates: l.available_dates.select(:id, :available_date)
+    }}
   end
 end
