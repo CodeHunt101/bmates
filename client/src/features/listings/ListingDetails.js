@@ -1,18 +1,8 @@
 import React from "react"
 import { Link } from "react-router-dom"
-import { ListingAvailability } from "./ListingAvailability"
+import { ReservationForm } from "../reservations/ReservationForm"
 
 export const ListingDetails = ({listing}) => {
-  
-  const tileClassNameToReserved = ({date, view}) => {
-    if (view === "month") {
-      if (listing.available_dates.find(dDate => new Date(dDate.available_date).toString() === date.toString())) {
-        return 'not-to-disable'
-      } else {
-        return 'to-disable'
-      }
-    }
-  }
 
   return (
   <>
@@ -36,7 +26,7 @@ export const ListingDetails = ({listing}) => {
     <div>
       <div>Make a reservation:</div>
       {/* TODO: build a new reservation form component */}
-      <ListingAvailability availableDates={listing.available_dates} tileClassNameToReserved={tileClassNameToReserved}/>
+      <ReservationForm listing={listing}/>
     </div>
   </>)
 }

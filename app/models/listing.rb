@@ -10,7 +10,7 @@ class Listing < ApplicationRecord
       listing: l, 
       user_provider_info:l.user_provider,
       topics: l.topics.select(:id,:name),
-      available_dates: l.available_dates.select(:id, :available_date)
+      available_dates: l.available_dates_not_reserved.select(:id, :available_date)
     }}
   end
 

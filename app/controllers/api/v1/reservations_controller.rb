@@ -16,6 +16,8 @@ class Api::V1::ReservationsController < ApplicationController
         reservation: reservation}, 
         except: [:created_at, :updated_at]
     end
+    listing_chosen_date = reservation.listing.available_dates_not_reserved.where(available_date: reservation.reservation_date)
+    listing_chosen_date.update(is_reserved: true)
   end
 
   private
@@ -25,8 +27,7 @@ class Api::V1::ReservationsController < ApplicationController
       :listing_id,
       :user_receiver_id,
       :status,
-      :checkin,
-      :checkout
+      :reservation_date
     )
   end
 end
