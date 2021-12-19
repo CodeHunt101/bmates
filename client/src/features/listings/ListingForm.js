@@ -4,7 +4,6 @@ import { Redirect } from "react-router"
 
 export const ListingForm = ({currentUser}) => {
   const [createdListing, setCreatedListing] = useState(null)
-  
   const [formData, setFormData] = useState({
     listingType: "",
     title: "",

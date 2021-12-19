@@ -9,6 +9,7 @@ import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
+import { EditUserForm } from "./features/users/EditUserForm"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -52,6 +53,10 @@ function App() {
         </Route>
         <Route path="/listings">
           <Listings />
+        </Route>
+
+        <Route path="/dashboard">
+          <EditUserForm />
         </Route>
                 
         <Route path="/logout">

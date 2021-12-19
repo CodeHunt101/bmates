@@ -2,19 +2,19 @@ import React, { useState } from 'react'
 
 export const SignupUserForm = ({fetchCurrentUser}) => {
   
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [gender, setGender] = useState('')
-  const [bio, setBio] = useState('')
+  // const [firstName, setFirstName] = useState('')
+  // const [lastName, setLastName] = useState('')
+  // const [gender, setGender] = useState('')
+  // const [bio, setBio] = useState('')
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
 
-  const onFirstNameChanged = e => setFirstName(e.target.value)
-  const onLastNameChanged = e => setLastName(e.target.value)
-  const onGenderChanged = e => setGender(e.target.value)
-  const onBioChanged = e => setBio(e.target.value)
+  // const onFirstNameChanged = e => setFirstName(e.target.value)
+  // const onLastNameChanged = e => setLastName(e.target.value)
+  // const onGenderChanged = e => setGender(e.target.value)
+  // const onBioChanged = e => setBio(e.target.value)
   const onUsernameChanged = e => setUsername(e.target.value)
   const onEmailChanged = e => setEmail(e.target.value)
   const onPasswordChanged = e => setPassword(e.target.value)
@@ -29,10 +29,10 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
       },
       body: JSON.stringify({
         user: {
-          first_name: firstName,
-          last_name: lastName,
-          gender,
-          bio,
+          // first_name: firstName,
+          // last_name: lastName,
+          // gender,
+          // bio,
           username,
           email,
           password,
@@ -60,7 +60,7 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
     <section>
       <h2>Sign Up</h2>
       <form onSubmit={handleOnSubmit}>
-        <label>First Name:</label>
+        {/* <label>First Name:</label>
         <input
           type="text"
           name="firstName"
@@ -85,7 +85,7 @@ export const SignupUserForm = ({fetchCurrentUser}) => {
           name="bio"
           value={bio}
           onChange={onBioChanged}
-        />
+        /> */}
         <label>Username:</label>
         <input
           name="username"
