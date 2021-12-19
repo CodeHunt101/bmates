@@ -115,17 +115,21 @@ siri = User.create({
   password_confirmation: "password"
 })
 
+rand_available_date_from_harold_listing = harold_listing.available_dates_not_reserved[rand(0..harold_listing.available_dates_not_reserved.count - 1)].available_date
+
 siri_reservation = Reservation.create({
   listing: harold_listing,
   user_receiver: siri,
   status: "pending",
-  checkin: '2022-02-02 01:00:00',
-  checkout: '2022-02-02 02:00:00' 
+  reservation_date: rand_available_date_from_harold_listing
 })
+
+harold_listing.available_dates_not_reserved.where(available_date: rand_available_date_from_harold_listing).update(is_reserved: true)
+
 gender = ['M', 'F']
 
 i=2
-while i<100 do
+while i<50 do
   User.create(
     first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
@@ -142,7 +146,7 @@ end
 users = User.all
 
 i=0
-while i < 100 do
+while i < 50 do
   listing = Listing.create({
     title: Faker::Lorem.sentence,
     listing_type: "Mate",
@@ -159,15 +163,21 @@ while i < 100 do
 end
 
 i=0
-while i < 100 do
-  rand_checkin = rand(2.years).seconds.ago
-  rand_checkout = rand_checkin + 3600
+while i < 101 do
+  rand_listing = Listing.all[rand(0..Listing.all.count - 1)]
+  
+  if rand_listing.available_dates_not_reserved.count == 0
+    # binding.pry
+    next
+  end
+  
+  rand_available_date_from_rand_listing = rand_listing.available_dates_not_reserved[rand(0..rand_listing.available_dates_not_reserved.count - 1)].available_date
   Reservation.create({
-    listing: Listing.all[rand(0..Listing.all.count - 1)],
+    listing: rand_listing,
     user_receiver: User.all[rand(0..User.all.count - 1)],
     status: "pending",
-    checkin: rand_checkin,
-    checkout: rand_checkout 
+    reservation_date: rand_available_date_from_rand_listing,
   })
+  rand_listing.available_dates_not_reserved.where(available_date: rand_available_date_from_rand_listing).update(is_reserved: true)
   i+=1
 end

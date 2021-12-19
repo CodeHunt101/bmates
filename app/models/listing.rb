@@ -13,4 +13,8 @@ class Listing < ApplicationRecord
       available_dates: l.available_dates.select(:id, :available_date)
     }}
   end
+
+  def available_dates_not_reserved
+    self.available_dates.where(is_reserved: false)
+  end
 end

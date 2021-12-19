@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_095547) do
   create_table "available_dates", force: :cascade do |t|
     t.datetime "available_date"
     t.integer "listing_id"
+    t.boolean "is_reserved", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -42,8 +43,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_095547) do
     t.integer "listing_id"
     t.integer "user_receiver_id"
     t.string "status"
-    t.datetime "checkin"
-    t.datetime "checkout"
+    t.datetime "reservation_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
