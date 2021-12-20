@@ -24,6 +24,18 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  def show
+    user = User.find(params[:id])
+    render json: {
+      current_user: user,
+      listings: user.listings,
+      reservations: {
+        received_reservations: user.received_reservations,
+        made_reservations: user.made_reservations
+      }
+    }, except: [:created_at, :updated_at, :password_digest, :user_provider_id]
+  end
+
   private
 
   def user_params

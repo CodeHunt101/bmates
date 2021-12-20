@@ -39,7 +39,7 @@ export const ListingForm = ({currentUser}) => {
   const handleOnSubmit = (e) => {
     // This creates a new listing and immediately appends available dates
     e.preventDefault()
-    fetch("/api/v1/listings/new", {
+    fetch("/api/v1/listings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

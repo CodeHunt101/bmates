@@ -8,11 +8,11 @@ Rails.application.routes.draw do
       get "/login", to: "sessions#create"
       get "/logout", to: "sessions#destroy"
       post "/signup", to: "users#create"
-      resources :users, only: [:index, :update]
+      resources :users, only: [:index, :update, :show]
+      # get "/current_user_details", to: "users#current_user_details"
 
       #Listings
-      resources :listings, only: [:index]
-      post "listings/new", to: "listings#create"
+      resources :listings, only: [:index, :create]
 
       #Topics
       resources :topics, only: [:index]
