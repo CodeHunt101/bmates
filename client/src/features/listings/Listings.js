@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Listing } from "./Listing"
 import { useParams } from "react-router"
 
-export const Listings = () => {
+export const Listings = ({currentUser}) => {
   const [listings, setListings] = useState([])
   
   const {userId} = useParams()
@@ -14,7 +14,7 @@ export const Listings = () => {
 
   const renderListings = (userId) => (
     listings.filter(listing => !!userId ? listing.listing.user_provider_id === parseInt(userId) : listing.listing)
-    .map(listing => <Listing key={listing.listing.id} listing={listing} userId={userId}/>)
+    .map(listing => <Listing key={listing.listing.id} listing={listing} userId={userId} currentUser={currentUser}/>)
   )
 
   return(

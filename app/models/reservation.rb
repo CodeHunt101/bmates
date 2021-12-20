@@ -10,4 +10,24 @@ class Reservation < ApplicationRecord
       user_receiver_info: r.user_receiver
       }}
   end
+
+  # def self.with_listing_title
+  #   joins(:listing).select("reservations.*, listings.title AS listing_title")
+  # end
+
+  def self.reservations_with_listing_provider_details
+    all.map{|r| {
+      reservation: r, 
+      listing_info: r.listing, 
+      user_provider_info: r.listing.user_provider,
+      }}
+  end
+
+  def self.reservations_with_listing_receiver_details
+    all.map{|r| {
+      reservation: r, 
+      listing_info: r.listing, 
+      user_receiver_info: r.user_receiver
+      }}
+  end
 end

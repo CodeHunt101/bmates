@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import { ReservationForm } from "../reservations/ReservationForm"
 
-export const ListingDetails = ({listing}) => {
+export const ListingDetails = ({listing, currentUser}) => {
 
   return (
   <>
@@ -26,7 +26,7 @@ export const ListingDetails = ({listing}) => {
     <div>
       <div>Make a reservation:</div>
       {/* TODO: build a new reservation form component */}
-      <ReservationForm listing={listing}/>
+      <ReservationForm listing={listing} currentUser={currentUser}/>
     </div>
   </>)
 }

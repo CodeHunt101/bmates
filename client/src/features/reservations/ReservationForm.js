@@ -12,18 +12,19 @@ export const ReservationForm = ({listing, currentUser}) => {
   })
   
   
-  const fetchCurrentUser = () => {
-    fetch('/api/v1/users')
-    .then(resp => resp.json())
-    .then(users => setFormData({
-      ...formData,
-      userReceiverId: users.current_user.id  
-    }))
-  }
+  // const fetchCurrentUser = () => {
+  //   fetch('/api/v1/users')
+  //   .then(resp => resp.json())
+  //   .then(users => setFormData({
+  //     ...formData,
+  //     userReceiverId: users.current_user.id  
+  //   }))
+  // }
   
-  useEffect(()=> {
-    fetchCurrentUser()
-  },[])
+  // useEffect(()=> {
+  //   fetchCurrentUser()
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[])
   
   
   const tileClassNameToReserved = ({date, view}) => {
@@ -62,7 +63,7 @@ export const ReservationForm = ({listing, currentUser}) => {
         body: JSON.stringify({
           reservation: {
             listing_id: listing.listing.id,
-            user_receiver_id: formData.userReceiverId,
+            user_receiver_id: currentUser.id,
             status: "pending",
             reservation_date: selectedDate
           }
@@ -72,7 +73,7 @@ export const ReservationForm = ({listing, currentUser}) => {
   }
 
   if (createdReservations) {
-    return <Redirect push to={`/users/${formData.userReceiverId}/made_reservations`} />
+    return <Redirect push to={`/users/${currentUser.id}/reservations`} />
   }
 
   

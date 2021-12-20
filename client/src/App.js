@@ -30,13 +30,10 @@ function App() {
       <Switch>
       
         <Route path="/users/:userId/listings">
-          <Listings />
+          <Listings currentUser={currentUser}/>
         </Route>
-        <Route path="/users/:userId/made_reservations">
-          <Reservations isProvider={false} />
-        </Route>
-        <Route path="/users/:userId/received_reservations">
-          <Reservations isProvider={true}/>
+        <Route path="/users/:userId/reservations">
+          <Reservations />
         </Route>
         <Route path="/users/:userId">
           <Users />
@@ -49,10 +46,10 @@ function App() {
           <ListingForm currentUser={currentUser} />
         </Route>
         <Route path="/listings/:listingId">
-          <Listings />
+          <Listings currentUser={currentUser}/>
         </Route>
         <Route path="/listings">
-          <Listings />
+          <Listings currentUser={currentUser}/>
         </Route>
 
         <Route path="/dashboard">

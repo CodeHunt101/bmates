@@ -30,8 +30,8 @@ class Api::V1::UsersController < ApplicationController
       current_user: user,
       listings: user.listings,
       reservations: {
-        received_reservations: user.received_reservations,
-        made_reservations: user.made_reservations
+        received_reservations: user.received_reservations.reservations_with_listing_receiver_details,
+        made_reservations: user.made_reservations.reservations_with_listing_provider_details
       }
     }, except: [:created_at, :updated_at, :password_digest, :user_provider_id]
   end
