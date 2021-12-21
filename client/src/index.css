@@ -24,3 +24,7 @@ button.available {
 .not-to-disable {
   background-color: green;
 }
+
+.reservations {
+  display: flex;
+}

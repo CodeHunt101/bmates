@@ -2,6 +2,7 @@ import React from "react"
 import { Link, Switch, Route } from "react-router-dom"
 import { EditUserForm } from "../features/users/EditUserForm"
 import { Listings } from "../features/listings/Listings"
+import { Reservations } from "../features/reservations/Reservations"
 
 export const Dashboard = ({currentUser, fetchCurrentUser}) => {
   return (
@@ -27,6 +28,9 @@ export const Dashboard = ({currentUser, fetchCurrentUser}) => {
         </Route>
         <Route path="/dashboard/my-listings">
           <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+        </Route>
+        <Route path="/dashboard/my-reservations">
+          <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
       </Switch>
     </nav>

@@ -8,7 +8,6 @@ export const ReservationForm = ({listing, currentUser}) => {
   const [createdReservations, setCreatedReservations] = useState(false)
   const [formData, setFormData] = useState({
     selectedDates: [],
-    userReceiverId: ""
   })
   
   const tileClassNameToReserved = ({date, view}) => {
@@ -27,12 +26,14 @@ export const ReservationForm = ({listing, currentUser}) => {
         ...formData,
         selectedDates: formData.selectedDates.filter(date => date.toString() !== value.toString())
       })
+      event.target.style.backgroundColor = "green"
     } 
     else {
       setFormData({
         ...formData,
         selectedDates: [...formData.selectedDates, value]
       })
+      event.target.style.backgroundColor = "lightBlue"
     }
   }
 
