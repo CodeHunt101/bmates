@@ -49,11 +49,11 @@ function App() {
           <Listings currentUser={currentUser}/>
         </Route>
         <Route path="/listings">
-          <Listings currentUser={currentUser}/>
+          <Listings currentUser={currentUser} />
         </Route>
 
         <Route path="/dashboard">
-          <EditUserForm />
+          <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
                 
         <Route path="/logout">

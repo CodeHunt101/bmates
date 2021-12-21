@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, {useState} from "react"
 import { ListingAvailability } from "../listings/ListingAvailability"
 import { getFullDate } from "../../helper_functions"
 import { Redirect } from "react-router"
@@ -10,22 +10,6 @@ export const ReservationForm = ({listing, currentUser}) => {
     selectedDates: [],
     userReceiverId: ""
   })
-  
-  
-  // const fetchCurrentUser = () => {
-  //   fetch('/api/v1/users')
-  //   .then(resp => resp.json())
-  //   .then(users => setFormData({
-  //     ...formData,
-  //     userReceiverId: users.current_user.id  
-  //   }))
-  // }
-  
-  // useEffect(()=> {
-  //   fetchCurrentUser()
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[])
-  
   
   const tileClassNameToReserved = ({date, view}) => {
     if (view === "month") {
@@ -76,7 +60,6 @@ export const ReservationForm = ({listing, currentUser}) => {
     return <Redirect push to={`/users/${currentUser.id}/reservations`} />
   }
 
-  
   return (
     <form onSubmit={handleOnSubmit}>
       <ListingAvailability availableDates={listing.available_dates} tileClassNameToReserved={tileClassNameToReserved} handleOnClickDay={handleOnClickDay}/>

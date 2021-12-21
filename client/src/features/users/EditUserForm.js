@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router'
 
-export const EditUserForm = () => {
+export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false)
 
@@ -18,24 +18,22 @@ export const EditUserForm = () => {
    
   })
 
-  const fetchCurrentUser = () => {
-    fetch('/api/v1/users')
-    .then(resp => resp.json())
-    .then(users => setFormData({
-      id: users.current_user.id,
-      firstName: users.current_user.first_name,
-      lastName: users.current_user.last_name,
-      gender: users.current_user.gender,
-      bio: users.current_user.bio,
-      username: users.current_user.username,
-      email: users.current_user.email,
-      password: "",
-      passwordConfirmation: ""}))
-  }
-  
   useEffect(()=> {
-    fetchCurrentUser()
-  },[])
+    currentUser && setFormData({
+      id: currentUser.id,
+      firstName: currentUser.first_name,
+      lastName: currentUser.last_name,
+      gender: currentUser.gender,
+      bio: currentUser.bio,
+      username: currentUser.username,
+      email: currentUser.email,
+      password: "",
+      passwordConfirmation: ""
+    })
+  },[currentUser])
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(()=>fetchCurrentUser(),[])
 
   const handleOnChange = e => {
     setFormData({
@@ -135,5 +133,4 @@ export const EditUserForm = () => {
       </form>
     </section>
   )  
-  
 }
