@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       # get "/current_user_details", to: "users#current_user_details"
 
       #Listings
-      resources :listings, only: [:index, :create]
+      resources :listings, only: [:index, :create, :show]
 
       #Topics
       resources :topics, only: [:index]

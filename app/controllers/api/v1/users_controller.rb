@@ -28,7 +28,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.find(params[:id])
     render json: {
       current_user: user,
-      listings: user.listings,
+      listings: user.listings.listings_with_user_provider_details_topics_and_available_dates,
       reservations: {
         received_reservations: user.received_reservations.reservations_with_listing_receiver_details,
         made_reservations: user.made_reservations.reservations_with_listing_provider_details

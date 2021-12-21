@@ -18,6 +18,13 @@ class Api::V1::ListingsController < ApplicationController
     end
   end
 
+  def show
+    listing = Listing.find(params[:id])
+    render json: {
+      listing: listing.listing_with_user_provider_details_topics_and_available_dates
+    }, except: [:created_at, :updated_at, :user_provider_id]
+  end
+
   private
 
   def listing_params

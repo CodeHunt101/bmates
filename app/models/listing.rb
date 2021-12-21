@@ -6,7 +6,7 @@ class Listing < ApplicationRecord
   has_many :available_dates
 
   def self.listings_with_user_provider_details_topics_and_available_dates
-    all.map{|l| {
+    self.all.map{|l| {
       listing: l, 
       user_provider_info:l.user_provider,
       topics: l.topics.select(:id,:name),
@@ -16,5 +16,14 @@ class Listing < ApplicationRecord
 
   def available_dates_not_reserved
     self.available_dates.where(is_reserved: false)
+  end
+
+  def listing_with_user_provider_details_topics_and_available_dates
+    {
+      listing: self, 
+      user_provider_info:self.user_provider,
+      topics: self.topics.select(:id,:name),
+      available_dates: self.available_dates_not_reserved.select(:id, :available_date)
+    }
   end
 end

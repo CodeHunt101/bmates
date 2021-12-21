@@ -10,6 +10,7 @@ import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { EditUserForm } from "./features/users/EditUserForm"
+import { Dashboard } from "./components/Dashboard"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -49,11 +50,11 @@ function App() {
           <Listings currentUser={currentUser}/>
         </Route>
         <Route path="/listings">
-          <Listings currentUser={currentUser} />
+          <Listings currentUser={currentUser} areAllListingsNeeded={true}/>
         </Route>
 
         <Route path="/dashboard">
-          <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
         </Route>
                 
         <Route path="/logout">
