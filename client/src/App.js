@@ -9,7 +9,6 @@ import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
-import { EditUserForm } from "./features/users/EditUserForm"
 import { Dashboard } from "./components/Dashboard"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
@@ -29,7 +28,6 @@ function App() {
     <>
       <Menu currentUser={currentUser}/>
       <Switch>
-      
         <Route path="/users/:userId/listings">
           <Listings currentUser={currentUser}/>
         </Route>
@@ -42,8 +40,13 @@ function App() {
         <Route path="/users">
           <Users />
         </Route>
+         
           {/* If order of listing/new and listing/userid is changed, it won't work */}
+        
         <Route path="/listings/new">
+          <ListingForm currentUser={currentUser} />
+        </Route>
+        <Route path="/listings/:listingId/edit">
           <ListingForm currentUser={currentUser} />
         </Route>
         <Route path="/listings/:listingId">
@@ -53,6 +56,15 @@ function App() {
           <Listings currentUser={currentUser} areAllListingsNeeded={true}/>
         </Route>
 
+        {/* <Route path="/dashboard/edit-profile">
+          <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+        </Route>
+        <Route path="/dashboard/my-listings">
+          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+        </Route>
+        <Route path="/dashboard/my-reservations">
+          <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+        </Route> */}
         <Route path="/dashboard">
           <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
         </Route>

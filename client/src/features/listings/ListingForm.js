@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react"
 import { ListingAvailability } from "./ListingAvailability"
 import { Redirect } from "react-router"
+import { useParams, useLocation } from "react-router"
 
 export const ListingForm = ({currentUser}) => {
-  const [createdListing, setCreatedListing] = useState(null)
+  const location = useLocation()
+  // console.log(location)
+  const {listingId} = useParams()
+  // console.log(listingId)
+  // const listing = location && location.state
+
+
+  // const { path } = useRouteMatch()
+  
+  
+  const [submittedListing, setSubmittedListing] = useState(null)
+  
   const [formData, setFormData] = useState({
     listingType: "",
     title: "",
@@ -12,12 +24,31 @@ export const ListingForm = ({currentUser}) => {
     selectedDates: []
   })
 
+  useEffect(()=> {
+    if (location && location.state) {
+      const {listing} = location.state
+      // console.log(listing)
+      setFormData({
+        listingType: listing.listing.listing_type,
+        title: listing.listing.title,
+        description: listing.listing.description,
+        topics: listing.topics.map(t=>t.id.toString()),
+        selectedDates: listing.available_dates.map(item=>new Date(item.available_date))
+      })
+    }
+  },[location])
+  
+
   const handleOnChange = (e) => (
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     })
   )
+
+  const handleCheck = (topic) => {
+    return !!formData.topics.find(t => t === topic.id.toString())
+  }
 
   const handleCheckBoxChange = (e) => {
     if (e.target.checked) {
@@ -39,40 +70,77 @@ export const ListingForm = ({currentUser}) => {
   const handleOnSubmit = (e) => {
     // This creates a new listing and immediately appends available dates
     e.preventDefault()
-    fetch("/api/v1/listings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        listing: {
-          listing_type: formData.listingType,
-          title: formData.title,
-          description: formData.description,
-          topic_ids: formData.topics,
-          user_provider_id: currentUser.id
-        }
-      })
-    })
-    .then(resp => resp.json())
-    .then(createdListing => {
-      formData.selectedDates.forEach(selectedDate => {
-        fetch("/api/v1/available_dates", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            available_date: {
-              available_date: selectedDate,
-              listing_id: createdListing.listing.id
-            }
-          })
+    const fetchListings = (method) => {
+      fetch(method === "POST" ? "/api/v1/listings":`/api/v1/listings/${listingId}`, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          listing: {
+            listing_type: formData.listingType,
+            title: formData.title,
+            description: formData.description,
+            topic_ids: formData.topics,
+            user_provider_id: currentUser.id
+          }
         })
       })
+      .then(resp => resp.json())
+      .then(submittedListing => {
+        formData.selectedDates.forEach(selectedDate => {
+          fetch("/api/v1/available_dates", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              available_date: {
+                available_date: selectedDate,
+                listing_id: submittedListing.listing.id
+              }
+            })
+          })
+        })
+  
+        setSubmittedListing(submittedListing)
+      })
+    }
+    location.pathname==='/listings/new' ? fetchListings('POST'): fetchListings('PATCH')
+    // fetch("/api/v1/listings", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     listing: {
+    //       listing_type: formData.listingType,
+    //       title: formData.title,
+    //       description: formData.description,
+    //       topic_ids: formData.topics,
+    //       user_provider_id: currentUser.id
+    //     }
+    //   })
+    // })
+    // .then(resp => resp.json())
+    // .then(submittedListing => {
+    //   formData.selectedDates.forEach(selectedDate => {
+    //     fetch("/api/v1/available_dates", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json"
+    //       },
+    //       body: JSON.stringify({
+    //         available_date: {
+    //           available_date: selectedDate,
+    //           listing_id: submittedListing.listing.id
+    //         }
+    //       })
+    //     })
+    //   })
 
-      setCreatedListing(createdListing)
-    })
+    //   setSubmittedListing(submittedListing)
+    // })
     
   }
 
@@ -88,7 +156,7 @@ export const ListingForm = ({currentUser}) => {
   const renderTopics = () => (
     allTopicOptions.map(t => (
       <div key={t.id}>
-        <input  type="checkbox" name="topics" value={t.id} onChange={handleCheckBoxChange} />
+        <input  type="checkbox" name="topics" value={t.id} checked={handleCheck(t)} onChange={handleCheckBoxChange} />
         <label>{t.name}</label>
       </div>
     ))
@@ -117,13 +185,13 @@ export const ListingForm = ({currentUser}) => {
     }
   }
 
-  if (createdListing) {
-    return <Redirect push to={`/listings/${createdListing.listing.id}`} />
+  if (submittedListing) {
+    return <Redirect push to={`/listings/${submittedListing.listing.id}`} />
   }
 
   return (
     <section>
-      <h2>New Listing</h2>
+      <h2>{location.pathname==='/listings/new' ? "New Listing": "Edit Listing"}</h2>
       <form onSubmit={handleOnSubmit}>
         <label>Listing Type:</label>
         <select name="listingType" value={formData.listingType} onChange={handleOnChange}>
@@ -147,7 +215,7 @@ export const ListingForm = ({currentUser}) => {
         {renderTopics()}
         <ListingAvailability tileClassNameToAvailable={tileClassNameToAvailable} handleOnClickDay={handleOnClickDay}/>
         <button type="submit">
-          Create Listing
+          Submit
         </button>
       </form>
     </section>

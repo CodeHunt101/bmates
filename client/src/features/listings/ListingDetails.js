@@ -4,9 +4,14 @@ import { ReservationForm } from "../reservations/ReservationForm"
 
 export const ListingDetails = ({listing, currentUser}) => {
 
+  // const location = useLocation()
+
   return (
   <>
     <h1 id="listing-title">{listing.listing.title}</h1> by {listing.user_provider_info.username}
+    <Link to={{pathname: `/listings/${listing.listing.id}/edit`, state: {listing: listing}}}>
+      Edit Listing
+    </Link>
     <p>{listing.listing.description}</p>
     <div>
       <h3>Gallery</h3>
