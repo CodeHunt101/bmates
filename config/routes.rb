@@ -3,11 +3,14 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      
+      
       #Users & Sessions
       post "/login", to: "sessions#create"
       get "/login", to: "sessions#create"
       get "/logout", to: "sessions#destroy"
       post "/signup", to: "users#create"
+      get "/current_user", to: "users#current_user_details"
       resources :users, only: [:index, :update, :show]
       # get "/current_user_details", to: "users#current_user_details"
 

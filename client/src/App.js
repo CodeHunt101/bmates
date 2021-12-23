@@ -16,17 +16,18 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
 
   const fetchCurrentUser = () => {
-    fetch('/api/v1/users')
+    fetch('/api/v1/current_user')
     .then(resp => resp.json())
-    .then(users => setCurrentUser(users.current_user))
+    .then(resp => setCurrentUser(resp.current_user))
   }
   useEffect(()=>{
+    // debugger
     fetchCurrentUser()
   },[])
   
   return (
     <>
-      <Menu currentUser={currentUser}/>
+      <Menu currentUser={currentUser} />
       <Switch>
         <Route path="/users/:userId/listings">
           <Listings currentUser={currentUser}/>
@@ -50,10 +51,10 @@ function App() {
           <ListingForm currentUser={currentUser} />
         </Route>
         <Route path="/listings/:listingId">
-          <Listings currentUser={currentUser}/>
+          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
         <Route path="/listings">
-          <Listings currentUser={currentUser} areAllListingsNeeded={true}/>
+          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
 
         {/* <Route path="/dashboard/edit-profile">

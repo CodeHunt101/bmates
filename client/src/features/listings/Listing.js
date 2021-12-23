@@ -1,27 +1,25 @@
 import React from "react"
-import { useParams } from "react-router"
+import { useLocation, useParams } from "react-router"
 import { ListingDetails } from "./ListingDetails"
-import { Link } from "react-router-dom"
+import { Link, useRouteMatch } from "react-router-dom"
 
-export const Listing = ({ listing, userId, currentUser }) => {
+export const Listing = ({ listing, currentUser}) => {
   const { listingId } = useParams()
-
+  // console.log(useLocation())
   const renderListing = () => {
-    if ((!listingId && !userId) || (!listingId && userId)) {
+    if (!listingId ) {
       return (
         <>
           {/* TODO: render the featured image here */}
-          <img href="" alt="" />
-          <Link to={{pathname: `/listings/${listing.listing.id}`,state: {listing, currentUser}}}>
+          
+          <img href="/hello.com" alt="listingImage" />
+          <Link to={`/listings/${listing.listing.id}`}> 
             <h3>{listing.listing.title}</h3>
-          </Link>
+          </Link><br></br>
         </>
       )
-    } else if (
-      listingId &&
-      parseInt(listingId) === listing.listing.id &&
-      !userId
-    ) {
+    } 
+    else {
       return <ListingDetails listing={listing} currentUser={currentUser} />
     }
   }
