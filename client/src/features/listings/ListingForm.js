@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { ListingAvailability } from "./ListingAvailability"
 import { Redirect } from "react-router"
-import { useParams, useLocation } from "react-router"
+import { useParams, useLocation, useRouteMatch } from "react-router"
 
 export const ListingForm = ({currentUser}) => {
   const location = useLocation()
-  // console.log(location)
+  const {path} = useRouteMatch()
   const {listingId} = useParams()
-  // console.log(listingId)
-  // const listing = location && location.state
-
-
-  // const { path } = useRouteMatch()
-  
   
   const [submittedListing, setSubmittedListing] = useState(null)
   
@@ -27,7 +21,6 @@ export const ListingForm = ({currentUser}) => {
   useEffect(()=> {
     if (location && location.state) {
       const {listing} = location.state
-      // console.log(listing)
       setFormData({
         listingType: listing.listing.listing_type,
         title: listing.listing.title,
@@ -106,41 +99,7 @@ export const ListingForm = ({currentUser}) => {
         setSubmittedListing(submittedListing)
       })
     }
-    location.pathname==='/listings/new' ? fetchListings('POST'): fetchListings('PATCH')
-    // fetch("/api/v1/listings", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     listing: {
-    //       listing_type: formData.listingType,
-    //       title: formData.title,
-    //       description: formData.description,
-    //       topic_ids: formData.topics,
-    //       user_provider_id: currentUser.id
-    //     }
-    //   })
-    // })
-    // .then(resp => resp.json())
-    // .then(submittedListing => {
-    //   formData.selectedDates.forEach(selectedDate => {
-    //     fetch("/api/v1/available_dates", {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json"
-    //       },
-    //       body: JSON.stringify({
-    //         available_date: {
-    //           available_date: selectedDate,
-    //           listing_id: submittedListing.listing.id
-    //         }
-    //       })
-    //     })
-    //   })
-
-    //   setSubmittedListing(submittedListing)
-    // })
+    path === '/listings/new' ? fetchListings('POST'): fetchListings('PATCH')
     
   }
 
@@ -186,7 +145,7 @@ export const ListingForm = ({currentUser}) => {
   }
 
   if (submittedListing) {
-    return <Redirect push to={`/listings/${submittedListing.listing.id}`} />
+    return <Redirect push to={{pathname:`/listings/${submittedListing.listing.id}`}} />
   }
 
   return (

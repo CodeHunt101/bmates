@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
 import { Users } from "./features/users/Users"
-import { Listings } from "./features/listings/Listings"
+import { ListingsList } from "./features/listings/ListingsList"
 import { ListingForm } from "./features/listings/ListingForm"
 import { Reservations } from "./features/reservations/Reservations"
 import { LoginUserForm } from "./features/users/LoginUserForm"
@@ -10,6 +10,7 @@ import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { Dashboard } from "./components/Dashboard"
+import { ListingDetails } from "./features/listings/ListingDetails"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
       <Menu currentUser={currentUser} />
       <Switch>
         <Route path="/users/:userId/listings">
-          <Listings currentUser={currentUser}/>
+          <ListingsList currentUser={currentUser}/>
         </Route>
         <Route path="/users/:userId/reservations">
           <Reservations />
@@ -51,17 +52,17 @@ function App() {
           <ListingForm currentUser={currentUser} />
         </Route>
         <Route path="/listings/:listingId">
-          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          <ListingDetails currentUser={currentUser} />
         </Route>
         <Route path="/listings">
-          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          <ListingsList currentUser={currentUser} />
         </Route>
 
         {/* <Route path="/dashboard/edit-profile">
           <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
         <Route path="/dashboard/my-listings">
-          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          <ListingsList currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
         <Route path="/dashboard/my-reservations">
           <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>

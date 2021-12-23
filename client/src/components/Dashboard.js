@@ -1,7 +1,7 @@
 import React from "react"
 import { Link, Switch, Route } from "react-router-dom"
 import { EditUserForm } from "../features/users/EditUserForm"
-import { Listings } from "../features/listings/Listings"
+import { ListingsList } from "../features/listings/ListingsList"
 import { Reservations } from "../features/reservations/Reservations"
 
 export const Dashboard = ({currentUser, fetchCurrentUser}) => {
@@ -27,7 +27,7 @@ export const Dashboard = ({currentUser, fetchCurrentUser}) => {
           <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
         <Route path="/dashboard/my-listings">
-          <Listings currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          <ListingsList currentUser={currentUser} />
         </Route>
         <Route path="/dashboard/my-reservations">
           <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
