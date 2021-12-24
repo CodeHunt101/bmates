@@ -37,14 +37,21 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def current_user_details
-    render json: {
-      current_user: current_user,
-      listings: current_user.listings.listings_with_user_provider_details_topics_and_available_dates,
-      reservations: {
-        received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,
-        made_reservations: current_user.made_reservations.reservations_with_listing_provider_details
+    if current_user
+      render json: {
+        current_user: current_user,
+        listings: current_user.listings.listings_with_user_provider_details_topics_and_available_dates,
+        reservations: {
+          received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,
+          made_reservations: current_user.made_reservations.reservations_with_listing_provider_details
+        }
+      }, except: [:created_at, :updated_at, :password_digest, :user_provider_id]
+    else
+      render json: {
+        current_user: nil
       }
-    }, except: [:created_at, :updated_at, :password_digest, :user_provider_id]
+    end
+
   end
 
   private
