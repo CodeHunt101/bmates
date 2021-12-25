@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import { Menu } from "./components/Menu"
+import {MainMenu} from "./components/MainMenu"
 import { Users } from "./features/users/Users"
 import { ListingsList } from "./features/listings/ListingsList"
 import { ListingForm } from "./features/listings/ListingForm"
@@ -28,7 +29,8 @@ function App() {
   
   return (
     <>
-      <Menu currentUser={currentUser} />
+      {/* <Menu currentUser={currentUser} /> */}
+      <MainMenu currentUser={currentUser}/>
       <Switch>
         <Route path="/users/:userId/listings">
           <ListingsList currentUser={currentUser}/>

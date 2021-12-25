@@ -4,9 +4,9 @@ import { WelcomeUser } from "../features/users/WelcomeUser"
 export const Menu = ({currentUser}) => {
   
   return (
-    <div className="menu">   
+    <div className="navbar">   
       <WelcomeUser currentUser={currentUser} />
-      <nav>
+      <nav className="menu">
         <Link to="/">
           <b>Home</b>
         </Link>

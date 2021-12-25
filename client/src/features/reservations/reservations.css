@@ -1,0 +1,12 @@
+.reservations {
+  display: flex;
+}
+
+.to-disable {
+  pointer-events: none;
+  background-color: silver;
+}
+
+.not-to-disable {
+  background-color: green;
+}
