@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import  './features/users/users.css';
+import './features/users/users.css';
 import './features/reservations/reservations.css';
 import './features/listings/listings.css';
 import App from './App';

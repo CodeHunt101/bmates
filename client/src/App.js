@@ -31,69 +31,70 @@ function App() {
     <>
       {/* <Menu currentUser={currentUser} /> */}
       <MainMenu currentUser={currentUser}/>
-      <Switch>
-        <Route path="/users/:userId/listings">
-          <ListingsList currentUser={currentUser}/>
-        </Route>
-        <Route path="/users/:userId/reservations">
-          <Reservations />
-        </Route>
-        <Route path="/users/:userId">
-          <Users />
-        </Route>
-        <Route path="/users">
-          <Users />
-        </Route>
-         
-          {/* If order of listing/new and listing/userid is changed, it won't work */}
+      <section className="main-container">
+        <Switch>
+          <Route path="/users/:userId/listings">
+            <ListingsList currentUser={currentUser}/>
+          </Route>
+          <Route path="/users/:userId/reservations">
+            <Reservations />
+          </Route>
+          <Route path="/users/:userId">
+            <Users />
+          </Route>
+          <Route path="/users">
+            <Users />
+          </Route>
         
-        <Route path="/listings/new">
-          <ListingForm currentUser={currentUser} />
-        </Route>
-        <Route path="/listings/:listingId/edit">
-          <ListingForm currentUser={currentUser} />
-        </Route>
-        <Route path="/listings/:listingId">
-          <ListingDetails currentUser={currentUser} />
-        </Route>
-        <Route path="/listings">
-          <ListingsList currentUser={currentUser} />
-        </Route>
-
-        {/* <Route path="/dashboard/edit-profile">
-          <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-        </Route>
-        <Route path="/dashboard/my-listings">
-          <ListingsList currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-        </Route>
-        <Route path="/dashboard/my-reservations">
-          <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-        </Route> */}
-        <Route path="/dashboard">
-          <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
-        </Route>
-                
-        <Route path="/logout">
-          <LogoutUser fetchCurrentUser={fetchCurrentUser} />
-          <Redirect to="/"/>
-        </Route>
+            {/* If order of listing/new and listing/userid is changed, it won't work */}
         
-        <Route path="/login">
-          <LoginUserForm fetchCurrentUser={fetchCurrentUser}/>
-          {currentUser && <Redirect to="/"/>}
-        </Route>
-      
-        <Route path="/signup" >
-          <SignupUserForm fetchCurrentUser={fetchCurrentUser}/>
-          {currentUser && <Redirect to="/"/>}
-        </Route>
-        <Route exact path="/">
-          <Home currentUser={currentUser}/>
-        </Route>
+          <Route path="/listings/new">
+            <ListingForm currentUser={currentUser} />
+          </Route>
+          <Route path="/listings/:listingId/edit">
+            <ListingForm currentUser={currentUser} />
+          </Route>
+          <Route path="/listings/:listingId">
+            <ListingDetails currentUser={currentUser} />
+          </Route>
+          <Route path="/listings">
+            <ListingsList currentUser={currentUser} />
+          </Route>
+          {/* <Route path="/dashboard/edit-profile">
+            <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          </Route>
+          <Route path="/dashboard/my-listings">
+            <ListingsList currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          </Route>
+          <Route path="/dashboard/my-reservations">
+            <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          </Route> */}
+          <Route path="/dashboard">
+            <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
+          </Route>
         
-        {/* <Route exact path="/*" element={<RedirectToMain />}/> */}
-        <Route render={() => <h1>404 Not found!</h1>} />
-      </Switch>
+          <Route path="/logout">
+            <LogoutUser fetchCurrentUser={fetchCurrentUser} />
+            <Redirect to="/"/>
+          </Route>
+        
+          <Route path="/login">
+            <LoginUserForm fetchCurrentUser={fetchCurrentUser}/>
+            {currentUser && <Redirect to="/"/>}
+          </Route>
+        
+          <Route path="/signup" >
+            <SignupUserForm fetchCurrentUser={fetchCurrentUser}/>
+            {currentUser && <Redirect to="/"/>}
+          </Route>
+          <Route exact path="/">
+            <Home currentUser={currentUser}/>
+          </Route>
+        
+          {/* <Route exact path="/*" element={<RedirectToMain />}/> */}
+          <Route render={() => <h1>404 Not found!</h1>} />
+        </Switch>
+      </section>
     </>
   )
 }
