@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router'
+import Avatar from "@mui/material/Avatar"
+import Button from "@mui/material/Button"
+import CssBaseline from "@mui/material/CssBaseline"
+import TextField from "@mui/material/TextField"
+import Link from "@mui/material/Link"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
+import Typography from "@mui/material/Typography"
+import { blue } from "@mui/material/colors"
+import Paper from "@mui/material/Paper"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
+import InputLabel from "@mui/material/InputLabel"
+import FormControl from "@mui/material/FormControl"
 
 export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
 
@@ -13,8 +28,8 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
     bio: "",
     username: "",
     email: "",
-    password: "",
-    passwordConfirmation: ""
+    // password: "",
+    // passwordConfirmation: ""
    
   })
 
@@ -27,8 +42,8 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
       bio: currentUser.bio,
       username: currentUser.username,
       email: currentUser.email,
-      password: "",
-      passwordConfirmation: ""
+      // password: "",
+      // passwordConfirmation: ""
     })
   },[currentUser])
 
@@ -58,8 +73,8 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
           bio: formData.bio,
           username: formData.username,
           email: formData.email,
-          password: formData.password,
-          password_confirmation: formData.passwordConfirmation
+          // password: formData.password,
+          // password_confirmation: formData.passwordConfirmation
         }
       })
     }).then(()=>setIsFormSubmitted(true))
@@ -71,66 +86,145 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
   }
 
   return (
-    <section>
-      <h2>Edit Profile</h2>
-      <form onSubmit={handleOnSubmit}>
-        <label>First Name:</label>
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleOnChange}
-        />
-        <label>Last Name:</label>
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleOnChange}
-        />
-        <label>Gender:</label>
-        <select value={formData.gender} name="gender" onChange={handleOnChange}>
-          <option value=""></option>
-          <option value="M">Male</option>
-          <option value="F">Female</option>
-        </select>
-        <label>Bio:</label>
-        <textarea
-          name="bio"
-          value={formData.bio}
-          onChange={handleOnChange}
-        />
-        <label>Username:</label>
-        <input
-          name="username"
-          value={formData.username}
-          onChange={handleOnChange}
-        />
-        <label>Email:</label>
-        <input
-          type="text"
-          name="email"
-          value={formData.email}
-          onChange={handleOnChange}
-        />
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleOnChange}
-        />
-        <label>Password Confirmation:</label>
-        <input
-          type="password"
-          name="passwordConfirmation"
-          value={formData.passwordConfirmation}
-          onChange={handleOnChange}
-        />
-        <button type="submit">
-          Submit
-        </button>
-      </form>
-    </section>
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
+            <AccessibilityNewIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Edit Profile
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleOnSubmit}
+            sx={{ mt: 1 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  autoComplete="given-first-name"
+                  name="firstName"
+                  required
+                  id="edit-user-first-name"
+                  label="First Name"
+                  value={formData.firstName}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  autoComplete="given-last-name"
+                  name="lastName"
+                  required
+                  id="edit-user-last-name"
+                  label="Last name"
+                  value={formData.lastName}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+                {/* <label>Gender:</label>
+                <select value={formData.gender} name="gender" onChange={handleOnChange}>
+                  <option value=""></option>
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                </select> */}
+              <Grid item xs={12} sm={4}>
+                <FormControl sx={{ minWidth: 100 }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Gender
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={formData.gender}
+                    label="Gender"
+                    onChange={handleOnChange}
+                    name="gender"
+                  >
+                    <MenuItem value={"M"}>Male</MenuItem>
+                    <MenuItem value={"F"}>Female</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+                {/* <label>Bio:</label>
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleOnChange}
+                /> */}
+              <Grid item xs={12}>
+                <TextField
+                  name="bio"
+                  required
+                  multiline
+                  minRows={3}
+                  fullWidth
+                  id="edit-user-bio"
+                  label="Bio"
+                  value={formData.bio}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-username"
+                  name="username"
+                  required
+                  fullWidth
+                  id="edit-user-userName"
+                  label="Username"
+                  value={formData.username}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="edit-user-email"
+                  label="Email Address"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+                {/* <label>Password:</label>
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleOnChange}
+                />
+                <label>Password Confirmation:</label>
+                <input
+                  type="password"
+                  name="passwordConfirmation"
+                  value={formData.passwordConfirmation}
+                  onChange={handleOnChange}
+                /> */}
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Submit
+              </Button>
+            </Grid>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   )  
 }

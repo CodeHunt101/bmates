@@ -76,7 +76,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
                     name="userName"
                     required
                     fullWidth
-                    id="userName"
+                    id="login-userName"
                     label="Username"
                     autoFocus
                     onChange={onUsernameChanged}
@@ -89,7 +89,7 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
                     name="password"
                     label="Password"
                     type="password"
-                    id="password"
+                    id="login-password"
                     autoComplete="new-password"
                     onChange={onPasswordChanged}
                   />

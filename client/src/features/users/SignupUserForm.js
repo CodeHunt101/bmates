@@ -113,11 +113,11 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="given-name"
+                  autoComplete="given-username"
                   name="userName"
                   required
                   fullWidth
-                  id="userName"
+                  id="signup-userName"
                   label="Username"
                   autoFocus
                   onChange={onUsernameChanged}
@@ -127,7 +127,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
                 <TextField
                   required
                   fullWidth
-                  id="email"
+                  id="signup-email"
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -141,7 +141,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
                   name="password"
                   label="Password"
                   type="password"
-                  id="password"
+                  id="signup-password"
                   autoComplete="new-password"
                   onChange={onPasswordChanged}
                 />
@@ -153,7 +153,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
                   name="passwordConfirmation"
                   label="Password Confirmation"
                   type="password"
-                  id="password-confirmation"
+                  id="signup-password-confirmation"
                   autoComplete="new-password"
                   onChange={onPasswordConfirmationChanged}
                 />

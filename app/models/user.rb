@@ -4,7 +4,7 @@ class User < ApplicationRecord
   # validates :first_name, :last_name, length: { minimum: 2 }
   validates :username, length: { minimum: 5 }
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, presence: true, uniqueness: true
-  validates :password, :password_confirmation, length: { in: 6..20 }
+  validates :password, :password_confirmation, length: { in: 6..20 }, if: -> { password.present? }
 
   has_many :listings, foreign_key: :user_provider_id
   
