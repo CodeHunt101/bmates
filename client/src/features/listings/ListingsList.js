@@ -15,7 +15,7 @@ export const ListingsList = ({ currentUser }) => {
           .then((resp) => resp.json())
           .then((resp) => setListings(resp.listings))
       
-      path === "/dashboard/my-listings" &&
+      path === "/my-listings" &&
         fetch(`/api/v1/current_user`)
           .then((resp) => resp.json())
           .then((resp) => setListings(resp.listings))

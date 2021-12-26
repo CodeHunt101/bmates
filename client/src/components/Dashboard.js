@@ -1,15 +1,12 @@
 import React from "react"
-import { Link, Switch, Route } from "react-router-dom"
-import { EditUserForm } from "../features/users/EditUserForm"
-import { ListingsList } from "../features/listings/ListingsList"
-import { Reservations } from "../features/reservations/Reservations"
+// import { Link, Switch, Route } from "react-router-dom"
 
 export const Dashboard = ({currentUser, fetchCurrentUser}) => {
   return (
     <>
     <h1>Dashboard</h1>
     <nav>
-      <Link to="/dashboard/edit-profile">
+      {/* <Link to="/dashboard/edit-profile">
         <b>Edit Profile</b>
       </Link>
       <Link to="/dashboard/inbox">
@@ -32,7 +29,7 @@ export const Dashboard = ({currentUser, fetchCurrentUser}) => {
         <Route path="/dashboard/my-reservations">
           <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
         </Route>
-      </Switch>
+      </Switch> */}
     </nav>
     </>
   )

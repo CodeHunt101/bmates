@@ -9,8 +9,8 @@ import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
 import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
-import { Dashboard } from "./components/Dashboard"
 import { ListingDetails } from "./features/listings/ListingDetails"
+import { EditUserForm } from "./features/users/EditUserForm"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
     .then(resp => setCurrentUser(resp.current_user))
   }
   useEffect(()=>{
-    // debugger
     fetchCurrentUser()
   },[])
   
@@ -67,8 +66,18 @@ function App() {
           <Route path="/dashboard/my-reservations">
             <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
           </Route> */}
-          <Route path="/dashboard">
+          {/* <Route path="/dashboard">
             <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
+          </Route> */}
+
+          <Route path="/edit-profile">
+            <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          </Route>
+          <Route path="/my-listings">
+            <ListingsList currentUser={currentUser} />
+          </Route>
+          <Route path="/my-reservations">
+            <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
           </Route>
         
           <Route path="/logout">

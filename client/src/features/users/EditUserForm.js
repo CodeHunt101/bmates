@@ -98,7 +98,21 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
           ? objectToStringifyWithPassword
           : objectToStringifyWithoutPassword
       ),
-    }).then(() => history.push(`/users/${formData.id}`))
+    }).then(
+      () => {
+        if (passwordChangeRequired) {
+          return (
+            formData.password.length >= 6 &&
+            formData.password.length <= 20 &&
+            formData.password === formData.passwordConfirmation &&
+            history.push(`/users/${formData.id}`)
+          )
+        } else {
+          return history.push(`/users/${formData.id}`)
+        }
+      }
+        
+    )
   }
 
   return (

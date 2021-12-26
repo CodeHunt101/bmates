@@ -11,10 +11,11 @@ import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
-// import { Link } from 'react-router-dom';
 import { WelcomeUser } from "../features/users/WelcomeUser"
 import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
+import MailRoundedIcon from '@mui/icons-material/MailRounded'
 
 const pagesWithoutCurrentUser = [
   { name: "Home", href: "/" },
@@ -24,16 +25,14 @@ const pagesWithoutCurrentUser = [
   { name: "FAQ", href: "/faq" },
 ]
 const pagesWithCurrentUser = [
-  { name: "Home", href: "/" },
+  { name: <HomeRoundedIcon/>, href: "/" },
   { name: "Add Listing", href: "/listings/new" },
-  { name: "Dashboard", href: "/dashboard" },
-  { name: "Logout", href: "/logout" },
   { name: "FAQ", href: "/faq" },
 ]
 const settings = [
-  { name:"Edit Profile", href: "/dashboard/edit-profile"}, 
-  { name:"My Listings", href: "/dashboard/my-listings"}, 
-  { name:"My Reservations", href: "/dashboard/my-reservations"}, 
+  { name:"Edit Profile", href: "/edit-profile"}, 
+  { name:"My Listings", href: "/my-listings"}, 
+  { name:"My Reservations", href: "/my-reservations"}, 
   { name:"Logout", href: "/logout"}]
 
 export const MainMenu = ({ currentUser }) => {
@@ -140,8 +139,15 @@ export const MainMenu = ({ currentUser }) => {
                 </Button>
               ))}
           </Box>
-          <Box sx={{ flexGrow: 0.05 }}>
+          <Box sx={{ flexGrow: 0.02 }}>
             <WelcomeUser currentUser={currentUser} />
+          </Box>
+          <Box sx={{ flexGrow: 0 }}>
+            <Button >
+              <Link className="main-menu-item" href="/inbox">
+                <MailRoundedIcon />
+              </Link>
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
