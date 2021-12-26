@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router'
+import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
-import Link from "@mui/material/Link"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
@@ -15,10 +14,12 @@ import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import InputLabel from "@mui/material/InputLabel"
 import FormControl from "@mui/material/FormControl"
+import FormGroup from "@mui/material/FormGroup"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Checkbox from "@mui/material/Checkbox"
 
-export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
-
-  const [isFormSubmitted, setIsFormSubmitted] = useState(false)
+export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
+  const history = useHistory()
 
   const [formData, setFormData] = useState({
     id: "",
@@ -28,61 +29,76 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
     bio: "",
     username: "",
     email: "",
-    // password: "",
-    // passwordConfirmation: ""
-   
+    password: "",
+    passwordConfirmation: "",
   })
 
-  useEffect(()=> {
-    currentUser && setFormData({
-      id: currentUser.id,
-      firstName: currentUser.first_name,
-      lastName: currentUser.last_name,
-      gender: currentUser.gender,
-      bio: currentUser.bio,
-      username: currentUser.username,
-      email: currentUser.email,
-      // password: "",
-      // passwordConfirmation: ""
-    })
-  },[currentUser])
+  const [passwordChangeRequired, setPasswordChangeRequired] = useState(false)
+
+  useEffect(() => {
+    currentUser &&
+      setFormData({
+        id: currentUser.id,
+        firstName: currentUser.first_name,
+        lastName: currentUser.last_name,
+        gender: currentUser.gender,
+        bio: currentUser.bio,
+        username: currentUser.username,
+        email: currentUser.email,
+        password: "",
+        passwordConfirmation: "",
+      })
+  }, [currentUser])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(()=>fetchCurrentUser(),[])
+  useEffect(() => fetchCurrentUser(), [])
 
-  const handleOnChange = e => {
+  const handleOnChange = (e) => {
+    console.log(e.target.checked)
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
-  
+
+  const handleOnCheck = (e) => {
+    setPasswordChangeRequired(e.target.checked)
+  }
+
   const handleOnSubmit = (e) => {
     e.preventDefault()
+    const objectToStringifyWithoutPassword = {
+      user: {
+        id: formData.id,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        gender: formData.gender,
+        bio: formData.bio,
+        username: formData.username,
+        email: formData.email,
+      },
+    }
+
+    const objectToStringifyWithPassword = {
+      ...objectToStringifyWithoutPassword,
+      user: {
+        ...objectToStringifyWithoutPassword.user,
+        password: formData.password,
+        password_confirmation: formData.passwordConfirmation,
+      },
+    }
+
     fetch(`/api/v1/users/${formData.id}`, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        user: {
-          id: formData.id,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          gender: formData.gender,
-          bio: formData.bio,
-          username: formData.username,
-          email: formData.email,
-          // password: formData.password,
-          // password_confirmation: formData.passwordConfirmation
-        }
-      })
-    }).then(()=>setIsFormSubmitted(true))
-    
-  }
-
-  if (isFormSubmitted) {
-    return <Redirect push to={`/users/${formData.id}`} />
+      body: JSON.stringify(
+        passwordChangeRequired
+          ? objectToStringifyWithPassword
+          : objectToStringifyWithoutPassword
+      ),
+    }).then(() => history.push(`/users/${formData.id}`))
   }
 
   return (
@@ -108,7 +124,7 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
             component="form"
             noValidate
             onSubmit={handleOnSubmit}
-            sx={{ mt: 1 }}
+            sx={{ mt: 1, my: 5 }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
@@ -133,12 +149,6 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
                   onChange={handleOnChange}
                 />
               </Grid>
-                {/* <label>Gender:</label>
-                <select value={formData.gender} name="gender" onChange={handleOnChange}>
-                  <option value=""></option>
-                  <option value="M">Male</option>
-                  <option value="F">Female</option>
-                </select> */}
               <Grid item xs={12} sm={4}>
                 <FormControl sx={{ minWidth: 100 }}>
                   <InputLabel id="demo-simple-select-helper-label">
@@ -157,12 +167,6 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
                   </Select>
                 </FormControl>
               </Grid>
-                {/* <label>Bio:</label>
-                <textarea
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleOnChange}
-                /> */}
               <Grid item xs={12}>
                 <TextField
                   name="bio"
@@ -199,32 +203,59 @@ export const EditUserForm = ({currentUser, fetchCurrentUser}) => {
                   onChange={handleOnChange}
                 />
               </Grid>
-                {/* <label>Password:</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleOnChange}
-                />
-                <label>Password Confirmation:</label>
-                <input
-                  type="password"
-                  name="passwordConfirmation"
-                  value={formData.passwordConfirmation}
-                  onChange={handleOnChange}
-                /> */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Submit
+              <Grid item xs={12}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={handleOnCheck}
+                        inputProps={{ "aria-label": "controlled" }}
+                      />
+                    }
+                    label="I want to change my password"
+                  />
+                </FormGroup>
+              </Grid>
+              {passwordChangeRequired && (
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="edit-user-password"
+                      autoComplete="new-password"
+                      onChange={handleOnChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="passwordConfirmation"
+                      label="Password Confirmation"
+                      type="password"
+                      id="edit-user-password-confirmation"
+                      autoComplete="new-password"
+                      onChange={handleOnChange}
+                    />
+                  </Grid>
+                </>
+              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
               </Button>
             </Grid>
           </Box>
         </Box>
       </Grid>
     </Grid>
-  )  
+  )
 }

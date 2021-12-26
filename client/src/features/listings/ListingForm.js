@@ -102,7 +102,6 @@ export const ListingForm = ({ currentUser }) => {
               }),
             })
           })
-
           setSubmittedListing(submittedListing)
         })
     }
@@ -197,7 +196,7 @@ export const ListingForm = ({ currentUser }) => {
         md={5}
         component={Paper}
         elevation={6}
-        circle
+        circle="true"
       >
         <Box
           sx={{
