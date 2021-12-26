@@ -5,6 +5,22 @@ import { useParams, useLocation, useRouteMatch } from "react-router"
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+import Box from "@mui/material/Box"
+import Grid from "@mui/material/Grid"
+import Button from "@mui/material/Button"
+import Typography from "@mui/material/Typography"
+import PeopleIcon from '@mui/icons-material/People';
+import Avatar from "@mui/material/Avatar"
+import { blue } from "@mui/material/colors"
+import CssBaseline from "@mui/material/CssBaseline"
+import Paper from "@mui/material/Paper"
+import Select from "@mui/material/Select"
+import MenuItem from "@mui/material/MenuItem"
+import InputLabel from "@mui/material/InputLabel"
+import FormControl from "@mui/material/FormControl"
+
+
+
 
 export const ListingForm = ({currentUser}) => {
   const location = useLocation()
@@ -109,7 +125,7 @@ export const ListingForm = ({currentUser}) => {
   )
 
   const renderTopics = () => (
-    allTopicOptions && <Stack spacing={3} sx={{ width: 500 }}>
+    allTopicOptions && <Stack spacing={3} sx={{ minWidth: 240 }}>
       <Autocomplete
         onChange={handleCheckBoxChange}
         value={handleDefaultValues(allTopicOptions)}
@@ -157,34 +173,91 @@ export const ListingForm = ({currentUser}) => {
   }
 
   return (
-    <section>
-      <h2>{location.pathname==='/listings/new' ? "New Listing": "Edit Listing"}</h2>
-      <form onSubmit={handleOnSubmit}>
-        <label>Listing Type:</label>
-        <select name="listingType" value={formData.listingType} onChange={handleOnChange}>
-          <option value=""></option>
-          <option value="Mate">Mate</option>
-        </select>
-       
-        <label>Title:</label>
-        <input
-          name="title"
-          value={formData.title}
-          onChange={handleOnChange}
-        />
-        <label>Description:</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleOnChange}
-        />
-        <label>Topics:</label>
-        {renderTopics()}
-        <ListingAvailability tileClassNameToAvailable={tileClassNameToAvailable} handleOnClickDay={handleOnClickDay}/>
-        <button type="submit">
-          Submit
-        </button>
-      </form>
-    </section>
+    
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid item  sx={{mx: 'auto'}} xs={12} sm={8} md={5} component={Paper} elevation={6} circle>
+          <Box
+            sx={{
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
+              <PeopleIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+            {location.pathname==='/listings/new' ? "New Listing": "Edit Listing"}
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleOnSubmit}
+              sx={{ mt: 1 }}
+            >
+              <Grid container spacing={2}>
+                
+                <Grid item xs={12} sm={4}>
+                  <FormControl sx={{ minWidth: 120 }}>
+                    <InputLabel id="demo-simple-select-helper-label">Type</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={formData.listingType}
+                      label="Type"
+                      onChange={handleOnChange}
+                      name="listingType"
+                    >
+                    <MenuItem value={"Mate"}>Mate</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <TextField
+                    sx={{ minWidth: 200 }}
+                    name="title"
+                    required
+                    id="listing-title"
+                    label="Title"
+                    value={formData.title}
+                    onChange={handleOnChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="description"
+                    required
+                    multiline
+                    minRows={2}
+                    fullWidth
+                    id="listing-description"
+                    label="Description"
+                    value={formData.description}
+                    onChange={handleOnChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  {renderTopics()}
+                </Grid>
+                <Grid item xs={12}>
+                  <ListingAvailability tileClassNameToAvailable={tileClassNameToAvailable} handleOnClickDay={handleOnClickDay}/>
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    
   )  
 }
