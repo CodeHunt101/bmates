@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react"
 import { ListingAvailability } from "./ListingAvailability"
 import { Redirect } from "react-router"
 import { useParams, useLocation, useRouteMatch } from "react-router"
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
 
 export const ListingForm = ({currentUser}) => {
   const location = useLocation()
@@ -39,25 +42,12 @@ export const ListingForm = ({currentUser}) => {
     })
   )
 
-  const handleCheck = (topic) => {
-    return !!formData.topics.find(t => t === topic.id.toString())
-  }
-
-  const handleCheckBoxChange = (e) => {
-    if (e.target.checked) {
-      const selectedTopics = [...formData.topics, e.target.value]
-      setFormData({
-        ...formData,
-        topics: selectedTopics
-      })
-    }
-    else {
-      const selectedTopics = formData.topics.filter(t => t !== e.target.value)
-      setFormData({
-        ...formData,
-        topics: selectedTopics
-      })
-    }
+  const handleCheckBoxChange = (event,values) => {
+    const selectedTopics = values.map(value => value.id.toString())
+    setFormData({
+      ...formData,
+      topics: selectedTopics
+    })
   }
   
   const handleOnSubmit = (e) => {
@@ -112,13 +102,31 @@ export const ListingForm = ({currentUser}) => {
         })
   },[])
   
-  const renderTopics = () => (
-    allTopicOptions.map(t => (
-      <div key={t.id}>
-        <input  type="checkbox" name="topics" value={t.id} checked={handleCheck(t)} onChange={handleCheckBoxChange} />
-        <label>{t.name}</label>
-      </div>
+  const handleDefaultValues = (allTopicOptions) => (
+    allTopicOptions.filter(topic => (
+      formData.topics.includes(topic.id.toString())
     ))
+  )
+
+  const renderTopics = () => (
+    allTopicOptions && <Stack spacing={3} sx={{ width: 500 }}>
+      <Autocomplete
+        onChange={handleCheckBoxChange}
+        value={handleDefaultValues(allTopicOptions)}
+        multiple
+        id="tags-standard"
+        options={allTopicOptions}
+        getOptionLabel={(option) => option.name}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="standard"
+            label="Select Topics"
+            placeholder="Topics"
+          />
+        )}
+      />
+    </Stack>
   )
 
   const tileClassNameToAvailable = ({date,view}) => {

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
-import { Menu } from "./components/Menu"
 import {MainMenu} from "./components/MainMenu"
 import { Users } from "./features/users/Users"
 import { ListingsList } from "./features/listings/ListingsList"
@@ -29,7 +28,6 @@ function App() {
   
   return (
     <>
-      {/* <Menu currentUser={currentUser} /> */}
       <MainMenu currentUser={currentUser}/>
       <section className="main-container">
         <Switch>
