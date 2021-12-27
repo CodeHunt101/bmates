@@ -17,6 +17,9 @@ import FormControl from "@mui/material/FormControl"
 import FormGroup from "@mui/material/FormGroup"
 import FormControlLabel from "@mui/material/FormControlLabel"
 import Checkbox from "@mui/material/Checkbox"
+import Input from "@mui/material/Input"
+import IconButton from "@mui/material/IconButton"
+import PhotoCamera from "@mui/icons-material/PhotoCamera"
 
 export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
   const history = useHistory()
@@ -32,6 +35,8 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
     password: "",
     passwordConfirmation: "",
   })
+
+  const [attachedImage, setAttachedImage] = useState(null)
 
   const [passwordChangeRequired, setPasswordChangeRequired] = useState(false)
 
@@ -54,11 +59,14 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
   useEffect(() => fetchCurrentUser(), [])
 
   const handleOnChange = (e) => {
-    console.log(e.target.checked)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
+  }
+
+  const handleOnImageChange = (e) => {
+    setAttachedImage(e.target.files[0])
   }
 
   const handleOnCheck = (e) => {
@@ -67,52 +75,44 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    const objectToStringifyWithoutPassword = {
-      user: {
-        id: formData.id,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        gender: formData.gender,
-        bio: formData.bio,
-        username: formData.username,
-        email: formData.email,
-      },
+
+    const newUserInfo = new FormData()
+
+    const appendUserInfoWithoutPassword = () => {
+      newUserInfo.append("user[id]", formData.id)
+      newUserInfo.append("user[first_name]", formData.firstName)
+      newUserInfo.append("user[last_name]", formData.lastName)
+      newUserInfo.append("user[gender]", formData.gender)
+      newUserInfo.append("user[bio]", formData.bio)
+      newUserInfo.append("user[username]", formData.username)
+      newUserInfo.append("user[email]", formData.email)
+      attachedImage && newUserInfo.append("user[image]", attachedImage)
+      return newUserInfo
     }
 
-    const objectToStringifyWithPassword = {
-      ...objectToStringifyWithoutPassword,
-      user: {
-        ...objectToStringifyWithoutPassword.user,
-        password: formData.password,
-        password_confirmation: formData.passwordConfirmation,
-      },
+    const appendUserInfoWithPassword = () => {
+      appendUserInfoWithoutPassword()
+      newUserInfo.append("user[password]", formData.password)
+      newUserInfo.append("user[password_confirmation]",formData.passwordConfirmation)
+      return newUserInfo
     }
 
-    fetch(`/api/v1/users/${formData.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        passwordChangeRequired
-          ? objectToStringifyWithPassword
-          : objectToStringifyWithoutPassword
-      ),
-    }).then(
-      () => {
-        if (passwordChangeRequired) {
-          return (
-            formData.password.length >= 6 &&
-            formData.password.length <= 20 &&
-            formData.password === formData.passwordConfirmation &&
-            history.push(`/users/${formData.id}`)
-          )
-        } else {
-          return history.push(`/users/${formData.id}`)
-        }
-      }
-        
-    )
+    if (
+      passwordChangeRequired & (formData.password.length >= 6) &&
+      formData.password.length <= 20 &&
+      formData.password === formData.passwordConfirmation
+    ) {
+      fetch(`/api/v1/users/${formData.id}`, {
+        method: "PUT",
+        body: appendUserInfoWithPassword(),
+      }).then(() => history.push(`/users/${formData.id}`))
+    }
+    if (!passwordChangeRequired) {
+      fetch(`/api/v1/users/${formData.id}`, {
+        method: "PUT",
+        body: appendUserInfoWithoutPassword(),
+      }).then(() => history.push(`/users/${formData.id}`))
+    }
   }
 
   return (
@@ -141,6 +141,26 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
             sx={{ mt: 1, my: 5 }}
           >
             <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <label htmlFor="icon-button-file">
+                  Profile picture
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    name="image"
+                    onChange={handleOnImageChange}
+                  />
+                </label>
+              </Grid>
+
               <Grid item xs={12} sm={4}>
                 <TextField
                   autoComplete="given-first-name"

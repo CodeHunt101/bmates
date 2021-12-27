@@ -18,6 +18,7 @@ class Api::V1::UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     user.update(user_params)
+    
     if user.valid?
       message = "#{user.username} has been successfully updated."
       render json: {message: message, user: user}, except: [:created_at, :updated_at, :password_digest]
@@ -64,6 +65,7 @@ class Api::V1::UsersController < ApplicationController
       :bio,
       :username,
       :email,
+      :image,
       :is_admin,
       :password,
       :password_confirmation
