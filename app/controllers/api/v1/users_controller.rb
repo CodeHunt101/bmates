@@ -41,6 +41,7 @@ class Api::V1::UsersController < ApplicationController
     if current_user
       render json: {
         current_user: current_user,
+        profile_picture_url: current_user.image.url,
         listings: current_user.listings.listings_with_user_provider_details_topics_and_available_dates,
         reservations: {
           received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,

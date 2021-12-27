@@ -8,7 +8,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const { userId } = useParams()
   useEffect(() => {
     (currentUser || userId) &&
-      fetch(`/api/v1/users/${userId || currentUser.id}`)
+      fetch(`/api/v1/users/${userId || currentUser.current_user.id}`)
         .then((resp) => resp.json())
         .then((resp) => setReservations(resp.reservations))
   }, [userId, currentUser])

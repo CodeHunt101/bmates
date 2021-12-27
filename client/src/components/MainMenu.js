@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
@@ -35,9 +35,12 @@ const settings = [
   { name:"My Reservations", href: "/my-reservations"}, 
   { name:"Logout", href: "/logout"}]
 
-export const MainMenu = ({ currentUser }) => {
+export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) => {
   const history = useHistory()
+  // console.log(currentUser.current_user.profile_picture_url)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(()=>fetchCurrentUser(),[userSubmittedImage])
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -152,7 +155,7 @@ export const MainMenu = ({ currentUser }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={currentUser && currentUser.current_user.username.toUpperCase()} src={`${currentUser && currentUser.profile_picture_url}`} />
               </IconButton>
             </Tooltip>
             <Menu

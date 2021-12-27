@@ -14,8 +14,6 @@ export const ListingDetails = ({currentUser}) => {
       .then((resp) => {
         setListing(resp.listing)})
   },[currentUser, listingId])
-
-  console.log(listing)
   
   const renderListingDetails = () => (
     listing && (

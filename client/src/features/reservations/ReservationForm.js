@@ -56,7 +56,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
         body: JSON.stringify({
           reservation: {
             listing_id: listing.listing.id,
-            user_receiver_id: currentUser.id,
+            user_receiver_id: currentUser.current_user.id,
             status: "pending",
             reservation_date: selectedDate,
           },
@@ -66,7 +66,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   if (createdReservations) {
-    return <Redirect push to={`/users/${currentUser.id}/reservations`} />
+    return <Redirect push to={`/users/${currentUser.current_user.id}/reservations`} />
   }
 
   return (

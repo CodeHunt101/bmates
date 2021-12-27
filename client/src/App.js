@@ -15,19 +15,25 @@ import { EditUserForm } from "./features/users/EditUserForm"
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
-
+  
   const fetchCurrentUser = () => {
     fetch('/api/v1/current_user')
     .then(resp => resp.json())
-    .then(resp => setCurrentUser(resp.current_user))
+    .then(resp => setCurrentUser(resp))
   }
   useEffect(()=>{
     fetchCurrentUser()
   },[])
+
+  const [userSubmittedImage, setUserSubmittedImage] = useState(false)
+
+  const handleUserSubmittedImage = (status) => {
+    setUserSubmittedImage(status)
+  }
   
   return (
     <>
-      <MainMenu currentUser={currentUser}/>
+      <MainMenu currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} userSubmittedImage={userSubmittedImage}/>
       <section className="main-container">
         <Switch>
           <Route path="/users/:userId/listings">
@@ -57,21 +63,9 @@ function App() {
           <Route path="/listings">
             <ListingsList currentUser={currentUser} />
           </Route>
-          {/* <Route path="/dashboard/edit-profile">
-            <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-          </Route>
-          <Route path="/dashboard/my-listings">
-            <ListingsList currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-          </Route>
-          <Route path="/dashboard/my-reservations">
-            <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
-          </Route> */}
-          {/* <Route path="/dashboard">
-            <Dashboard currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} />
-          </Route> */}
 
           <Route path="/edit-profile">
-            <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+            <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} handleUserSubmittedImage={handleUserSubmittedImage}/>
           </Route>
           <Route path="/my-listings">
             <ListingsList currentUser={currentUser} />

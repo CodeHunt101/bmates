@@ -81,7 +81,7 @@ export const ListingForm = ({ currentUser }) => {
               title: formData.title,
               description: formData.description,
               topic_ids: formData.topics,
-              user_provider_id: currentUser.id,
+              user_provider_id: currentUser.current_user.id,
             },
           }),
         }

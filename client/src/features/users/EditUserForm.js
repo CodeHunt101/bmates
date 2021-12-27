@@ -21,7 +21,7 @@ import Input from "@mui/material/Input"
 import IconButton from "@mui/material/IconButton"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
 
-export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
+export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
   const history = useHistory()
 
   const [formData, setFormData] = useState({
@@ -43,20 +43,20 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
   useEffect(() => {
     currentUser &&
       setFormData({
-        id: currentUser.id,
-        firstName: currentUser.first_name,
-        lastName: currentUser.last_name,
-        gender: currentUser.gender,
-        bio: currentUser.bio,
-        username: currentUser.username,
-        email: currentUser.email,
+        id: currentUser.current_user.id,
+        firstName: currentUser.current_user.first_name,
+        lastName: currentUser.current_user.last_name,
+        gender: currentUser.current_user.gender,
+        bio: currentUser.current_user.bio,
+        username: currentUser.current_user.username,
+        email: currentUser.current_user.email,
         password: "",
         passwordConfirmation: "",
       })
   }, [currentUser])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => fetchCurrentUser(), [])
+  // useEffect(() => fetchCurrentUser(), [])
 
   const handleOnChange = (e) => {
     setFormData({
@@ -105,13 +105,17 @@ export const EditUserForm = ({ currentUser, fetchCurrentUser }) => {
       fetch(`/api/v1/users/${formData.id}`, {
         method: "PUT",
         body: appendUserInfoWithPassword(),
-      }).then(() => history.push(`/users/${formData.id}`))
+      })
+      .then(()=>handleUserSubmittedImage(true))
+      .then(() => history.push(`/users/${formData.id}`))
     }
     if (!passwordChangeRequired) {
       fetch(`/api/v1/users/${formData.id}`, {
         method: "PUT",
         body: appendUserInfoWithoutPassword(),
-      }).then(() => history.push(`/users/${formData.id}`))
+      })
+      .then(()=>handleUserSubmittedImage(true))
+      .then(() => history.push(`/users/${formData.id}`))
     }
   }
 
