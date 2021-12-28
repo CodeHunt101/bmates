@@ -14,8 +14,8 @@ import MenuItem from "@mui/material/MenuItem"
 import { WelcomeUser } from "../features/users/WelcomeUser"
 import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
-import MailRoundedIcon from '@mui/icons-material/MailRounded'
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
+import MailRoundedIcon from "@mui/icons-material/MailRounded"
 
 const pagesWithoutCurrentUser = [
   { name: "Home", href: "/" },
@@ -25,22 +25,27 @@ const pagesWithoutCurrentUser = [
   { name: "FAQ", href: "/faq" },
 ]
 const pagesWithCurrentUser = [
-  { name: <HomeRoundedIcon/>, href: "/" },
+  { name: <HomeRoundedIcon />, href: "/" },
   { name: "Add Listing", href: "/listings/new" },
   { name: "FAQ", href: "/faq" },
 ]
 const settings = [
-  { name:"Edit Profile", href: "/edit-profile"}, 
-  { name:"My Listings", href: "/my-listings"}, 
-  { name:"My Reservations", href: "/my-reservations"}, 
-  { name:"Logout", href: "/logout"}]
+  { name: "Edit Profile", href: "/edit-profile" },
+  { name: "My Listings", href: "/my-listings" },
+  { name: "My Reservations", href: "/my-reservations" },
+  { name: "Logout", href: "/logout" },
+]
 
-export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) => {
+export const MainMenu = ({
+  currentUser,
+  fetchCurrentUser,
+  userSubmittedImage,
+}) => {
   const history = useHistory()
   // console.log(currentUser.current_user.profile_picture_url)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(()=>fetchCurrentUser(),[userSubmittedImage])
+  useEffect(() => fetchCurrentUser(), [userSubmittedImage])
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -60,7 +65,7 @@ export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
-
+  
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -108,7 +113,7 @@ export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) 
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
-              {currentUser  &&
+              {currentUser &&
                 pagesWithCurrentUser.map((page) => (
                   <MenuItem key={page.name}>
                     <Typography textAlign="center">{page.name}</Typography>
@@ -127,7 +132,7 @@ export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) 
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {!currentUser &&
               pagesWithoutCurrentUser.map((page) => (
-                <Button key={page.name} >
+                <Button key={page.name}>
                   <Link className="main-menu-item" href={page.href}>
                     {page.name}
                   </Link>
@@ -135,52 +140,63 @@ export const MainMenu = ({ currentUser, fetchCurrentUser, userSubmittedImage }) 
               ))}
             {currentUser &&
               pagesWithCurrentUser.map((page) => (
-                <Button key={page.name} >
+                <Button key={page.name}>
                   <Link className="main-menu-item" href={page.href}>
                     {page.name}
                   </Link>
                 </Button>
               ))}
           </Box>
-          <Box sx={{ flexGrow: 0.02 }}>
-            <WelcomeUser currentUser={currentUser} />
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Button >
-              <Link className="main-menu-item" href="/inbox">
-                <MailRoundedIcon />
-              </Link>
-            </Button>
-          </Box>
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={currentUser && currentUser.current_user.username.toUpperCase()} src={`${currentUser && currentUser.profile_picture_url}`} />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={()=>handleCloseNavMenu(setting)}>
-                  <Typography textAlign="center">{setting.name}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+          {currentUser && (
+          <>
+            <Box sx={{ flexGrow: 0.02 }}>
+              <WelcomeUser currentUser={currentUser} />
+            </Box>
+            <Box sx={{ flexGrow: 0 }}>
+              <Button>
+                <Link className="main-menu-item" href="/inbox">
+                  <MailRoundedIcon />
+                </Link>
+              </Button>
+            </Box>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt={
+                      currentUser.current_user.username.toUpperCase()
+                    }
+                    src={`${currentUser.profile_picture_url}`}
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem
+                    key={setting.name}
+                    onClick={() => handleCloseNavMenu(setting)}
+                  >
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </Box>
+          </>)}
         </Toolbar>
       </Container>
     </AppBar>

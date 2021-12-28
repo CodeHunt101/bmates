@@ -19,7 +19,13 @@ function App() {
   const fetchCurrentUser = () => {
     fetch('/api/v1/current_user')
     .then(resp => resp.json())
-    .then(resp => setCurrentUser(resp))
+    .then(resp => {
+      if (resp && resp.current_user) {
+        setCurrentUser(resp)
+      } 
+      else setCurrentUser(null)
+      
+    })
   }
   useEffect(()=>{
     fetchCurrentUser()
