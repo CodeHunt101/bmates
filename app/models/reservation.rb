@@ -30,4 +30,13 @@ class Reservation < ApplicationRecord
       user_receiver_info: r.user_receiver
       }}
   end
+
+  def reservation_with_listing_provider_and_receiver_details
+    {
+      reservation: self, 
+      listing_info: self.listing, 
+      user_provider_info: self.listing.user_provider,
+      user_receiver_info: self.user_receiver
+    }
+  end
 end

@@ -65,7 +65,7 @@ export const MainMenu = ({
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
   }
-  
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -141,62 +141,69 @@ export const MainMenu = ({
             {currentUser &&
               pagesWithCurrentUser.map((page) => (
                 <Button key={page.name}>
-                  <Link className="main-menu-item" href={page.href}>
+                  <Link
+                    sx={{ height: "24px" }}
+                    className="main-menu-item"
+                    href={page.href}
+                  >
                     {page.name}
                   </Link>
                 </Button>
               ))}
           </Box>
           {currentUser && (
-          <>
-            <Box sx={{ flexGrow: 0.02 }}>
-              <WelcomeUser currentUser={currentUser} />
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Button>
-                <Link className="main-menu-item" href="/inbox">
-                  <MailRoundedIcon />
-                </Link>
-              </Button>
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar
-                    alt={
-                      currentUser.current_user.username.toUpperCase()
-                    }
-                    src={`${currentUser.profile_picture_url}`}
-                  />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem
-                    key={setting.name}
-                    onClick={() => handleCloseNavMenu(setting)}
+            <>
+              <Box sx={{ flexGrow: 0.02 }}>
+                <WelcomeUser currentUser={currentUser} />
+              </Box>
+              <Box sx={{ flexGrow: 0 }}>
+                <Button>
+                  <Link
+                    sx={{ height: "24px" }}
+                    className="main-menu-item"
+                    href="/inbox"
                   >
-                    <Typography textAlign="center">{setting.name}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          </>)}
+                    <MailRoundedIcon />
+                  </Link>
+                </Button>
+              </Box>
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar
+                      alt={currentUser.current_user.username.toUpperCase()}
+                      src={`${currentUser.profile_picture_url}`}
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={setting.name}
+                      onClick={() => handleCloseNavMenu(setting)}
+                    >
+                      <Typography textAlign="center">{setting.name}</Typography>
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+            </>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

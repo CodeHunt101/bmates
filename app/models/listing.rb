@@ -18,6 +18,10 @@ class Listing < ApplicationRecord
     self.available_dates.where(is_reserved: false)
   end
 
+  def available_dates_reserved
+    self.available_dates.where(is_reserved: true)
+  end
+
   def listing_with_user_provider_details_topics_and_available_dates
     {
       listing: self, 

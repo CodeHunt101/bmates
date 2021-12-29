@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       resources :topics, only: [:index]
 
       #Reservations
-      resources :reservations, only: [:index, :create]
+      resources :reservations, only: [:index, :create, :update, :show]
 
       #Available_Dates
       resources :available_dates, only: [:create]

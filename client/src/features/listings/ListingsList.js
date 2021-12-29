@@ -1,49 +1,45 @@
 import React, { useState, useEffect } from "react"
 import { ListingPreview } from "./ListingPreview"
 import { useParams, useRouteMatch } from "react-router"
-import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from "@mui/material/CssBaseline"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import Container from "@mui/material/Container"
+import Link from "@mui/material/Link"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 export const ListingsList = ({ currentUser }) => {
-  
   const [listings, setListings] = useState(null)
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
-  
+
   useEffect(() => {
-      
-      path === "/listings" &&
-        fetch("/api/v1/listings")
-          .then((resp) => resp.json())
-          .then((resp) => setListings(resp.listings))
-      
-      path === "/my-listings" &&
-        fetch(`/api/v1/current_user`)
-          .then((resp) => resp.json())
-          .then((resp) => setListings(resp.listings))
-      
-      path === "/users/:userId/listings" &&
-        fetch(`/api/v1/users/${userId}`)
-          .then((resp) => resp.json())
-          .then((resp) => setListings(resp.listings))
-    
+    path === "/listings" &&
+      fetch("/api/v1/listings")
+        .then((resp) => resp.json())
+        .then((resp) => setListings(resp.listings))
+
+    path === "/my-listings" &&
+      fetch(`/api/v1/current_user`)
+        .then((resp) => resp.json())
+        .then((resp) => setListings(resp.listings))
+
+    path === "/users/:userId/listings" &&
+      fetch(`/api/v1/users/${userId}`)
+        .then((resp) => resp.json())
+        .then((resp) => setListings(resp.listings))
   }, [currentUser, listingId, path, userId])
-  
+
   const renderListings = () => {
     if (listings) {
       return listings.map((listing) => (
-          <ListingPreview
-            key={listing.listing.id}
-            listing={listing}
-            currentUser={currentUser}
-          />
-        ))
-      
+        <ListingPreview
+          key={listing.listing.id}
+          listing={listing}
+          currentUser={currentUser}
+        />
+      ))
     }
   }
 
@@ -65,7 +61,7 @@ export const ListingsList = ({ currentUser }) => {
     )
   }
 
-  const theme = createTheme();
+  const theme = createTheme()
 
   return (
     <ThemeProvider theme={theme}>
@@ -74,7 +70,7 @@ export const ListingsList = ({ currentUser }) => {
         {/* Hero unit */}
         <Box
           sx={{
-            bgcolor: 'background.paper',
+            bgcolor: "background.paper",
             pt: 8,
             pb: 6,
           }}
@@ -91,13 +87,17 @@ export const ListingsList = ({ currentUser }) => {
         </Box>
         <Container sx={{ py: 5 }} maxWidth="md">
           {/* End hero unit */}
-          <Grid container spacing={4}>
+          <Grid
+            container
+            sx={{ display: "flex", justifyContent: "center" }}
+            spacing={4}
+          >
             {renderListings()}
           </Grid>
         </Container>
       </main>
       {/* Footer */}
-      <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
+      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>
@@ -113,5 +113,5 @@ export const ListingsList = ({ currentUser }) => {
       </Box>
       {/* End footer */}
     </ThemeProvider>
-  );
+  )
 }

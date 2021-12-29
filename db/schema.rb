@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 2021_12_27_045006) do
     t.string "username"
     t.string "email"
     t.text "bio"
-    t.string "profile_picture_url"
     t.boolean "is_admin", default: false
     t.string "password_digest"
     t.datetime "created_at", precision: 6, null: false
