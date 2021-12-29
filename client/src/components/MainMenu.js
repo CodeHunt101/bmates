@@ -42,7 +42,6 @@ export const MainMenu = ({
   userSubmittedImage,
 }) => {
   const history = useHistory()
-  // console.log(currentUser.current_user.profile_picture_url)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchCurrentUser(), [userSubmittedImage])
@@ -56,14 +55,16 @@ export const MainMenu = ({
     setAnchorElUser(event.currentTarget)
   }
 
-  const handleCloseNavMenu = (setting) => {
-    console.log(setting.href)
+  const handleCloseNavMenu = () => {
     setAnchorElNav(null)
-    history.push(setting.href)
   }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null)
+  }
+
+  const handleOnNavElClick = (navEl) => {
+    history.push(navEl.href)
   }
 
   return (
@@ -103,19 +104,20 @@ export const MainMenu = ({
                 horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
               }}
             >
               {!currentUser &&
                 pagesWithoutCurrentUser.map((page) => (
-                  <MenuItem key={page.name}>
+                  <MenuItem key={page.name} onClick={() => handleOnNavElClick(page)}>
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
               {currentUser &&
                 pagesWithCurrentUser.map((page) => (
-                  <MenuItem key={page.name}>
+                  <MenuItem key={page.name} onClick={() => handleOnNavElClick(page)}>
                     <Typography textAlign="center">{page.name}</Typography>
                   </MenuItem>
                 ))}
@@ -189,13 +191,13 @@ export const MainMenu = ({
                     vertical: "top",
                     horizontal: "right",
                   }}
-                  open={Boolean(anchorElUser)}
+                  open={!!anchorElUser}
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
                     <MenuItem
                       key={setting.name}
-                      onClick={() => handleCloseNavMenu(setting)}
+                      onClick={() => handleOnNavElClick(setting)}
                     >
                       <Typography textAlign="center">{setting.name}</Typography>
                     </MenuItem>

@@ -33,6 +33,7 @@ export const ListingAvailability = ({tileClassNameToAvailable, handleOnClickDay,
     <Calendar 
       tileClassName={handleTileClassNames}
       onClickDay={handleOnClickDay}
+      minDate={new Date()}
       // tileDisabled={tileDisabled}
     />
   </>)

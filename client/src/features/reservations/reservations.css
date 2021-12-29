@@ -101,7 +101,7 @@ button.not-to-disable {
   background-color: #f0f0f0;
 }
 .react-calendar__tile:enabled:hover {
-  background-color: #e6e6e6;
+  background-color: #e7b13b;
 }
 .react-calendar__tile--now {
   background: #ffff76;

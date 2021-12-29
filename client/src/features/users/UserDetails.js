@@ -14,12 +14,6 @@ export const UserDetails = () => {
     .then(resp => setUser(resp))
   },[userId])
   
-  // const renderUser = () => {
-  //   if (!userId || parseInt(userId) === user.id) {
-  //     return ( 
-  //       <p>{user.first_name} {user.last_name}</p>)
-  //   }
-  // }
   return(
     <>
       {

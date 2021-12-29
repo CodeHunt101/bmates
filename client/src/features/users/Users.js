@@ -40,12 +40,6 @@ export const Users = () => {
 
   const theme = createTheme()
 
-  // return(
-  //   <>
-  //     <h2>Users</h2>
-  //     {renderUsers()}
-  //   </>
-  // )
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />

@@ -31,7 +31,6 @@ export const ListingDetails = ({currentUser}) => {
           <div>Hosted by:</div>
           <div>{listing.user_provider_info.username}</div>
           <div><img href="" alt=""/></div>
-          {/* TODO: work the details for user profile component */}
           <Link to={`/users/${listing.listing.user_provider_id}`}>View Profile</Link>
         </div>
         <div>
@@ -40,7 +39,6 @@ export const ListingDetails = ({currentUser}) => {
         </div>
         <div>
           <div>Make a reservation:</div>
-          {/* TODO: build a new reservation form component */}
           <ReservationForm listing={listing} currentUser={currentUser}/>
         </div>
       </>
