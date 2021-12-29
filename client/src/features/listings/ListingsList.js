@@ -37,7 +37,7 @@ export const ListingsList = ({ currentUser }) => {
         <ListingPreview
           key={listing.listing.id}
           listing={listing}
-          currentUser={currentUser}
+          // currentUser={currentUser}
         />
       ))
     }

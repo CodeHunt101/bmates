@@ -1,7 +1,7 @@
 class Api::V1::UsersController < ApplicationController
   
   def index
-    users = User.all
+    users = User.users_with_pp
     render json: {
       current_user: current_user, 
       users: users}, except: [:created_at, :updated_at, :password_digest]
@@ -28,7 +28,8 @@ class Api::V1::UsersController < ApplicationController
   def show
     user = User.find(params[:id])
     render json: {
-      current_user: user,
+      user_info: user,
+      profile_picture: user.image.url,
       listings: user.listings.listings_with_user_provider_details_topics_and_available_dates,
       reservations: {
         received_reservations: user.received_reservations.reservations_with_listing_receiver_details,

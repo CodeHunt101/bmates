@@ -13,4 +13,14 @@ class User < ApplicationRecord
   #As a user, it has many received reservations through listings
   has_many :received_reservations, through: :listings, source: :reservations
   has_many :made_reservations, foreign_key: :user_receiver_id, class_name: "Reservation"
+
+
+  def self.users_with_pp
+    all.map{|user| {
+      user_info: user,
+      profile_picture: user.image.url
+    }}
+  end
+
+ 
 end

@@ -83,7 +83,7 @@ harold = User.create({
   first_name: "Harold",
   last_name: "Torres",
   gender: "M",
-  bio: "blah blah blah",
+  bio: Faker::Lorem.paragraph(sentence_count: 5),
   username: "haroldtm55",
   email: "harold@example.com",
   password: "password",
@@ -93,7 +93,7 @@ harold = User.create({
 harold_listing = Listing.create({
   title: "I want to be your cybermate",
   listing_type: "Mate",
-  description: "bleh bleh",
+  description: Faker::Lorem.paragraph(sentence_count: 5),
   user_provider: harold
 })
 
@@ -108,7 +108,7 @@ siri = User.create({
   first_name: "Siri",
   last_name: "Watasir",
   gender: "F",
-  bio: "blah blah blah",
+  bio: Faker::Lorem.paragraph(sentence_count: 5),
   username: "chongnang",
   email: "siri@example.com",
   password: "password",
@@ -134,7 +134,7 @@ while i<50 do
     first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
     gender: i % 2 != 0 ? 'M' : 'F',
-    bio: "blah blah blah",
+    bio: Faker::Lorem.paragraph(sentence_count: 5),
     username: "user" + "#{i+1}",
     email: Faker::Internet.email,
     password: "password",
@@ -150,7 +150,7 @@ while i < 50 do
   listing = Listing.create({
     title: Faker::Lorem.sentence,
     listing_type: "Mate",
-    description: Faker::Lorem.paragraph,
+    description: Faker::Lorem.paragraph(sentence_count: 5),
     user_provider: User.all[rand(0..User.all.count - 1)]
   })
   i+=1

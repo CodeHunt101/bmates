@@ -33,7 +33,7 @@ export const ListingPreview = ({ listing }) => {
           {listing.listing.title}
         </Typography>
         <Typography>
-          By: <Link to={`users/${listing.user_provider_info.id}`}>
+          By: <Link to={`/users/${listing.user_provider_info.id}`}>
           {listing.user_provider_info.username}
           </Link>
         </Typography>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Home } from "./components/Home"
 import {MainMenu} from "./components/MainMenu"
 import { Users } from "./features/users/Users"
+import { UserDetails } from "./features/users/UserDetails"
 import { ListingsList } from "./features/listings/ListingsList"
 import { ListingForm } from "./features/listings/ListingForm"
 import { Reservations } from "./features/reservations/Reservations"
@@ -49,7 +50,7 @@ function App() {
             <Reservations />
           </Route>
           <Route path="/users/:userId">
-            <Users />
+            <UserDetails />
           </Route>
           <Route path="/users">
             <Users />
