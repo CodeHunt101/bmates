@@ -1,5 +1,6 @@
 .reservations {
   display: flex;
+  justify-content: space-evenly;
 }
 
 button.to-disable {

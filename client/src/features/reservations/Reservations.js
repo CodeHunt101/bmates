@@ -24,7 +24,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
     <div className="reservations">
       <div>
         <h3>Made Reservations</h3>
-        <ul>
+        <div>
           {reservations.made_reservations &&
             reservations.made_reservations.map((r) => (
               <Reservation
@@ -33,16 +33,16 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
                 handleCancellation={handleCancellation}
               />
             ))}
-        </ul>
+        </div>
       </div>
       <div>
         <h3>Received Reservations</h3>
-        <ul>
+        <div>
           {reservations.received_reservations &&
             reservations.received_reservations.map((r) => (
               <Reservation key={r.reservation.id} reservation={r} />
             ))}
-        </ul>
+        </div>
       </div>
     </div>
   )
