@@ -1,6 +1,7 @@
 class Reservation < ApplicationRecord
   belongs_to :listing
   belongs_to :user_receiver, class_name: "User"
+  has_one :review
 
   def self.reservations_with_listing_provider_and_receiver_details
     all.map{|r| {
