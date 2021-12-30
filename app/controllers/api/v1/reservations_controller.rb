@@ -12,7 +12,7 @@ class Api::V1::ReservationsController < ApplicationController
     if reservation.valid?
       message = "reservation has been successfully created"
       render json: {
-        message: message, 
+        resp: message, 
         reservation: reservation}, 
         except: [:created_at, :updated_at]
     end

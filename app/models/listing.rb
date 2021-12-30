@@ -4,6 +4,8 @@ class Listing < ApplicationRecord
   has_many :listing_topics
   has_many :topics, through: :listing_topics
   has_many :available_dates
+  has_many :messages
+  has_many :reviews
 
   def self.listings_with_user_provider_details_topics_and_available_dates
     self.all.map{|l| {

@@ -49,23 +49,46 @@ export const MainMenu = ({
   const [anchorElUser, setAnchorElUser] = useState(null)
 
   const handleOpenNavMenu = (event) => {
+    // On mobile screen, it opens the navbar as a list of buttons
     setAnchorElNav(event.currentTarget)
   }
   const handleOpenUserMenu = (event) => {
+    // User click in their pp to see the user menu
     setAnchorElUser(event.currentTarget)
   }
 
   const handleCloseNavMenu = () => {
+    // On mobile screen, deactivate navbar if user clicks outside of it
     setAnchorElNav(null)
   }
 
   const handleCloseUserMenu = () => {
+    // User click outside user menu to deactivate it
     setAnchorElUser(null)
   }
 
   const handleOnNavElClick = (navEl) => {
+    // Goes to any navbar location onClick
     history.push(navEl.href)
   }
+
+  const renderMenuDropDownItem = (navEl) => (
+    <MenuItem key={navEl.name} onClick={() => handleOnNavElClick(navEl)}>
+      <Typography textAlign="center">{navEl.name}</Typography>
+    </MenuItem>
+  )
+
+  const renderMenuNavBarItem = (navEl) => (
+    <Button key={navEl.name}>
+      <Link
+        sx={{ height: "24px" }}
+        className="main-menu-item"
+        href={navEl.href}
+      >
+        {navEl.name}
+      </Link>
+    </Button>
+  )
 
   return (
     <AppBar position="static">
@@ -92,7 +115,7 @@ export const MainMenu = ({
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id="nav-menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: "bottom",
@@ -111,15 +134,11 @@ export const MainMenu = ({
             >
               {!currentUser &&
                 pagesWithoutCurrentUser.map((page) => (
-                  <MenuItem key={page.name} onClick={() => handleOnNavElClick(page)}>
-                    <Typography textAlign="center">{page.name}</Typography>
-                  </MenuItem>
+                  renderMenuDropDownItem(page)
                 ))}
               {currentUser &&
                 pagesWithCurrentUser.map((page) => (
-                  <MenuItem key={page.name} onClick={() => handleOnNavElClick(page)}>
-                    <Typography textAlign="center">{page.name}</Typography>
-                  </MenuItem>
+                  renderMenuDropDownItem(page)
                 ))}
             </Menu>
           </Box>
@@ -134,23 +153,11 @@ export const MainMenu = ({
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {!currentUser &&
               pagesWithoutCurrentUser.map((page) => (
-                <Button key={page.name}>
-                  <Link className="main-menu-item" href={page.href}>
-                    {page.name}
-                  </Link>
-                </Button>
+                renderMenuNavBarItem(page)
               ))}
             {currentUser &&
               pagesWithCurrentUser.map((page) => (
-                <Button key={page.name}>
-                  <Link
-                    sx={{ height: "24px" }}
-                    className="main-menu-item"
-                    href={page.href}
-                  >
-                    {page.name}
-                  </Link>
-                </Button>
+                renderMenuNavBarItem(page)
               ))}
           </Box>
           {currentUser && (
@@ -180,7 +187,7 @@ export const MainMenu = ({
                 </Tooltip>
                 <Menu
                   sx={{ mt: "45px" }}
-                  id="menu-appbar"
+                  id="user-menu-appbar"
                   anchorEl={anchorElUser}
                   anchorOrigin={{
                     vertical: "top",
@@ -195,12 +202,7 @@ export const MainMenu = ({
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => (
-                    <MenuItem
-                      key={setting.name}
-                      onClick={() => handleOnNavElClick(setting)}
-                    >
-                      <Typography textAlign="center">{setting.name}</Typography>
-                    </MenuItem>
+                    renderMenuDropDownItem(setting)
                   ))}
                 </Menu>
               </Box>

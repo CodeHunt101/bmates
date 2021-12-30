@@ -4,7 +4,6 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       
-      
       #Users & Sessions
       post "/login", to: "sessions#create"
       get "/login", to: "sessions#create"
@@ -25,6 +24,12 @@ Rails.application.routes.draw do
 
       #Available_Dates
       resources :available_dates, only: [:create]
+
+      #Messages
+      resources :messages, only: [:create]
+
+      #Reviews
+      resources :reviews, only: [:create]
     end
   end
 
