@@ -7,6 +7,7 @@ import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { User } from "./User"
+import Pagination from "@mui/material/Pagination"
 
 export const Users = () => {
   const [users, setUsers] = useState([])
@@ -17,8 +18,13 @@ export const Users = () => {
       .then((resp) => setUsers(resp.users))
   }, [])
 
-  const renderUsers = () =>
-    users.map((user) => <User key={user.id} user={user} />)
+  const [page, setPage] = useState(1)
+  const handleOnPageChange = (event, page) => setPage(page)
+
+  const renderUsersOnPage = (page = 1) =>
+    users
+      .slice(page * 8 - 8, page * 8)
+      .map((user) => <User key={user.id} user={user} />)
 
   function Copyright(props) {
     return (
@@ -62,14 +68,28 @@ export const Users = () => {
             Users
           </Typography>
         </Box>
-        <Container sx={{ py: 5 }} maxWidth="md">
+        {users && (
+          <Container
+            sx={{ display: "flex", justifyContent: "center" }}
+            maxWidth="md"
+          >
+            <Pagination
+              count={Math.ceil(users.length / 8)}
+              page={page}
+              onChange={handleOnPageChange}
+              variant="outlined"
+              color="primary"
+            />
+          </Container>
+        )}
+        <Container sx={{ py: 5 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid
             container
             sx={{ display: "flex", justifyContent: "center" }}
             spacing={4}
           >
-            {renderUsers()}
+            {renderUsersOnPage(page)}
           </Grid>
         </Container>
       </main>

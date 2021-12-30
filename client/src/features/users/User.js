@@ -13,7 +13,7 @@ export const User = ({ user }) => {
   return (
     <>
       {/* {renderUser()} */}
-      <Grid item xs={12} sm={6} md={4}>
+      <Grid item xs={12} sm={6} md={3}>
         <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           <CardMedia
             component="img"
@@ -26,7 +26,7 @@ export const User = ({ user }) => {
             image={
               user.profile_picture ||
               `https://source.unsplash.com/random?${
-                user.user_info.gender === "F" ? "woman" : "man"
+                user.user_info.gender === "F" ? "female" : "male"
               }`
             }
             alt="listingImage"

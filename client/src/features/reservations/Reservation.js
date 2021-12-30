@@ -40,11 +40,11 @@ export const Reservation = ({ reservation, handleCancellation }) => {
         {new Date(reservation.reservation.reservation_date).toDateString()}
       </p>
       {reservation.user_provider_info &&
-        reservation.reservation.status !== "cancelled" && (
+        reservation.reservation.status !== "closed" && reservation.reservation.status !== "cancelled" && (
           <>
             <Button onClick={handleOnCancellationClick}>
               Cancel Reservation
-            </Button>{" "}
+            </Button>
             <br />
           </>
         )}

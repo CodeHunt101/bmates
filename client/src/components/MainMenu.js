@@ -16,6 +16,7 @@ import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
+// import Badge from "@mui/material/Badge"
 
 const pagesWithoutCurrentUser = [
   { name: "Home", href: "/" },
@@ -166,15 +167,17 @@ export const MainMenu = ({
                 <WelcomeUser currentUser={currentUser} />
               </Box>
               <Box sx={{ flexGrow: 0 }}>
-                <Button>
-                  <Link
-                    sx={{ height: "24px" }}
-                    className="main-menu-item"
-                    href="/inbox"
-                  >
-                    <MailRoundedIcon />
-                  </Link>
-                </Button>
+                <Button >
+                  {/* <Badge badgeContent={4} color="warning"> */}
+                    <Link
+                      sx={{ height: "24px" }}
+                      className="main-menu-item"
+                      href="/inbox"
+                    >
+                      <MailRoundedIcon />
+                    </Link>
+                  {/* </Badge > */}
+                </Button >
               </Box>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">

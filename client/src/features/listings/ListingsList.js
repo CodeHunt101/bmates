@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import Pagination from "@mui/material/Pagination"
 
 export const ListingsList = ({ currentUser }) => {
   const [listings, setListings] = useState(null)
@@ -31,15 +32,16 @@ export const ListingsList = ({ currentUser }) => {
         .then((resp) => setListings(resp.listings))
   }, [currentUser, listingId, path, userId])
 
-  const renderListings = () => {
+  const [page, setPage] = useState(1)
+  const handleOnPageChange = (event, page) => setPage(page)
+
+  const renderListingsOnPage = (page = 1) => {
     if (listings) {
-      return listings.map((listing) => (
-        <ListingPreview
-          key={listing.listing.id}
-          listing={listing}
-          // currentUser={currentUser}
-        />
-      ))
+      return listings
+        .slice(page * 8 - 8, page * 8)
+        .map((listing) => (
+          <ListingPreview key={listing.listing.id} listing={listing} />
+        ))
     }
   }
 
@@ -85,14 +87,28 @@ export const ListingsList = ({ currentUser }) => {
             Listings
           </Typography>
         </Box>
-        <Container sx={{ py: 5 }} maxWidth="md">
+        {listings && (
+          <Container
+            sx={{ display: "flex", justifyContent: "center" }}
+            maxWidth="md"
+          >
+            <Pagination
+              count={Math.ceil(listings.length / 8)}
+              page={page}
+              onChange={handleOnPageChange}
+              variant="outlined"
+              color="primary"
+            />
+          </Container>
+        )}
+        <Container sx={{ py: 5 }} maxWidth="lg">
           {/* End hero unit */}
           <Grid
             container
             sx={{ display: "flex", justifyContent: "center" }}
             spacing={4}
           >
-            {renderListings()}
+            {renderListingsOnPage(page)}
           </Grid>
         </Container>
       </main>

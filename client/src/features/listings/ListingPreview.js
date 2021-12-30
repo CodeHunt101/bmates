@@ -13,7 +13,7 @@ export const ListingPreview = ({ listing }) => {
   const handleOnClick = () => history.push(`/listings/${listing.listing.id}`)
 
   return (
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={3}>
     <Card
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
@@ -25,6 +25,7 @@ export const ListingPreview = ({ listing }) => {
           pt: '10%',
           cursor: 'pointer'
         }}
+        height="300px"
         image="https://source.unsplash.com/random"
         alt="listingImage"
       />
