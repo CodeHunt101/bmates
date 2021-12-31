@@ -4,12 +4,17 @@ class Reservation < ApplicationRecord
   has_one :review
 
   def self.reservations_with_listing_provider_and_receiver_details
-    all.map{|r| {
-      reservation: r, 
-      listing_info: r.listing, 
-      user_provider_info: r.listing.user_provider,
-      user_receiver_info: r.user_receiver
-      }}
+    
+    all.map do |r| 
+      {
+        reservation: r, 
+        listing_info: r.listing, 
+        user_provider_info: r.listing.user_provider,
+        user_provider_profile_picture: r.listing.user_provider.image.url,
+        user_receiver_info: r.user_receiver,
+        user_receiver_profile_picture: r.user_receiver.image.url
+      }
+    end
   end
 
   # def self.with_listing_title

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { Reservation } from "./Reservation"
 import { useParams } from "react-router"
+import Typography from "@mui/material/Typography"
+import CssBaseline from "@mui/material/CssBaseline"
+import Grid from "@mui/material/Grid"
+import Box from "@mui/material/Box"
+import Paper from "@mui/material/Paper"
+import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const [reservations, setReservations] = useState([])
@@ -23,7 +29,9 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const renderReservations = () => (
     <div className="reservations">
       <div>
-        <h3>Made Reservations</h3>
+        <Typography align="center" component="div" variant="inherit">
+          <b>TO RECEIVE</b>
+        </Typography>
         <div>
           {reservations.made_reservations &&
             reservations.made_reservations.map((r) => (
@@ -36,7 +44,9 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
         </div>
       </div>
       <div>
-        <h3>Received Reservations</h3>
+        <Typography align="center" component="div" variant="inherit">
+          <b>TO PROVIDE</b>
+        </Typography>
         <div>
           {reservations.received_reservations &&
             reservations.received_reservations.map((r) => (
@@ -46,11 +56,38 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
       </div>
     </div>
   )
-
+  const theme = createTheme()
   return (
-    <>
-      <h1>Reservations</h1>
-      {renderReservations()}
-    </>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Grid
+        item
+        sx={{ mx: "auto" }}
+        xs={12}
+        sm={8}
+        md={9}
+        component={Paper}
+        elevation={6}
+        circle="true"
+      >
+        <Box
+          sx={{
+            pt: 8,
+            pb: 6,
+          }}
+        >
+          <Typography
+            component="h2"
+            variant="h4"
+            align="center"
+            color="text.primary"
+            gutterBottom
+          >
+            Reservations
+          </Typography>
+        </Box>
+        {renderReservations()}
+      </Grid>
+    </ThemeProvider>
   )
 }

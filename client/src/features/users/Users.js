@@ -53,7 +53,6 @@ export const Users = () => {
         {/* Hero unit */}
         <Box
           sx={{
-            bgcolor: "background.paper",
             pt: 8,
             pb: 6,
           }}
@@ -94,7 +93,7 @@ export const Users = () => {
         </Container>
       </main>
       {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
+      <Box sx={{ p: 6 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>

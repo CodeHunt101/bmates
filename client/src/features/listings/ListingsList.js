@@ -9,6 +9,7 @@ import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Pagination from "@mui/material/Pagination"
+import Paper from "@mui/material/Paper"
 
 export const ListingsList = ({ currentUser }) => {
   const [listings, setListings] = useState(null)
@@ -68,11 +69,19 @@ export const ListingsList = ({ currentUser }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <main>
+      <Grid
+        item
+        sx={{ mx: "auto" }}
+        xs={12}
+        sm={8}
+        md={10.1}
+        component={Paper}
+        elevation={6}
+        circle="true"
+      >
         {/* Hero unit */}
         <Box
           sx={{
-            bgcolor: "background.paper",
             pt: 8,
             pb: 6,
           }}
@@ -111,9 +120,9 @@ export const ListingsList = ({ currentUser }) => {
             {renderListingsOnPage(page)}
           </Grid>
         </Container>
-      </main>
+      </Grid>
       {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", p: 6 }} component="footer">
+      <Box sx={{ bgcolor: "background.paper", margin: 1, p: 2 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>

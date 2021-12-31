@@ -71,6 +71,7 @@ export const MainMenu = ({
   const handleOnNavElClick = (navEl) => {
     // Goes to any navbar location onClick
     history.push(navEl.href)
+    setAnchorElUser(null)
   }
 
   const renderMenuDropDownItem = (navEl) => (
@@ -92,7 +93,7 @@ export const MainMenu = ({
   )
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

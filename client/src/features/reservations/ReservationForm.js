@@ -9,7 +9,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
     selectedDates: [],
   })
 
-  const tileClassNameToReserved = ({ date, view }) => {
+  const tileClassNameToDisabled = ({ date, view }) => {
     if (view === "month") {
       if (
         listing.available_dates.find(
@@ -19,6 +19,18 @@ export const ReservationForm = ({ listing, currentUser }) => {
         return "not-to-disable"
       } else {
         return "to-disable"
+      }
+    }
+  }
+
+  const tileClassNameToSelected = ({ date, view }) => {
+    if (view === "month") {
+      if (
+        formData.selectedDates.find(
+          (dDate) => dDate.toString() === date.toString()
+        )
+      ) {
+        return "selected"
       }
     }
   }
@@ -35,13 +47,11 @@ export const ReservationForm = ({ listing, currentUser }) => {
           (date) => date.toString() !== value.toString()
         ),
       })
-      event.target.style.backgroundColor = "hsl(210, 100%, 43%)"
     } else {
       setFormData({
         ...formData,
         selectedDates: [...formData.selectedDates, value],
       })
-      event.target.style.backgroundColor = "green"
     }
   }
 
@@ -66,15 +76,21 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   if (createdReservations) {
-    return <Redirect push to={`/users/${currentUser.current_user.id}/reservations`} />
+    return (
+      <Redirect
+        push
+        to={`/users/${currentUser.current_user.id}/reservations`}
+      />
+    )
   }
 
   return (
     <form onSubmit={handleOnSubmit}>
       <ListingAvailability
         availableDates={listing.available_dates}
-        tileClassNameToReserved={tileClassNameToReserved}
+        tileClassNameToDisabled={tileClassNameToDisabled}
         handleOnClickDay={handleOnClickDay}
+        tileClassNameToSelected={tileClassNameToSelected}
       />
       <button type="submit">Submit Reservations</button>
     </form>

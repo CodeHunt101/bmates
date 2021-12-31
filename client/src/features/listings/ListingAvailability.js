@@ -1,40 +1,36 @@
 import React from "react"
 import Calendar from "react-calendar"
 
-export const ListingAvailability = ({tileClassNameToAvailable, handleOnClickDay, availableDates, tileClassNameToReserved}) => {
-  
-  const handleTileClassNames = ({date, view}) => {
-    if (tileClassNameToAvailable) {
-      return tileClassNameToAvailable({date, view})
-    } 
-    else {
-      if (availableDates) {
-        return tileClassNameToReserved({date, view})
-      }
+export const ListingAvailability = ({
+  handleOnClickDay,
+  availableDates,
+  tileClassNameToDisabled,
+  tileClassNameToSelected,
+}) => {
+  const handleTileClassNameToDisabled = ({ date, view }) => {
+    if (availableDates) {
+      return tileClassNameToDisabled({ date, view })
     }
   }
-  
-  // TODO: figure out disabling all dates except for specified ones
-  // const tileDisabled = ({date,view}) => {
-  //   if (availableDates) {
-  //     if (view === 'month') {
-  //       const datesToDisable = availableDates.find(dDate => {
-  //         const availableDate = new Date(dDate.available_date)
-  //         return availableDate.toString() !== date.toString()
-  //       })
-  //       return datesToDisable
-  //     }
-  //   }
-  // }
 
+  const handleTileClassNameToSelected = ({ date, view }) => {
+    if (tileClassNameToSelected) {
+      return tileClassNameToSelected({ date, view })
+    }
+  }
 
-  return(
-  <>
-    <Calendar 
-      tileClassName={handleTileClassNames}
-      onClickDay={handleOnClickDay}
-      minDate={new Date()}
-      // tileDisabled={tileDisabled}
-    />
-  </>)
+  return (
+    <>
+      <Calendar
+        tileClassName={({ date, view }) => {
+          return [
+            handleTileClassNameToDisabled({ date, view }),
+            handleTileClassNameToSelected({ date, view }),
+          ]
+        }}
+        onClickDay={handleOnClickDay}
+        minDate={new Date()}
+      />
+    </>
+  )
 }

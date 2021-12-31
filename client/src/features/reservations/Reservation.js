@@ -1,15 +1,13 @@
 import React from "react"
 import Button from "@mui/material/Button"
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-
+import Box from "@mui/material/Box"
+import Card from "@mui/material/Card"
+import CardContent from "@mui/material/CardContent"
+import CardMedia from "@mui/material/CardMedia"
+import Typography from "@mui/material/Typography"
+import Avatar from "@mui/material/Avatar"
 
 export const Reservation = ({ reservation, handleCancellation }) => {
-  // const theme = useTheme();
-  
   const handleOnCancellationClick = () => {
     fetch(`/api/v1/reservations/${reservation.reservation.id}`, {
       method: "PATCH",
@@ -25,42 +23,88 @@ export const Reservation = ({ reservation, handleCancellation }) => {
   }
 
   const reservationInfo = () => (
-    <Card sx={{ 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      marginBottom: '10%',
-      width: '500px',
-      height: '200px' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CardContent sx={{ flex: '1 0 auto' }}>
-          <Typography component="div" variant="h6">
-            {reservation.listing_info.title}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
-            {reservation.user_provider_info && (
-                <><b>User Provider:</b> {reservation.user_provider_info.username}</>
-            )}
-            {reservation.user_receiver_info && (
-                <><b>User Receiver:</b> {reservation.user_receiver_info.username}</>
-            )}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
-          { reservation.reservation.status}
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
-            {new Date(reservation.reservation.reservation_date).toDateString()}
-          </Typography>
-        </CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
-          {reservation.user_provider_info &&
-          reservation.reservation.status !== "closed" && reservation.reservation.status !== "cancelled" && (
+    <Card
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "10%",
+        width: "370px",
+        height: "270px",
+        margin: 1,
+      }}
+    >
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <CardContent sx={{ flex: "1 0 auto" }}>
+          {reservation.user_provider_info && (
             <>
-              <Button onClick={handleOnCancellationClick}>
-                Cancel Reservation
-              </Button>
-              <br />
+              <Avatar
+                sx={{ margin: "auto" }}
+                alt={reservation.user_provider_info.username}
+                src={`${reservation.user_provider_profile_pictture}`}
+              />
             </>
           )}
+          {reservation.user_receiver_info && (
+            <>
+              <Avatar
+                sx={{ margin: "auto" }}
+                alt={reservation.user_receiver_info.username}
+                src={`${reservation.user_receiver_profile_pictture}`}
+              />
+            </>
+          )}
+
+          <Typography component="div" variant="subtitle1">
+            <b>{reservation.listing_info.title}</b>
+          </Typography>
+          <Typography
+            sx={{ marginBottom: "5%" }}
+            variant="subtitle2"
+            color="text.secondary"
+            component="div"
+          >
+            {reservation.user_provider_info && (
+              <>
+                From: <b>{reservation.user_provider_info.username}</b>
+              </>
+            )}
+            {reservation.user_receiver_info && (
+              <>
+                To: <b>{reservation.user_receiver_info.username}</b>
+              </>
+            )}
+          </Typography>
+          <Typography variant="subtitle1" component="div">
+            <b>
+              {new Date(
+                reservation.reservation.reservation_date
+              ).toDateString()}
+            </b>
+          </Typography>
+          <Typography variant="button" component="div">
+            {
+              {
+                pending: "Pending Approval",
+                accepted: "Accepted",
+                declined: "Declined",
+                closed: "Closed",
+                cancelled: "Cancelled",
+                expired: "Expired",
+              }[`${reservation.reservation.status}`]
+            }
+          </Typography>
+        </CardContent>
+        <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
+          {reservation.user_provider_info &&
+            reservation.reservation.status !== "closed" &&
+            reservation.reservation.status !== "cancelled" && (
+              <>
+                <Button onClick={handleOnCancellationClick}>
+                  Cancel Reservation
+                </Button>
+                <br />
+              </>
+            )}
           {/* <IconButton aria-label="previous">
             {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
           </IconButton>
@@ -79,48 +123,7 @@ export const Reservation = ({ reservation, handleCancellation }) => {
         alt="Reservation"
       />
     </Card>
-  );
+  )
 
   return <div className="reservation">{reservationInfo()}</div>
 }
-
-
-// const reservationInfo = () => (
-//   <>
-//     {/* <p>ID: {reservation.reservation.id}</p> */}
-//     <p>
-//       <b>Listing:</b> {reservation.listing_info.title}
-//     </p>
-//     <Avatar
-//       alt="reservation"
-//       src="https://source.unsplash.com/random?activity"
-//       sx={{ width: 56*4, height: 56*4 }} />
-    
-//     {reservation.user_provider_info && (
-//       <p>
-//         <b>User Provider:</b> {reservation.user_provider_info.username}
-//       </p>
-//     )}
-//     {reservation.user_receiver_info && (
-//       <p>
-//         <b>User Receiver:</b> {reservation.user_receiver_info.username}
-//       </p>
-//     )}
-//     <p>
-//       <b>Status:</b> {reservation.reservation.status}
-//     </p>
-//     <p>
-//       <b>Reservation Date:</b>{" "}
-//       {new Date(reservation.reservation.reservation_date).toDateString()}
-//     </p>
-//     {reservation.user_provider_info &&
-//       reservation.reservation.status !== "closed" && reservation.reservation.status !== "cancelled" && (
-//         <>
-//           <Button onClick={handleOnCancellationClick}>
-//             Cancel Reservation
-//           </Button>
-//           <br />
-//         </>
-//       )}
-//   </>
-// )

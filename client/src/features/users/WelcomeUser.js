@@ -1,9 +1,18 @@
-import React from "react";
+import React from "react"
+import Typography from "@mui/material/Typography"
 
-export const WelcomeUser = ({currentUser}) => {
+export const WelcomeUser = ({ currentUser }) => {
   return (
     <>
-    {currentUser && (<h4>Welcome {currentUser.current_user.username}</h4>)}
+      {currentUser && (
+        <Typography component="div" variant="inherit">
+          Hi,{" "}
+          <b>
+            {currentUser.current_user.first_name ||
+              currentUser.current_user.username}
+          </b>
+        </Typography>
+      )}
     </>
   )
 }

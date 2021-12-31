@@ -1,6 +1,7 @@
 .reservations {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 button.to-disable {
@@ -12,11 +13,14 @@ button.not-to-disable {
   background-color: #006edc;
   color: white;
 }
+button.selected {
+  background-color: green;
+}
 
 .react-calendar {
   width: 350px;
   max-width: 100%;
-  background: white;
+  background: transparent;
   border: 1px solid #a0a096;
   line-height: 1.125em;
   margin: auto;
