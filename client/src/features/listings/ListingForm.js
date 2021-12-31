@@ -144,17 +144,17 @@ export const ListingForm = ({ currentUser }) => {
       </Stack>
     )
 
-  // const tileClassNameToAvailable = ({ date, view }) => {
-  //   if (view === "month") {
-  //     if (
-  //       formData.selectedDates.find(
-  //         (dDate) => dDate.toString() === date.toString()
-  //       )
-  //     ) {
-  //       return "available"
-  //     }
-  //   }
-  // }
+  const tileClassNameToAvailable = ({ date, view }) => {
+    if (view === "month") {
+      if (
+        formData.selectedDates.find(
+          (dDate) => dDate.toString() === date.toString()
+        )
+      ) {
+        return "available"
+      }
+    }
+  }
 
   const handleOnClickDay = (value, event) => {
     if (
@@ -268,7 +268,7 @@ export const ListingForm = ({ currentUser }) => {
               </Grid>
               <Grid item xs={12}>
                 <ListingAvailability
-                  // tileClassNameToAvailable={tileClassNameToAvailable}
+                  tileClassNameToAvailable={tileClassNameToAvailable}
                   handleOnClickDay={handleOnClickDay}
                 />
               </Grid>

@@ -4,6 +4,7 @@ import Calendar from "react-calendar"
 export const ListingAvailability = ({
   handleOnClickDay,
   availableDates,
+  tileClassNameToAvailable,
   tileClassNameToDisabled,
   tileClassNameToSelected,
 }) => {
@@ -19,11 +20,18 @@ export const ListingAvailability = ({
     }
   }
 
+  const handleTileClassNameToAvailable = ({date, view}) => {
+    if (tileClassNameToAvailable) {
+      return tileClassNameToAvailable({date, view})
+    } 
+  }
+
   return (
     <>
       <Calendar
         tileClassName={({ date, view }) => {
           return [
+            handleTileClassNameToAvailable({ date, view }),
             handleTileClassNameToDisabled({ date, view }),
             handleTileClassNameToSelected({ date, view }),
           ]
