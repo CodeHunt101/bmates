@@ -89,8 +89,8 @@ export const ListingForm = ({ currentUser }) => {
       )
         .then((resp) => resp.json())
         .then((submittedListing) => {
-          formData.selectedDates.forEach((selectedDate) => {
-            fetch("/api/v1/available_dates", {
+          const promises = formData.selectedDates.map((selectedDate) => {
+            return fetch("/api/v1/available_dates", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export const ListingForm = ({ currentUser }) => {
               }),
             })
           })
-          setSubmittedListing(submittedListing)
+        Promise.all(promises).then(()=>setSubmittedListing(submittedListing))
         })
     }
     path === "/listings/new" ? fetchListings("POST") : fetchListings("PATCH")

@@ -61,8 +61,8 @@ export const ReservationForm = ({ listing, currentUser }) => {
   const handleOnSubmit = (e) => {
     // POSTs each selected date to the server as a reservation date
     e.preventDefault()
-    formData.selectedDates.forEach((selectedDate) => {
-      fetch("/api/v1/reservations", {
+    const promises = formData.selectedDates.map((selectedDate) => {
+      return fetch("/api/v1/reservations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,8 +75,9 @@ export const ReservationForm = ({ listing, currentUser }) => {
             reservation_date: selectedDate,
           },
         }),
-      }).then(() => setCreatedReservations(true))
+      })
     })
+    Promise.all(promises).then(() => setCreatedReservations(true))
   }
 
   if (createdReservations) {
