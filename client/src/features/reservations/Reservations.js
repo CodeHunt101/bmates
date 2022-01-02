@@ -17,6 +17,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
 
   const { userId } = useParams()
   useEffect(() => {
+    // Updates reservation state on change of userId, logged user or change of reservation status
     (currentUser || userId) &&
       fetch(`/api/v1/users/${userId || currentUser.current_user.id}`)
         .then((resp) => resp.json())
@@ -28,7 +29,6 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
 
   const renderReservations = () => (
     <div className="reservations">
-      
         <Typography align="center" component="div" variant="inherit">
           <b>TO RECEIVE</b>
         </Typography>
@@ -42,8 +42,6 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
               />
             ))}
         </div>
-      
-      
         <Typography align="center" component="div" variant="inherit">
           <b>TO PROVIDE</b>
         </Typography>
@@ -53,7 +51,6 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
               <Reservation key={r.reservation.id} reservation={r} />
             ))}
         </div>
-      
     </div>
   )
   const theme = createTheme()

@@ -10,6 +10,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   })
 
   const tileClassNameToDisabled = ({ date, view }) => {
+    // Looks up through the available dates. If they match with a calendar date, the className of the day tile is set to not to disable.
     if (view === "month") {
       if (
         listing.available_dates.find(
@@ -24,6 +25,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   const tileClassNameToSelected = ({ date, view }) => {
+    // Looks up through the selected dates. If they match with a calendar date, the className of the day tile is set to selected. 
     if (view === "month") {
       if (
         formData.selectedDates.find(
@@ -36,6 +38,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   const handleOnClickDay = (value, event) => {
+    // If new selectedDate is already on the selectedDates state, it's removed from the state, otherwise it's appended.
     if (
       formData.selectedDates.find(
         (date) => date.toString() === value.toString()
@@ -56,6 +59,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   const handleOnSubmit = (e) => {
+    // POSTs each selected date to the server as a reservation date
     e.preventDefault()
     formData.selectedDates.forEach((selectedDate) => {
       fetch("/api/v1/reservations", {

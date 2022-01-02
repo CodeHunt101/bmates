@@ -22,6 +22,7 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
   const onPasswordChanged = (e) => setPassword(e.target.value)
 
   const handleOnSubmit = (e) => {
+    // Logs the user in
     e.preventDefault()
 
     fetch("/api/v1/login", {

@@ -3,11 +3,6 @@ class ApplicationController < ActionController::API
   before_action :user_is_authenticated
   # helper_method :current_user
 
-  def hello_world
-    session[:count] = (session[:count] || 0) + 1
-    render json: { count: session[:count] }
-  end
-
   # private
 
   def verified_user

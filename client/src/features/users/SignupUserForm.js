@@ -42,6 +42,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
     setPasswordConfirmation(e.target.value)
 
   const handleOnSubmit = (e) => {
+    // POSTs a new user and logs them in
     e.preventDefault()
     fetch("/api/v1/signup", {
       method: "POST",

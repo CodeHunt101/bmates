@@ -16,7 +16,8 @@ class Api::V1::ReservationsController < ApplicationController
         reservation: reservation}, 
         except: [:created_at, :updated_at]
     end
-    listing_chosen_date = reservation.listing.available_dates_not_reserved.where(available_date: reservation.reservation_date)
+    # After reservation is created, it changes the is_reserved field of the available date to true
+    listing_chosen_date = reservation.listing_available_date_not_reserved(reservation.reservation_date)
     listing_chosen_date.update(is_reserved: true)
   end
 
@@ -30,7 +31,8 @@ class Api::V1::ReservationsController < ApplicationController
         reservation: reservation}, 
         except: [:created_at, :updated_at]
     end
-    listing_chosen_date = reservation.listing.available_dates_reserved.where(available_date: reservation.reservation_date)
+    # After reservation is created, it changes the is_reserved field of the available date to false
+    listing_chosen_date = reservation.listing_available_date_reserved(reservation.reservation_date)
     listing_chosen_date.update(is_reserved: false)
   end
 

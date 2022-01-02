@@ -10,6 +10,7 @@ import { Link } from "@mui/material"
 
 export const Reservation = ({ reservation, handleCancellation }) => {
   const handleOnCancellationClick = () => {
+    // PATCHes and changes the status of a reservation to cancelled
     fetch(`/api/v1/reservations/${reservation.reservation.id}`, {
       method: "PATCH",
       headers: {
@@ -56,7 +57,7 @@ export const Reservation = ({ reservation, handleCancellation }) => {
             </Link>
           )}
 
-          <Link href={`listings/${reservation.listing_info.id}`}>
+          <Link href={`/listings/${reservation.listing_info.id}`}>
             <Typography component="div" variant="subtitle1">
               <b>{reservation.listing_info.title}</b>
             </Typography>

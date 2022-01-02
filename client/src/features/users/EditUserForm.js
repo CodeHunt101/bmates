@@ -70,9 +70,13 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     setPasswordChangeRequired(e.target.checked)
   }
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault()
+  const redirectToUserDetails = (userId) => history.push(`/users/${userId}`)
 
+  const handleOnSubmit = (e) => {
+    // PUTs the new user info through a FormData instance. The information can be send with or without new password
+    e.preventDefault()
+    
+    // Images can only be sent to the server through a FormData instance
     const newUserInfo = new FormData()
 
     const appendUserInfoWithoutPassword = () => {
@@ -93,7 +97,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
       newUserInfo.append("user[password_confirmation]",formData.passwordConfirmation)
       return newUserInfo
     }
-
+    // TODO: the if statemente has to be handled by the server
     if (
       passwordChangeRequired & (formData.password.length >= 6) &&
       formData.password.length <= 20 &&
@@ -104,7 +108,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         body: appendUserInfoWithPassword(),
       })
       .then(()=>handleUserSubmittedImage(true))
-      .then(() => history.push(`/users/${formData.id}`))
+      .then(() => redirectToUserDetails(formData.id))
     }
     if (!passwordChangeRequired) {
       fetch(`/api/v1/users/${formData.id}`, {
@@ -112,7 +116,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         body: appendUserInfoWithoutPassword(),
       })
       .then(()=>handleUserSubmittedImage(true))
-      .then(() => history.push(`/users/${formData.id}`))
+      .then(() => redirectToUserDetails(formData.id))
     }
   }
 

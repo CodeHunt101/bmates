@@ -34,6 +34,7 @@ export const ListingForm = ({ currentUser }) => {
   })
 
   useEffect(() => {
+    // Populates the form with the listing object provided from useLocation
     if (location && location.state) {
       const { listing } = location.state
       setFormData({
@@ -54,7 +55,7 @@ export const ListingForm = ({ currentUser }) => {
       [e.target.name]: e.target.value,
     })
 
-  const handleCheckBoxChange = (event, values) => {
+  const handleAutoCompleteChange = (event, values) => {
     const selectedTopics = values.map((value) => value.id.toString())
     setFormData({
       ...formData,
@@ -118,7 +119,8 @@ export const ListingForm = ({ currentUser }) => {
   }, [])
 
   const handleDefaultValues = (allTopicOptions) =>
-    allTopicOptions.filter((topic) =>
+    // Topics in state that matches all topic options, are automatically selected
+  allTopicOptions.filter((topic) =>
       formData.topics.includes(topic.id.toString())
     )
 
@@ -126,7 +128,7 @@ export const ListingForm = ({ currentUser }) => {
     allTopicOptions && (
       <Stack spacing={3} sx={{ minWidth: 240 }}>
         <Autocomplete
-          onChange={handleCheckBoxChange}
+          onChange={handleAutoCompleteChange}
           value={handleDefaultValues(allTopicOptions)}
           multiple
           id="tags-standard"
@@ -145,6 +147,7 @@ export const ListingForm = ({ currentUser }) => {
     )
 
   const tileClassNameToAvailable = ({ date, view }) => {
+    // Looks up through the selected dates. If they match with a calendar date, the className of the day tile is set to available.
     if (view === "month") {
       if (
         formData.selectedDates.find(
@@ -157,6 +160,7 @@ export const ListingForm = ({ currentUser }) => {
   }
 
   const handleOnClickDay = (value, event) => {
+    // If new selectedDate is already on the selectedDates state, it's removed from the state, otherwise it's appended.
     if (
       formData.selectedDates.find(
         (date) => date.toString() === value.toString()

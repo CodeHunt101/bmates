@@ -17,10 +17,6 @@ class Reservation < ApplicationRecord
     end
   end
 
-  # def self.with_listing_title
-  #   joins(:listing).select("reservations.*, listings.title AS listing_title")
-  # end
-
   def self.reservations_with_listing_provider_details
     all.map{|r| {
       reservation: r, 
@@ -44,5 +40,13 @@ class Reservation < ApplicationRecord
       user_provider_info: self.listing.user_provider,
       user_receiver_info: self.user_receiver
     }
+  end
+
+  def listing_available_date_reserved(date)
+    self.listing.available_dates_reserved.where(available_date: self.reservation_date)
+  end
+
+  def listing_available_date_not_reserved(date)
+    self.listing.available_dates_not_reserved.where(available_date: self.reservation_date)
   end
 end

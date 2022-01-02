@@ -17,6 +17,7 @@ export const ListingsList = ({ currentUser }) => {
   const { userId, listingId } = useParams()
 
   useEffect(() => {
+    // Depending on the current path, the listings state with fetch the date from a different server path
     path === "/listings" &&
       fetch("/api/v1/listings")
         .then((resp) => resp.json())

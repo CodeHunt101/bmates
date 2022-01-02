@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :received_reservations, through: :listings, source: :reservations
   has_many :made_reservations, foreign_key: :user_receiver_id, class_name: "Reservation"
 
+  #As a sender or receiver, it has many sent or received messages
   has_many :sent_messages, foreign_key: :sender_id, class_name: "Message"
   has_many :received_messages, foreign_key: :receiver_id, class_name: "Message"
 
