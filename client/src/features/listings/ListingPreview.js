@@ -18,10 +18,8 @@ export const ListingPreview = ({ listing }) => {
       sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <CardMedia onClick={handleOnClick}
-        
         component="img"
         sx={{
-          // 16:9
           pt: '10%',
           cursor: 'pointer'
         }}
@@ -40,7 +38,7 @@ export const ListingPreview = ({ listing }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={handleOnClick} size="medium">View Listing</Button>
+        <Button href={`/listings/${listing.listing.id}`} size="medium">View Listing</Button>
       </CardActions>
     </Card>
   </Grid>

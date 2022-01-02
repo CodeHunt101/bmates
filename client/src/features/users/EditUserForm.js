@@ -55,9 +55,6 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
       })
   }, [currentUser])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // useEffect(() => fetchCurrentUser(), [])
-
   const handleOnChange = (e) => {
     setFormData({
       ...formData,

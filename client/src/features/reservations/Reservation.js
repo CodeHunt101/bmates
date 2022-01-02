@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent"
 import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
 import Avatar from "@mui/material/Avatar"
+import { Link } from "@mui/material"
 
 export const Reservation = ({ reservation, handleCancellation }) => {
   const handleOnCancellationClick = () => {
@@ -22,7 +23,8 @@ export const Reservation = ({ reservation, handleCancellation }) => {
     }).then(() => handleCancellation(true))
   }
 
-  const reservationInfo = () => (
+  return (
+  <div className="reservation">
     <Card
       sx={{
         display: "flex",
@@ -36,27 +38,29 @@ export const Reservation = ({ reservation, handleCancellation }) => {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           {reservation.user_provider_info && (
-            <>
+            <Link href={`/users/${reservation.user_provider_info.id}`} underline='none'>
               <Avatar
                 sx={{ margin: "auto" }}
                 alt={reservation.user_provider_info.username}
                 src={`${reservation.user_provider_profile_pictture}`}
               />
-            </>
+            </Link>
           )}
           {reservation.user_receiver_info && (
-            <>
+            <Link href={`/users/${reservation.user_receiver_info.id}`} underline='none'>
               <Avatar
                 sx={{ margin: "auto" }}
                 alt={reservation.user_receiver_info.username}
                 src={`${reservation.user_receiver_profile_pictture}`}
               />
-            </>
+            </Link>
           )}
 
-          <Typography component="div" variant="subtitle1">
-            <b>{reservation.listing_info.title}</b>
-          </Typography>
+          <Link href={`listings/${reservation.listing_info.id}`}>
+            <Typography component="div" variant="subtitle1">
+              <b>{reservation.listing_info.title}</b>
+            </Typography>
+          </Link>
           <Typography
             sx={{ marginBottom: "5%" }}
             variant="subtitle2"
@@ -105,15 +109,6 @@ export const Reservation = ({ reservation, handleCancellation }) => {
                 <br />
               </>
             )}
-          {/* <IconButton aria-label="previous">
-            {theme.direction === 'rtl' ? <SkipNextIcon /> : <SkipPreviousIcon />}
-          </IconButton>
-          <IconButton aria-label="play/pause">
-            <PlayArrowIcon sx={{ height: 38, width: 38 }} />
-          </IconButton>
-          <IconButton aria-label="next">
-            {theme.direction === 'rtl' ? <SkipPreviousIcon /> : <SkipNextIcon />}
-          </IconButton> */}
         </Box>
       </Box>
       <CardMedia
@@ -123,7 +118,6 @@ export const Reservation = ({ reservation, handleCancellation }) => {
         alt="Reservation"
       />
     </Card>
+  </div>
   )
-
-  return <div className="reservation">{reservationInfo()}</div>
 }

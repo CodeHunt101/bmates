@@ -16,10 +16,9 @@ import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
-// import Badge from "@mui/material/Badge"
 
 const pagesWithoutCurrentUser = [
-  { name: "Home", href: "/" },
+  { name: <HomeRoundedIcon />, href: "/" },
   { name: "Login", href: "/login" },
   { name: "Signup", href: "/signup" },
   { name: "Add Listing", href: "/listings/new" },

@@ -3,47 +3,43 @@ import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
 import TextField from "@mui/material/TextField"
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
 import Link from "@mui/material/Link"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
-import LoginIcon from '@mui/icons-material/Login';
+import LoginIcon from "@mui/icons-material/Login"
 import Typography from "@mui/material/Typography"
-// import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { blue } from "@mui/material/colors"
 import Paper from "@mui/material/Paper"
 
 const theme = createTheme()
 
-export const LoginUserForm = ({fetchCurrentUser}) => {
+export const LoginUserForm = ({ fetchCurrentUser }) => {
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
 
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const onUsernameChanged = (e) => setUsername(e.target.value)
+  const onPasswordChanged = (e) => setPassword(e.target.value)
 
-  const onUsernameChanged = e => setUsername(e.target.value)
-  const onPasswordChanged = e => setPassword(e.target.value)
-  
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    
+
     fetch("/api/v1/login", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         username,
         password,
-      })
+      }),
     })
-    .then(resp => resp.json()).then(resp => console.log(resp.message))
-    .then(fetchCurrentUser)
+      .then((resp) => resp.json())
+      .then((resp) => console.log(resp.message))
+      .then(fetchCurrentUser)
   }
 
   return (
-    
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
@@ -96,13 +92,13 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
                 </Grid>
               </Grid>
               <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Log In
-                </Button>
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Log In
+              </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   <Link href="/signup" variant="body2">
@@ -112,7 +108,6 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
               </Grid>
             </Box>
           </Box>
-          
         </Grid>
         <Grid
           item
@@ -120,7 +115,8 @@ export const LoginUserForm = ({fetchCurrentUser}) => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random?friendship)",
+            backgroundImage:
+              "url(https://source.unsplash.com/random?friendship)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
