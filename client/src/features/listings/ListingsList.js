@@ -21,17 +21,29 @@ export const ListingsList = ({ currentUser }) => {
     path === "/listings" &&
       fetch("/api/v1/listings")
         .then((resp) => resp.json())
-        .then((resp) => setListings(resp.listings))
+        .then((resp) =>
+          setListings(
+            resp.listings.filter((listing) => listing.listing.is_active)
+          )
+        )
 
     path === "/my-listings" &&
       fetch(`/api/v1/current_user`)
         .then((resp) => resp.json())
-        .then((resp) => setListings(resp.listings))
+        .then((resp) =>
+          setListings(
+            resp.listings.filter((listing) => listing.listing.is_active)
+          )
+        )
 
     path === "/users/:userId/listings" &&
       fetch(`/api/v1/users/${userId}`)
         .then((resp) => resp.json())
-        .then((resp) => setListings(resp.listings))
+        .then((resp) =>
+          setListings(
+            resp.listings.filter((listing) => listing.listing.is_active)
+          )
+        )
   }, [currentUser, listingId, path, userId])
 
   const [page, setPage] = useState(1)
@@ -123,7 +135,10 @@ export const ListingsList = ({ currentUser }) => {
         </Container>
       </Grid>
       {/* Footer */}
-      <Box sx={{ bgcolor: "background.paper", margin: 1, p: 2 }} component="footer">
+      <Box
+        sx={{ bgcolor: "background.paper", margin: 1, p: 2 }}
+        component="footer"
+      >
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>

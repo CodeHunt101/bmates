@@ -5,6 +5,7 @@ class CreateListings < ActiveRecord::Migration[6.1]
       t.string :title
       t.text :description
       t.integer :user_provider_id
+      t.boolean :is_active, default: true
 
       t.timestamps
     end

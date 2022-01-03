@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2021_12_30_052826) do
     t.string "title"
     t.text "description"
     t.integer "user_provider_id"
+    t.boolean "is_active", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

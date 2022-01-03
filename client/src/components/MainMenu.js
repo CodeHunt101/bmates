@@ -71,6 +71,7 @@ export const MainMenu = ({
     // Goes to any navbar location onClick
     history.push(navEl.href)
     setAnchorElUser(null)
+    setAnchorElNav(null)
   }
 
   const renderMenuDropDownItem = (navEl) => (

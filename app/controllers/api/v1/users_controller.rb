@@ -30,7 +30,7 @@ class Api::V1::UsersController < ApplicationController
     render json: {
       user_info: user,
       profile_picture: user.image.url,
-      listings: user.listings.listings_with_user_provider_details_topics_and_available_dates,
+      listings: user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
       reservations: {
         received_reservations: user.received_reservations.reservations_with_listing_receiver_details,
         made_reservations: user.made_reservations.reservations_with_listing_provider_details
@@ -43,7 +43,7 @@ class Api::V1::UsersController < ApplicationController
       render json: {
         current_user: current_user,
         profile_picture_url: current_user.image.url,
-        listings: current_user.listings.listings_with_user_provider_details_topics_and_available_dates,
+        listings: current_user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
         reservations: {
           received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,
           made_reservations: current_user.made_reservations.reservations_with_listing_provider_details

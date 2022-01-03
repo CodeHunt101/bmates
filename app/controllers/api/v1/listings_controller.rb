@@ -1,7 +1,7 @@
 class Api::V1::ListingsController < ApplicationController
   
   def index
-    listings = Listing.listings_with_user_provider_details_topics_and_available_dates
+    listings = Listing.listings_with_user_provider_details_topics_available_dates_and_reservations
     render json: {
       listings: listings
       }, except: [:created_at, :updated_at, :password_digest, :user_provider]
@@ -21,7 +21,7 @@ class Api::V1::ListingsController < ApplicationController
   def show
     listing = Listing.find(params[:id])
     render json: {
-      listing: listing.listing_with_user_provider_details_topics_and_available_dates
+      listing: listing.listing_with_user_provider_details_topics_available_dates_and_reservations
     }, except: [:created_at, :updated_at, :user_provider_id]
   end
 
@@ -46,6 +46,7 @@ class Api::V1::ListingsController < ApplicationController
       :title,
       :description,
       :user_provider_id,
+      :is_active,
       topic_ids: [],
       date_ids: []
     )
