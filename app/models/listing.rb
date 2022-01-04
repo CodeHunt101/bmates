@@ -7,6 +7,8 @@ class Listing < ApplicationRecord
   has_many :messages
   has_many :reviews, through: :reservations
 
+  has_one_attached :image
+
   def self.listings_with_user_provider_details_topics_available_dates_and_reservations
     self.all.map{|l| {
       listing: l, 

@@ -17,6 +17,9 @@ import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import InputLabel from "@mui/material/InputLabel"
 import FormControl from "@mui/material/FormControl"
+import { Input } from "@mui/material"
+import { IconButton } from "@mui/material"
+import PhotoCamera from "@mui/icons-material/PhotoCamera"
 
 export const ListingForm = ({ currentUser }) => {
   const location = useLocation()
@@ -24,6 +27,7 @@ export const ListingForm = ({ currentUser }) => {
   const { listingId } = useParams()
 
   const [submittedListing, setSubmittedListing] = useState(null)
+  const [areAvailableDatesSubmitted, setAreAvailableDatesSubmitted] = useState(false)
 
   const [formData, setFormData] = useState({
     listingType: "",
@@ -32,6 +36,8 @@ export const ListingForm = ({ currentUser }) => {
     topics: [],
     selectedDates: [],
   })
+
+  const [attachedImage, setAttachedImage] = useState(null)
 
   useEffect(() => {
     // Populates the form with the listing object provided from useLocation
@@ -55,6 +61,10 @@ export const ListingForm = ({ currentUser }) => {
       [e.target.name]: e.target.value,
     })
 
+  const handleOnImageChange = (e) => {
+    setAttachedImage(e.target.files[0])
+  }
+
   const handleAutoCompleteChange = (event, values) => {
     const selectedTopics = values.map((value) => value.id.toString())
     setFormData({
@@ -66,7 +76,16 @@ export const ListingForm = ({ currentUser }) => {
   const handleOnSubmit = (e) => {
     // This creates a new listing and immediately appends available dates
     e.preventDefault()
+    
+    const newListingInfo = new FormData()
+    
+    const appendListingInfo = () => {
+      newListingInfo.append("listing[image]", attachedImage)
+      return newListingInfo
+    }
+    
     const fetchListings = (method) => {
+      // POSTs or PATCHes form without iterables (available dates)
       fetch(
         method === "POST"
           ? "/api/v1/listings"
@@ -89,6 +108,7 @@ export const ListingForm = ({ currentUser }) => {
       )
         .then((resp) => resp.json())
         .then((submittedListing) => {
+          // POSTs iterables
           const promises = formData.selectedDates.map((selectedDate) => {
             return fetch("/api/v1/available_dates", {
               method: "POST",
@@ -103,8 +123,20 @@ export const ListingForm = ({ currentUser }) => {
               }),
             })
           })
-        Promise.all(promises).then(()=>setSubmittedListing(submittedListing))
+        Promise.all(promises).then(()=>{
+          setSubmittedListing(submittedListing)
+          // PATCHes image (if any)
+          const promise = attachedImage && fetch(`/api/v1/listings/${submittedListing.listing.id}/update_image`,
+            {
+              method: 'PATCH',
+              body: appendListingInfo(),
+            }
+          )
+          // TODO: check if image is uploaded synchronously
+          Promise.resolve(promise).then(()=>setAreAvailableDatesSubmitted(true))
         })
+      })
+
     }
     path === "/listings/new" ? fetchListings("POST") : fetchListings("PATCH")
   }
@@ -180,7 +212,7 @@ export const ListingForm = ({ currentUser }) => {
     }
   }
 
-  if (submittedListing) {
+  if (submittedListing && areAvailableDatesSubmitted) {
     return (
       <Redirect
         push
@@ -268,6 +300,26 @@ export const ListingForm = ({ currentUser }) => {
                 />
               </Grid>
               <Grid item xs={12}>
+                <label htmlFor="icon-button-file">
+                  Listing picture
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    name="image"
+                    multiple
+                    onChange={handleOnImageChange}
+                  />
+                </label>
+              </Grid>
+              <Grid item xs={12}>
                 {renderTopics()}
               </Grid>
               <Grid item xs={12}>
@@ -291,3 +343,45 @@ export const ListingForm = ({ currentUser }) => {
     </Grid>
   )
 }
+
+
+// const fetchListings = (method) => {
+  // fetch(
+  //   method === "POST"
+  //     ? "/api/v1/listings"
+  //     : `/api/v1/listings/${listingId}`,
+  //   {
+  //     method: method,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       listing: {
+  //         listing_type: formData.listingType,
+  //         title: formData.title,
+  //         description: formData.description,
+  //         topic_ids: formData.topics,
+  //         user_provider_id: currentUser.current_user.id,
+  //       },
+  //     }),
+  //   }
+  // )
+//     .then((resp) => resp.json())
+//     .then((submittedListing) => {
+//       const promises = formData.selectedDates.map((selectedDate) => {
+//         return fetch("/api/v1/available_dates", {
+//           method: "POST",
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//           body: JSON.stringify({
+//             available_date: {
+//               available_date: selectedDate,
+//               listing_id: submittedListing.listing.id,
+//             },
+//           }),
+//         })
+//       })
+//     Promise.all(promises).then(()=>setSubmittedListing(submittedListing))
+//     })
+// }

@@ -38,6 +38,18 @@ class Api::V1::ListingsController < ApplicationController
     end
   end
 
+  def update_image
+    listing = Listing.find(params[:id])
+    listing.update(listing_params)
+    if listing.valid?
+      message = "Listing has been successfully updated"
+      render json: {
+        message: message, 
+        listing: listing}, 
+        except: [:created_at, :updated_at]
+    end
+  end
+
   private
 
   def listing_params
@@ -47,6 +59,7 @@ class Api::V1::ListingsController < ApplicationController
       :description,
       :user_provider_id,
       :is_active,
+      :image,
       topic_ids: [],
       date_ids: []
     )

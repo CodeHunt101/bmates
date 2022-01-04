@@ -26,6 +26,12 @@ export const ListingAvailability = ({
     } 
   }
 
+  const addDays = (days) => {
+    let result =  new Date()
+    result.setDate(result.getDate() + days)
+    return result
+  }
+
   return (
     <>
       <Calendar
@@ -37,7 +43,7 @@ export const ListingAvailability = ({
           ]
         }}
         onClickDay={handleOnClickDay}
-        minDate={new Date()}
+        minDate={addDays(1)}
       />
     </>
   )

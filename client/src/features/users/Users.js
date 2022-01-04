@@ -76,7 +76,6 @@ export const Users = () => {
               count={Math.ceil(users.length / 8)}
               page={page}
               onChange={handleOnPageChange}
-              variant="outlined"
               color="primary"
             />
           </Container>

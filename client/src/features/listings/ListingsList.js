@@ -50,12 +50,19 @@ export const ListingsList = ({ currentUser }) => {
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderListingsOnPage = (page = 1) => {
-    if (listings) {
+    if (listings && listings.length>0) {
       return listings
         .slice(page * 8 - 8, page * 8)
         .map((listing) => (
           <ListingPreview key={listing.listing.id} listing={listing} />
         ))
+    } else {
+      return <Typography
+        variant="h6"
+        align="center"
+      >
+        There are no listings to show!
+      </Typography>
     }
   }
 
@@ -84,7 +91,7 @@ export const ListingsList = ({ currentUser }) => {
       <CssBaseline />
       <Grid
         item
-        sx={{ mx: "auto" }}
+        sx={{ mx: "auto", minHeight: "75vh" }}
         xs={12}
         sm={8}
         md={10.1}
@@ -109,7 +116,7 @@ export const ListingsList = ({ currentUser }) => {
             Listings
           </Typography>
         </Box>
-        {listings && (
+        {listings && listings.length > 0 && (
           <Container
             sx={{ display: "flex", justifyContent: "center" }}
             maxWidth="md"
@@ -118,7 +125,6 @@ export const ListingsList = ({ currentUser }) => {
               count={Math.ceil(listings.length / 8)}
               page={page}
               onChange={handleOnPageChange}
-              variant="outlined"
               color="primary"
             />
           </Container>
