@@ -1,3 +1,11 @@
 div.menu {
   display: flex;
 }
+div.user-background {
+  background-image: url('../../images/background.png');
+  background-color: #e3f2fd;
+}
+
+div.MuiListItemAvatar-root div.MuiAvatar-circular {
+  background-color: rgba(25, 118, 210, 1);
+}

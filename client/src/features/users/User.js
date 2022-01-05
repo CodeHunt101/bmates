@@ -38,11 +38,11 @@ export const User = ({ user }) => {
         </Typography>
         <Typography>Name: {user.user_info.first_name}</Typography>
         <Typography>
-          {user.user_info.bio.split(" ").slice(0, 25).join(" ") + "..."}
+          {user.user_info.bio.split(" ").slice(0, 25).join(" ") + ".."}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="medium">View User Details</Button>
+        <Button href={`/users/${user.user_info.id}`} size="medium">View User Details</Button>
       </CardActions>
     </Card>
   )

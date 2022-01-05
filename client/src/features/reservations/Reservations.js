@@ -29,6 +29,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
 
   const renderReservations = () => (
     <div className="reservations">
+        <div>
         <Typography align="center" component="div" variant="inherit">
           <b>TO RECEIVE</b>
         </Typography>
@@ -42,6 +43,8 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
               />
             ))}
         </div>
+        </div>
+        <div>
         <Typography align="center" component="div" variant="inherit">
           <b>TO PROVIDE</b>
         </Typography>
@@ -50,6 +53,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
             reservations.received_reservations.map((r) => (
               <Reservation key={r.reservation.id} reservation={r} />
             ))}
+        </div>
         </div>
     </div>
   )

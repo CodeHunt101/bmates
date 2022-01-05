@@ -11,11 +11,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 
-export const ListingsList = ({ currentUser }) => {
+export const ListingsList = () => {
   const [listings, setListings] = useState(null)
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
-
   useEffect(() => {
     // Depending on the current path, the listings state with fetch the date from a different server path
     path === "/listings" &&
@@ -36,7 +35,7 @@ export const ListingsList = ({ currentUser }) => {
           )
         )
 
-    path === "/users/:userId/listings" &&
+    path.includes("/users/:userId") &&
       fetch(`/api/v1/users/${userId}`)
         .then((resp) => resp.json())
         .then((resp) =>
@@ -44,7 +43,7 @@ export const ListingsList = ({ currentUser }) => {
             resp.listings.filter((listing) => listing.listing.is_active)
           )
         )
-  }, [currentUser, listingId, path, userId])
+  }, [listingId, path, userId])
 
   const [page, setPage] = useState(1)
   const handleOnPageChange = (event, page) => setPage(page)
@@ -96,13 +95,13 @@ export const ListingsList = ({ currentUser }) => {
         sm={8}
         md={10.1}
         component={Paper}
-        elevation={6}
+        elevation={path !== "/users/:userId" ? 6:3}
         circle="true"
       >
         {/* Hero unit */}
         <Box
           sx={{
-            pt: 8,
+            pt: path !== "/users/:userId" ? 8:1,
             pb: 6,
           }}
         >
@@ -113,7 +112,7 @@ export const ListingsList = ({ currentUser }) => {
             color="text.primary"
             gutterBottom
           >
-            Listings
+            {path !== "/users/:userId" && "Listings"}
           </Typography>
         </Box>
         {listings && listings.length > 0 && (
@@ -140,25 +139,6 @@ export const ListingsList = ({ currentUser }) => {
           </Grid>
         </Container>
       </Grid>
-      {/* Footer */}
-      <Box
-        sx={{ bgcolor: "background.paper", margin: 1, p: 2 }}
-        component="footer"
-      >
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Some footer!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
     </ThemeProvider>
   )
 }
