@@ -24,7 +24,10 @@ export const Users = () => {
   const renderUsersOnPage = (page = 1) =>
     users
       .slice(page * 8 - 8, page * 8)
-      .map((user) => <User key={user.id} user={user} />)
+      .map((user) => (
+        <Grid item xs={12} sm={6} md={3}>
+          <User user={user} />
+        </Grid>))
 
   function Copyright(props) {
     return (

@@ -27,7 +27,8 @@ export const ListingForm = ({ currentUser }) => {
   const { listingId } = useParams()
 
   const [submittedListing, setSubmittedListing] = useState(null)
-  const [areAvailableDatesSubmitted, setAreAvailableDatesSubmitted] = useState(false)
+  const [areAvailableDatesSubmitted, setAreAvailableDatesSubmitted] =
+    useState(false)
 
   const [formData, setFormData] = useState({
     listingType: "",
@@ -76,14 +77,14 @@ export const ListingForm = ({ currentUser }) => {
   const handleOnSubmit = (e) => {
     // This creates a new listing and immediately appends available dates
     e.preventDefault()
-    
+
     const newListingInfo = new FormData()
-    
+
     const appendListingInfo = () => {
       newListingInfo.append("listing[image]", attachedImage)
       return newListingInfo
     }
-    
+
     const fetchListings = (method) => {
       // POSTs or PATCHes form without iterables (available dates)
       fetch(
@@ -123,20 +124,24 @@ export const ListingForm = ({ currentUser }) => {
               }),
             })
           })
-        Promise.all(promises).then(()=>{
-          setSubmittedListing(submittedListing)
-          // PATCHes image (if any)
-          const promise = attachedImage && fetch(`/api/v1/listings/${submittedListing.listing.id}/update_image`,
-            {
-              method: 'PATCH',
-              body: appendListingInfo(),
-            }
-          )
-          // TODO: check if image is uploaded synchronously
-          Promise.resolve(promise).then(()=>setAreAvailableDatesSubmitted(true))
+          Promise.all(promises).then(() => {
+            setSubmittedListing(submittedListing)
+            // PATCHes image (if any)
+            const promise =
+              attachedImage &&
+              fetch(
+                `/api/v1/listings/${submittedListing.listing.id}/update_image`,
+                {
+                  method: "PATCH",
+                  body: appendListingInfo(),
+                }
+              )
+            // TODO: check if image is uploaded synchronously
+            Promise.resolve(promise).then(() =>
+              setAreAvailableDatesSubmitted(true)
+            )
+          })
         })
-      })
-
     }
     path === "/listings/new" ? fetchListings("POST") : fetchListings("PATCH")
   }
@@ -152,7 +157,7 @@ export const ListingForm = ({ currentUser }) => {
 
   const handleDefaultValues = (allTopicOptions) =>
     // Topics in state that matches all topic options, are automatically selected
-  allTopicOptions.filter((topic) =>
+    allTopicOptions.filter((topic) =>
       formData.topics.includes(topic.id.toString())
     )
 
@@ -344,28 +349,27 @@ export const ListingForm = ({ currentUser }) => {
   )
 }
 
-
 // const fetchListings = (method) => {
-  // fetch(
-  //   method === "POST"
-  //     ? "/api/v1/listings"
-  //     : `/api/v1/listings/${listingId}`,
-  //   {
-  //     method: method,
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       listing: {
-  //         listing_type: formData.listingType,
-  //         title: formData.title,
-  //         description: formData.description,
-  //         topic_ids: formData.topics,
-  //         user_provider_id: currentUser.current_user.id,
-  //       },
-  //     }),
-  //   }
-  // )
+// fetch(
+//   method === "POST"
+//     ? "/api/v1/listings"
+//     : `/api/v1/listings/${listingId}`,
+//   {
+//     method: method,
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       listing: {
+//         listing_type: formData.listingType,
+//         title: formData.title,
+//         description: formData.description,
+//         topic_ids: formData.topics,
+//         user_provider_id: currentUser.current_user.id,
+//       },
+//     }),
+//   }
+// )
 //     .then((resp) => resp.json())
 //     .then((submittedListing) => {
 //       const promises = formData.selectedDates.map((selectedDate) => {

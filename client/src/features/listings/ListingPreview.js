@@ -32,12 +32,13 @@ export const ListingPreview = ({ listing }) => {
           <Typography gutterBottom variant="h5" component="h2">
             {listing.listing.title}
           </Typography>
+          {path !== "/my-listings" && (
           <Typography>
             By:{" "}
-            <Link to={`/users/${listing.user_provider_info.id}`}>
-              {listing.user_provider_info.username}
+            <Link to={`/users/${listing.user_info.id}`}>
+              {listing.user_info.username}
             </Link>
-          </Typography>
+          </Typography>)}
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button href={`/listings/${listing.listing.id}`} size="medium">
