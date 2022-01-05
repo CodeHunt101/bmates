@@ -138,7 +138,7 @@ harold_listing.available_dates_not_reserved.where(available_date: rand_available
 
 siri.made_reservations.each do |reservation|
   if reservation.reservation_date < Date.today
-    review = Review.create(message: 'excellent service', user:siri, reservation: reservation, rating: 5)
+    review = Review.create(message: 'excellent service', user:siri, reservation: reservation, rating: 4)
     reservation.update(status: "closed")
   end
 end
@@ -199,7 +199,7 @@ while i < 101 do
   rand_listing.available_dates_not_reserved.where(available_date: rand_available_date_from_rand_listing).update(is_reserved: true)
 
   if i%2==0 && reservation.reservation_date < Date.today
-    review = Review.create(message: Faker::Lorem.paragraph(sentence_count: 2), user:rand_user_receiver, reservation: reservation, rating: rand(0..5))
+    review = Review.create(message: Faker::Lorem.paragraph(sentence_count: 2), user:rand_user_receiver, reservation: reservation, rating: rand(1..5))
     reservation.update(status: "closed")
   end
   i+=1

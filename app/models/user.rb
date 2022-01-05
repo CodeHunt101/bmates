@@ -28,5 +28,18 @@ class User < ApplicationRecord
     }}
   end
 
- 
+  def average_rating
+    ratings = self.listings.map do |l|
+      l.reviews.map do |l|
+        l.rating
+      end
+    end.flatten
+
+    if ratings.size > 0
+      ((ratings.sum/ratings.size).to_f * 2).round/2.0
+    else
+      "No ratings given yet"
+    end
+    
+  end 
 end

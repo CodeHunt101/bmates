@@ -37,4 +37,9 @@ class Listing < ApplicationRecord
       reservations: self.reservations
     }
   end
+
+  def average_rating
+    ratings = self.ratings.map{|r| r.rating}
+    ((ratings.sum/ratings.size).to_f * 2).round/2.0
+  end
 end
