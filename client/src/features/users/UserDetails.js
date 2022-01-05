@@ -20,7 +20,7 @@ export const UserDetails = () => {
         user && (
           <>
         <div>
-          <img src={user.profile_picture} alt="profile" width="200px"></img>
+          <img src={user.user_profile_picture} alt="profile" width="200px"></img>
           <p>About <b>{user.user_info.username} | {user.user_info.gender === "F" ? <FemaleRoundedIcon fontSize="large"/> : <MaleRoundedIcon fontSize="large"/>}</b></p>
           <p>{user.user_info.first_name}</p>
           <p>{user.user_info.bio}</p>

@@ -29,7 +29,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.find(params[:id])
     render json: {
       user_info: user,
-      profile_picture: user.image.url,
+      user_profile_picture: user.image.url,
       listings: user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
       reservations: {
         received_reservations: user.received_reservations.reservations_with_listing_receiver_details,

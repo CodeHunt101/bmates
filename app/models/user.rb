@@ -24,7 +24,7 @@ class User < ApplicationRecord
   def self.users_with_pp
     all.map{|user| {
       user_info: user,
-      profile_picture: user.image.url
+      user_profile_picture: user.image.url
     }}
   end
 

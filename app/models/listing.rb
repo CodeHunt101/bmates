@@ -31,6 +31,7 @@ class Listing < ApplicationRecord
     {
       listing: self, 
       user_info:self.user_provider,
+      user_profile_picture: self.user_provider.image.url,
       topics: self.topics.select(:id,:name),
       available_dates: self.available_dates_not_reserved.select(:id, :available_date),
       reservations: self.reservations
