@@ -44,7 +44,16 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
+          square
+          className="login-signup"
+        >
           <Box
             sx={{
               my: 8,
@@ -116,8 +125,7 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?friendship)",
+            backgroundImage: "url(https://source.unsplash.com/random?friends)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"

@@ -238,6 +238,7 @@ export const ListingForm = ({ currentUser }) => {
         component={Paper}
         elevation={6}
         circle="true"
+        id="new-listing-paper"
       >
         <Box
           sx={{

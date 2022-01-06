@@ -10,28 +10,35 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const [reservations, setReservations] = useState([])
-  const [isReservationStatusChanged, setIsReservationStatusChanged] = useState(false)
+  const [isReservationStatusChanged, setIsReservationStatusChanged] =
+    useState(false)
 
   const handleStatusChange = (isStatusChanged) => {
     setIsReservationStatusChanged(isStatusChanged)
     setIsReservationStatusChanged(false)
   }
-  
+
+  const [isReservationReviewed, setIsReservationReviewed] = useState(false)
+  const handleReview = (isReservationReviewed) => {
+    setIsReservationReviewed(isReservationReviewed)
+    setIsReservationReviewed(false)
+  }
+
   const { userId } = useParams()
   useEffect(() => {
     // Updates reservation state on change of userId, logged user or change of reservation status
-    (currentUser || userId) &&
+    ;(currentUser || userId) &&
       fetch(`/api/v1/users/${userId || currentUser.current_user.id}`)
         .then((resp) => resp.json())
         .then((resp) => setReservations(resp.reservations))
-  }, [userId, currentUser, isReservationStatusChanged])
+  }, [userId, currentUser, isReservationStatusChanged, isReservationReviewed])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchCurrentUser && fetchCurrentUser(), [])
 
   const renderReservations = () => (
     <div className="reservations">
-        <div>
+      <div>
         <Typography align="center" component="div" variant="inherit">
           <b>TO RECEIVE</b>
         </Typography>
@@ -42,25 +49,26 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
                 key={r.reservation.id}
                 reservation={r}
                 handleStatusChange={handleStatusChange}
+                handleReview={handleReview}
               />
             ))}
         </div>
-        </div>
-        <div>
+      </div>
+      <div>
         <Typography align="center" component="div" variant="inherit">
           <b>TO PROVIDE</b>
         </Typography>
         <div>
           {reservations.received_reservations &&
             reservations.received_reservations.map((r) => (
-              <Reservation 
-                key={r.reservation.id} 
-                reservation={r} 
+              <Reservation
+                key={r.reservation.id}
+                reservation={r}
                 handleStatusChange={handleStatusChange}
               />
             ))}
         </div>
-        </div>
+      </div>
     </div>
   )
   const theme = createTheme()

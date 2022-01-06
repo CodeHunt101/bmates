@@ -1,4 +1,4 @@
-class ReviewsController < ApplicationController
+class Api::V1::ReviewsController < ApplicationController
   
   def create
     review = Review.create(review_params)
@@ -16,7 +16,7 @@ class ReviewsController < ApplicationController
   def review_params
     params.require(:review).permit(
       :user_id,
-      :listing_id,
+      :reservation_id,
       :message,
       :rating,
     )

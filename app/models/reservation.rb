@@ -22,6 +22,7 @@ class Reservation < ApplicationRecord
       reservation: r, 
       listing_info: r.listing, 
       user_provider_info: r.listing.user_provider,
+      review: r.review,
       }}
   end
 
@@ -29,7 +30,8 @@ class Reservation < ApplicationRecord
     all.map{|r| {
       reservation: r, 
       listing_info: r.listing, 
-      user_receiver_info: r.user_receiver
+      user_receiver_info: r.user_receiver,
+      review: r.review
       }}
   end
 
