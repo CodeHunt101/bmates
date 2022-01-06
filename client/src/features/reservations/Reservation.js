@@ -8,8 +8,8 @@ import Typography from "@mui/material/Typography"
 import Avatar from "@mui/material/Avatar"
 import { Link } from "@mui/material"
 
-export const Reservation = ({ reservation, handleCancellation }) => {
-  const handleOnCancellationClick = () => {
+export const Reservation = ({ reservation, handleStatusChange }) => {
+  const handleOnStatusChangeClick = (newStatus) => {
     // PATCHes and changes the status of a reservation to cancelled
     fetch(`/api/v1/reservations/${reservation.reservation.id}`, {
       method: "PATCH",
@@ -18,10 +18,10 @@ export const Reservation = ({ reservation, handleCancellation }) => {
       },
       body: JSON.stringify({
         reservation: {
-          status: "cancelled",
+          status: newStatus,
         },
       }),
-    }).then(() => handleCancellation(true))
+    }).then(() => handleStatusChange(true))
   }
 
   return (
@@ -70,12 +70,12 @@ export const Reservation = ({ reservation, handleCancellation }) => {
           >
             {reservation.user_provider_info && (
               <>
-                From: <b>{reservation.user_provider_info.username}</b>
+                From: <Link href={`/users/${reservation.user_provider_info.id}`}><b>{reservation.user_provider_info.username}</b></Link>
               </>
             )}
             {reservation.user_receiver_info && (
               <>
-                To: <b>{reservation.user_receiver_info.username}</b>
+                To: <Link href={`/users/${reservation.user_receiver_info.id}`}><b>{reservation.user_receiver_info.username}</b></Link>
               </>
             )}
           </Typography>
@@ -101,11 +101,23 @@ export const Reservation = ({ reservation, handleCancellation }) => {
         </CardContent>
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           {reservation.user_provider_info &&
-            reservation.reservation.status !== "closed" &&
-            reservation.reservation.status !== "cancelled" && (
+            (reservation.reservation.status === "pending" ||
+            reservation.reservation.status === "accepted") && (
               <>
-                <Button onClick={handleOnCancellationClick}>
+                <Button onClick={()=>handleOnStatusChangeClick('cancelled')}>
                   Cancel Reservation
+                </Button>
+                <br />
+              </>
+            )}
+          {reservation.user_receiver_info &&
+            reservation.reservation.status === "pending" && (
+              <>
+                <Button onClick={()=>handleOnStatusChangeClick('accepted')}>
+                  Accept
+                </Button>
+                <Button onClick={()=>handleOnStatusChangeClick('declined')}>
+                  Decline
                 </Button>
                 <br />
               </>

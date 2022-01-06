@@ -204,3 +204,5 @@ while i < 101 do
   end
   i+=1
 end
+
+Reservation.all.filter{|r| r.reservation_date < Date.today && r.status=="pending"}.each{|r| r.update(status: "expired")}

@@ -10,11 +10,13 @@ import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const [reservations, setReservations] = useState([])
-  const [isReservationCancelled, setIsReservationCancelled] = useState(false)
+  const [isReservationStatusChanged, setIsReservationStatusChanged] = useState(false)
 
-  const handleCancellation = (isCancelled) =>
-    setIsReservationCancelled(isCancelled)
-
+  const handleStatusChange = (isStatusChanged) => {
+    setIsReservationStatusChanged(isStatusChanged)
+    setIsReservationStatusChanged(false)
+  }
+  
   const { userId } = useParams()
   useEffect(() => {
     // Updates reservation state on change of userId, logged user or change of reservation status
@@ -22,7 +24,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
       fetch(`/api/v1/users/${userId || currentUser.current_user.id}`)
         .then((resp) => resp.json())
         .then((resp) => setReservations(resp.reservations))
-  }, [userId, currentUser, isReservationCancelled])
+  }, [userId, currentUser, isReservationStatusChanged])
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => fetchCurrentUser && fetchCurrentUser(), [])
@@ -39,7 +41,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
               <Reservation
                 key={r.reservation.id}
                 reservation={r}
-                handleCancellation={handleCancellation}
+                handleStatusChange={handleStatusChange}
               />
             ))}
         </div>
@@ -51,7 +53,11 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
         <div>
           {reservations.received_reservations &&
             reservations.received_reservations.map((r) => (
-              <Reservation key={r.reservation.id} reservation={r} />
+              <Reservation 
+                key={r.reservation.id} 
+                reservation={r} 
+                handleStatusChange={handleStatusChange}
+              />
             ))}
         </div>
         </div>
