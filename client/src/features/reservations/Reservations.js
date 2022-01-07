@@ -79,7 +79,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
         item
         sx={{ mx: "auto" }}
         xs={12}
-        sm={8}
+        sm={10}
         md={9}
         component={Paper}
         elevation={6}

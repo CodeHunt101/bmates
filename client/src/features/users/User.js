@@ -20,10 +20,10 @@ export const User = ({ user }) => {
         }}
         height="300px"
         image={
-          user.user_profile_picture ||
+          user.user_profile_picture === null?
           `https://source.unsplash.com/random?${
             user.user_info?.gender === "F" ? "female" : "male"
-          }`
+          }`: user.user_profile_picture
         }
         alt="listingImage"
       />

@@ -71,8 +71,10 @@ export const UserDetails = () => {
     user && (
       <Grid
         container
+        position="absolute"
         spacing={2}
         component="main"
+        id="user-details-layout"
         sx={{ minHeight: "100vh", backgroundColor: "#f9f9f9" }}
       >
         <Grid item sx={{ mx: "auto" }} xs={12} elevation={3} circle="true">

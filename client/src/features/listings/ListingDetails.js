@@ -20,13 +20,13 @@ export const ListingDetails = ({currentUser}) => {
   
   const renderListingDetails = () => (
     (
-      <Grid container spacing={2} component="main" sx={{ minHeight:"100vh", backgroundColor: '#f9f9f9' }}>
-        <Grid container sx={{ mx: "auto", display:'flex', justifyContent:'space-evenly' }} xs={10} 
-            elevation={3} circle="true">
+      <Grid container position="absolute" spacing={2} component="main" sx={{ display: 'flex', justifyContent: 'center', minHeight:"100vh", backgroundColor: '#f9f9f9' }}>
+        {/* <Grid item sx={{ mx: "auto", display:'flex', justifyContent:'space-evenly' }} xs={10} */}
+            {/* elevation={3} circle="true"> */}
           <Grid
             item
             xs={12}
-            sm={8}
+            sm={6}
             md={7}
           >
             <Box
@@ -78,13 +78,14 @@ export const ListingDetails = ({currentUser}) => {
               >
                 
                 {/* TODO: render the Gallery images here with some iteration*/}
+                {console.log(listing.listing_image)}
                 <CardMedia
                   component="img"
                   sx={{
                     cursor: "pointer",
                   }}
                   height="300px"
-                  image="https://source.unsplash.com/random"
+                  image={listing.listing_image === null ? "https://source.unsplash.com/random" : listing.listing_image}
                   alt="listingImage"
                 />
               </Box>
@@ -102,13 +103,13 @@ export const ListingDetails = ({currentUser}) => {
           <Grid
             item
             xs={12}
-            sm={4}
+            sm={6}
             md={3}
             // sx={{ mx: "auto" }}
           >
             <Box
               sx={{
-                my: 8,
+                my: 6,
                 mx: 2,
                 alignItems: "center",
               }}>
@@ -118,7 +119,7 @@ export const ListingDetails = ({currentUser}) => {
               <User user={listing}/>
             </Box>
           </Grid>
-        </Grid>
+        {/* </Grid> */}
       </Grid>
     )
   )

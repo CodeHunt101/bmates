@@ -11,7 +11,8 @@ class Listing < ApplicationRecord
 
   def self.listings_with_user_provider_details_topics_available_dates_and_reservations
     self.all.map{|l| {
-      listing: l, 
+      listing: l,
+      listing_image: l.image.url,
       user_info:l.user_provider,
       topics: l.topics.select(:id,:name),
       available_dates: l.available_dates_not_reserved.select(:id, :available_date),
@@ -29,7 +30,8 @@ class Listing < ApplicationRecord
 
   def listing_with_user_provider_details_topics_available_dates_and_reservations
     {
-      listing: self, 
+      listing: self,
+      listing_image: self.image.url,
       user_info:self.user_provider,
       user_profile_picture: self.user_provider.image.url,
       topics: self.topics.select(:id,:name),
