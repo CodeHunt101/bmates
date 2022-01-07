@@ -27,6 +27,8 @@ class Api::V1::UsersController < ApplicationController
 
   def show
     user = User.find(params[:id])
+    user.made_reservations.each {|r| r.update_status}
+    user.received_reservations.each {|r| r.update_status}
     render json: {
       user_info: user,
       user_profile_picture: user.image.url,

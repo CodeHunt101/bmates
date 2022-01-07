@@ -51,4 +51,16 @@ class Reservation < ApplicationRecord
   def listing_available_date_not_reserved(date)
     self.listing.available_dates_not_reserved.where(available_date: self.reservation_date)
   end
+
+  def update_status
+    if self.reservation_date < Date.today && ['pending', 'accepted'].include?(self.status)
+      current_status = self.status
+      statusOptions = {
+        pending: 'expired',
+        accepted: 'closed'
+      }
+      updated_status = statusOptions[current_status.to_sym]
+      self.update(status: updated_status)
+    end
+  end
 end
