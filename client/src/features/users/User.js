@@ -22,27 +22,27 @@ export const User = ({ user }) => {
         image={
           user.user_profile_picture ||
           `https://source.unsplash.com/random?${
-            user.user_info.gender === "F" ? "female" : "male"
+            user.user_info?.gender === "F" ? "female" : "male"
           }`
         }
         alt="listingImage"
       />
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
-          {user.user_info.username} |{" "}
-          {user.user_info.gender === "F" ? (
+          {user.user_info?.username} |{" "}
+          {user.user_info?.gender === "F" ? (
             <FemaleRoundedIcon fontSize="large" />
           ) : (
             <MaleRoundedIcon fontSize="large" />
           )}
         </Typography>
-        <Typography>Name: {user.user_info.first_name}</Typography>
+        <Typography>Name: {user.user_info?.first_name}</Typography>
         <Typography>
-          {user.user_info.bio.split(" ").slice(0, 25).join(" ") + ".."}
+          {user.user_info?.bio.split(" ").slice(0, 25).join(" ") + ".."}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button href={`/users/${user.user_info.id}`} size="medium">View User Details</Button>
+        <Button href={`/users/${user.user_info?.id}`} size="medium">View User Details</Button>
       </CardActions>
     </Card>
   )

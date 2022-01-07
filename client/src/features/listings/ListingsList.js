@@ -11,7 +11,7 @@ import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 
 export const ListingsList = () => {
-  const [listings, setListings] = useState(null)
+  const [listings, setListings] = useState([])
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
   useEffect(() => {
@@ -48,7 +48,7 @@ export const ListingsList = () => {
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderListingsOnPage = (page = 1) => {
-    if (listings && listings.length>0) {
+    if (listings.length>0) {
       return listings
         .slice(page * 8 - 8, page * 8)
         .map((listing) => (
@@ -96,7 +96,7 @@ export const ListingsList = () => {
             {path !== "/users/:userId" && "Listings"}
           </Typography>
         </Box>
-        {listings && listings.length > 0 && (
+        {listings.length > 0 && (
           <Container
             sx={{ display: "flex", justifyContent: "center" }}
             maxWidth="md"

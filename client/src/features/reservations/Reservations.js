@@ -9,7 +9,7 @@ import Paper from "@mui/material/Paper"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
-  const [reservations, setReservations] = useState([])
+  const [reservations, setReservations] = useState({made_reservations: [], received_reservations: []})
   const [isReservationStatusChanged, setIsReservationStatusChanged] =
     useState(false)
 
@@ -43,7 +43,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
           <b>TO RECEIVE</b>
         </Typography>
         <div>
-          {reservations.made_reservations &&
+          {
             reservations.made_reservations.map((r) => (
               <Reservation
                 key={r.reservation.id}
@@ -59,7 +59,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
           <b>TO PROVIDE</b>
         </Typography>
         <div>
-          {reservations.received_reservations &&
+          {
             reservations.received_reservations.map((r) => (
               <Reservation
                 key={r.reservation.id}

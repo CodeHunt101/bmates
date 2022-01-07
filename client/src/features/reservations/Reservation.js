@@ -125,8 +125,7 @@ export const Reservation = ({
           </CardContent>
           <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
             {reservation.user_provider_info &&
-              (reservation.reservation.status === "pending" ||
-                reservation.reservation.status === "accepted") && (
+              ['pending', 'accepted'].includes(reservation.reservation.status) && (
                 <>
                   <Button
                     onClick={() => handleOnStatusChangeClick("cancelled")}
