@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react"
+import { MessageForm } from '../messages/MessageForm'
 import { useParams } from "react-router"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
-import { Grid, Box, Typography } from "@mui/material"
+import { Grid, Box, Typography, FormControl, Button, TextField } from "@mui/material"
 import { ListingsList } from "../listings/ListingsList"
-import Paper from "@mui/material/Paper"
 import Avatar from "@mui/material/Avatar"
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -14,6 +14,8 @@ import Divider from '@mui/material/Divider';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
+import Paper from "@mui/material/Paper"
+
 
 function InsetDividers({user}) {
   return (
@@ -117,13 +119,18 @@ export const UserDetails = () => {
           </Box>
         </Grid>
         <Grid
-          item
-          sx={{ mx: "auto", display: "flex", justifyContent: "space-evenly" }}
-          xs={10}
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            minWidth: "100vw",
+            backgroundColor: "#f9f9f9",
+          }}
           elevation={3}
           circle="true"
+          component="main"
         >
-          <Grid item xs={12} sm={8} md={7}>
+          <Grid item xs={12} sm={6} md={7}>
             <Box
               sx={{
                 my: 1,
@@ -181,20 +188,28 @@ export const UserDetails = () => {
               </Box>
             </Box>
           </Grid>
-          <Grid item xs={12} sm={4} md={3}>
+          <Grid item xs={12} sm={6} md={3}>
             <Box
               sx={{
-                my: 8,
+                my: 1,
                 mx: 2,
                 alignItems: "center",
               }}
             >
-              GET IN TOUCH (Coming soon)
+              <Typography
+                component="h2"
+                variant="subtitle1"
+                sx={{ fontSize: 24, color: "#334e6f" }}
+                gutterBottom
+              >
+                <b>Get in touch</b>
+              </Typography>
+              {<MessageForm userReceiverId={userId}/>}
             </Box>
           </Grid>
         </Grid>
 
-        <Grid item sx={{ mx: "auto" }} xs={10} elevation={3} circle="true">
+        <Grid item sx={{ mx: "auto" }} xs={12} elevation={3} circle="true">
           <Typography
             component="h2"
             variant="subtitle1"

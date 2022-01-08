@@ -1,7 +1,9 @@
-class MessagesController < ApplicationController
+class Api::V1::MessagesController < ApplicationController
   
   def create
     message = Message.create(message_params)
+    message.update(sender:current_user)
+    
     if message.valid?
       render json: {
         resp: "Message has been sucessfully created",
@@ -12,12 +14,11 @@ class MessagesController < ApplicationController
 
   private
   
-  def messsage_params
+  def message_params
     params.require(:message).permit(
-      :sender_id,
       :receiver_id,
       :listing_id,
-      :content_id
+      :content
     )
   end
 end

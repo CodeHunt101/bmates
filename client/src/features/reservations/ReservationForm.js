@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { ListingAvailability } from "../listings/ListingAvailability"
 import { getFullDate } from "../../helper_functions"
 import { Redirect } from "react-router"
-import { Button } from "@mui/material"
+import { Button, FormControl, Box } from "@mui/material"
 
 export const ReservationForm = ({ listing, currentUser }) => {
   const [createdReservations, setCreatedReservations] = useState(false)
@@ -91,17 +91,23 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   return (
-    <form onSubmit={handleOnSubmit}>
-      <ListingAvailability
-        availableDates={listing.available_dates}
-        tileClassNameToDisabled={tileClassNameToDisabled}
-        handleOnClickDay={handleOnClickDay}
-        tileClassNameToSelected={tileClassNameToSelected}
-      />
-      <Button type="submit"
-              
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}>Submit</Button>
-    </form>
+    <Box
+      component="form"
+      noValidate
+      onSubmit={handleOnSubmit}
+    >
+      <FormControl sx={{width: '-webkit-fill-available'}}>
+        <ListingAvailability
+          availableDates={listing.available_dates}
+          tileClassNameToDisabled={tileClassNameToDisabled}
+          handleOnClickDay={handleOnClickDay}
+          tileClassNameToSelected={tileClassNameToSelected}
+        />
+        <Button 
+          type="submit"
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}>Submit</Button>
+      </FormControl>
+    </Box>
   )
 }

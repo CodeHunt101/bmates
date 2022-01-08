@@ -93,7 +93,7 @@ export const MainMenu = ({
   )
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky" sx={{minWidth: '100vw'}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
