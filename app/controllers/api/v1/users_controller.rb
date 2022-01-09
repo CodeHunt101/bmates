@@ -68,6 +68,7 @@ class Api::V1::UsersController < ApplicationController
       :last_name,
       :gender,
       :bio,
+      :dob,
       :username,
       :email,
       :image,

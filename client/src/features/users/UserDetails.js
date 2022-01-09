@@ -12,10 +12,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Divider from '@mui/material/Divider';
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
+import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import Paper from "@mui/material/Paper"
 import { AverageRating } from "../reviews/AverageRating"
+import { calculateAge } from "../../helper_functions"
 
 
 function InsetDividers({user}) {
@@ -41,10 +42,10 @@ function InsetDividers({user}) {
       <ListItem>
         <ListItemAvatar>
           <Avatar>
-            <NumbersRoundedIcon />
+            <CakeOutlinedIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="AGE" secondary="is my age" />
+        <ListItemText primary={calculateAge(new Date(user.user_info.dob))} secondary="is my age" />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>

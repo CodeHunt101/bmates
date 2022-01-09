@@ -20,6 +20,9 @@ import Checkbox from "@mui/material/Checkbox"
 import Input from "@mui/material/Input"
 import IconButton from "@mui/material/IconButton"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
 
 export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
   const history = useHistory()
@@ -29,11 +32,13 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     firstName: "",
     lastName: "",
     gender: "",
+    dob: new Date(),
     bio: "",
     username: "",
     email: "",
     password: "",
     passwordConfirmation: "",
+    
   })
 
   const [attachedImage, setAttachedImage] = useState(null)
@@ -47,6 +52,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         firstName: currentUser.current_user.first_name,
         lastName: currentUser.current_user.last_name,
         gender: currentUser.current_user.gender,
+        dob: currentUser.current_user.dob,
         bio: currentUser.current_user.bio,
         username: currentUser.current_user.username,
         email: currentUser.current_user.email,
@@ -59,6 +65,13 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleOnDobChange = (value) => {
+    setFormData({
+      ...formData,
+      dob: new Date(value.setHours(0,0,0,0)),
     })
   }
 
@@ -84,6 +97,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
       newUserInfo.append("user[first_name]", formData.firstName)
       newUserInfo.append("user[last_name]", formData.lastName)
       newUserInfo.append("user[gender]", formData.gender)
+      newUserInfo.append("user[dob]", formData.dob)
       newUserInfo.append("user[bio]", formData.bio)
       newUserInfo.append("user[username]", formData.username)
       newUserInfo.append("user[email]", formData.email)
@@ -206,6 +220,20 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   </Select>
                 </FormControl>
               </Grid>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  disableFuture
+                  label="DOB dd/mm/yyyy"
+                  openTo="year"
+                  views={['year', 'month', 'day']}
+                  value={formData.dob}
+                  // onChange={(newValue) => {
+                  //   setValue(newValue);
+                  // }}
+                  onChange={handleOnDobChange}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
               <Grid item xs={12}>
                 <TextField
                   name="bio"
