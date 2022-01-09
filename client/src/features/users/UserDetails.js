@@ -3,7 +3,7 @@ import { MessageForm } from '../messages/MessageForm'
 import { useParams } from "react-router"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
-import { Grid, Box, Typography, FormControl, Button, TextField } from "@mui/material"
+import { Grid, Box, Typography } from "@mui/material"
 import { ListingsList } from "../listings/ListingsList"
 import Avatar from "@mui/material/Avatar"
 import List from '@mui/material/List';
@@ -15,6 +15,7 @@ import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import Paper from "@mui/material/Paper"
+import { AverageRating } from "../reviews/AverageRating"
 
 
 function InsetDividers({user}) {
@@ -116,6 +117,11 @@ export const UserDetails = () => {
               alt="profile"
               sx={{ margin: "auto", width: 300, height: 300 }}
             ></Avatar>
+            <Box component={Paper} sx={{width: "fit-content", ml: "auto", mr: "auto", pt:1, mt:2}}>
+              <Typography>
+                <AverageRating user={user}/>
+              </Typography>
+            </Box>
           </Box>
         </Grid>
         <Grid

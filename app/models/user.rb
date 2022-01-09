@@ -36,9 +36,9 @@ class User < ApplicationRecord
     end.flatten
 
     if ratings.size > 0
-      ((ratings.sum/ratings.size).to_f * 2).round/2.0
+      ((ratings.sum.to_f/ratings.size) * 2).round/2.0
     else
-      "No ratings given yet"
+      nil
     end
     
   end 

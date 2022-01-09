@@ -13,6 +13,7 @@ class Listing < ApplicationRecord
     self.all.map{|l| {
       listing: l,
       listing_image: l.image.url,
+      listing_average_rating: l.average_rating,
       user_info:l.user_provider,
       topics: l.topics.select(:id,:name),
       available_dates: l.available_dates_not_reserved.select(:id, :available_date),
@@ -32,6 +33,7 @@ class Listing < ApplicationRecord
     {
       listing: self,
       listing_image: self.image.url,
+      listing_average_rating: self.average_rating,
       user_info:self.user_provider,
       user_profile_picture: self.user_provider.image.url,
       topics: self.topics.select(:id,:name),
@@ -41,7 +43,9 @@ class Listing < ApplicationRecord
   end
 
   def average_rating
-    ratings = self.ratings.map{|r| r.rating}
-    ((ratings.sum/ratings.size).to_f * 2).round/2.0
+    if self.reviews.count > 0
+      ratings = self.reviews.map{|r| r.rating}
+      ((ratings.sum.to_f/ratings.size)*2).round/2.0
+    end
   end
 end

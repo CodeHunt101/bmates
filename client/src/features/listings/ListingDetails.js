@@ -1,3 +1,9 @@
+import React, { useState, useEffect } from "react"
+import { Link, useParams } from "react-router-dom"
+import { ReservationForm } from "../reservations/ReservationForm"
+import { MessageForm } from "../messages/MessageForm"
+import { User } from "../users/User"
+import { AverageRating } from '../reviews/AverageRating'
 import {
   Grid,
   Paper,
@@ -6,16 +12,17 @@ import {
   CardMedia,
   Chip,
   IconButton,
+  Rating
 } from "@mui/material"
-import React, { useState, useEffect } from "react"
-import { Link, useParams } from "react-router-dom"
-import { ReservationForm } from "../reservations/ReservationForm"
-import { MessageForm } from "../messages/MessageForm"
 import EditRoundedIcon from "@mui/icons-material/Edit"
-import { User } from "../users/User"
+
+import FavoriteIcon from "@mui/icons-material/Favorite"
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 
 export const ListingDetails = ({ currentUser }) => {
-  const [listing, setListing] = useState({})
+  const [listing, setListing] = useState({
+    listing_average_rating: null
+  })
 
   const { listingId } = useParams()
 
@@ -66,6 +73,7 @@ export const ListingDetails = ({ currentUser }) => {
                 gutterBottom
               >
                 <b>{listing.listing?.title}</b>{" "}
+                <AverageRating listing={listing}/>
               </Typography>
               <Link
                 to={{

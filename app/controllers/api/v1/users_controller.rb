@@ -31,6 +31,7 @@ class Api::V1::UsersController < ApplicationController
     user.received_reservations.each {|r| r.update_status}
     render json: {
       user_info: user,
+      user_average_rating: user.average_rating,
       user_profile_picture: user.image.url,
       listings: user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
       reservations: {
