@@ -14,6 +14,7 @@ export const ListingsList = () => {
   const [listings, setListings] = useState([])
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
+  
   useEffect(() => {
     // Depending on the current path, the listings state with fetch the date from a different server path
     path === "/listings" &&

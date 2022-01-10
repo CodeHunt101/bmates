@@ -120,7 +120,7 @@ export const UserDetails = () => {
             ></Avatar>
             <Box component={Paper} sx={{width: "fit-content", ml: "auto", mr: "auto", pt:1, mt:2}}>
               <Typography>
-                <AverageRating user={user}/>
+                <AverageRating user={user} size="large"/>
               </Typography>
             </Box>
           </Box>

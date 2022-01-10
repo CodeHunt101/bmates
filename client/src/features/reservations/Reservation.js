@@ -7,7 +7,7 @@ import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
 import Avatar from "@mui/material/Avatar"
 import { Link } from "@mui/material"
-import { ReviewReservation } from "./ReviewReservation"
+import { ReviewReservation } from "../reviews/ReviewReservation"
 
 export const Reservation = ({
   reservation,

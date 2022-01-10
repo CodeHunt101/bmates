@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useHistory } from "react-router-dom"
+import { Link, useHistory, useRouteMatch, useParams } from "react-router-dom"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
 import CardActions from "@mui/material/CardActions"
@@ -8,12 +8,14 @@ import CardMedia from "@mui/material/CardMedia"
 import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
 import { DeactivateListing } from "./DeactivateListing"
+import { AverageRating } from "../reviews/AverageRating"
 
 export const ListingPreview = ({ listing }) => {
   const history = useHistory()
-  const path = history.location.pathname
+  const { url, path } = useRouteMatch()
+  const {userId} = useParams()
   const handleOnClick = () => history.push(`/listings/${listing.listing.id}`)
-
+  
   return (
     <Grid item xs={12} sm={6} md={3}>
       <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
@@ -25,14 +27,19 @@ export const ListingPreview = ({ listing }) => {
             cursor: "pointer",
           }}
           height="300px"
-          image="https://source.unsplash.com/random"
+          image={
+            listing.listing_image === null
+              ? "https://source.unsplash.com/random"
+              : listing.listing_image
+          }
           alt="listingImage"
         />
         <CardContent sx={{ flexGrow: 1 }}>
           <Typography gutterBottom variant="h5" component="h2">
-            {listing.listing.title}
+            {listing.listing.title} 
           </Typography>
-          {path !== "/my-listings" && (
+          <AverageRating listing={listing} size="medium"/>
+          {url !== "/my-listings"  && (
           <Typography>
             By:{" "}
             <Link to={`/users/${listing.user_info.id}`}>
@@ -44,7 +51,7 @@ export const ListingPreview = ({ listing }) => {
           <Button href={`/listings/${listing.listing.id}`} size="medium">
             View Listing
           </Button>
-          {path === "/my-listings" && <DeactivateListing listing={listing} />}
+          {url === "/my-listings" && <DeactivateListing listing={listing} />}
         </CardActions>
       </Card>
     </Grid>

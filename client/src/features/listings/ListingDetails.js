@@ -12,16 +12,14 @@ import {
   CardMedia,
   Chip,
   IconButton,
-  Rating
 } from "@mui/material"
 import EditRoundedIcon from "@mui/icons-material/Edit"
-
-import FavoriteIcon from "@mui/icons-material/Favorite"
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
+import { Reviews } from "../reviews/Reviews"
 
 export const ListingDetails = ({ currentUser }) => {
   const [listing, setListing] = useState({
-    listing_average_rating: null
+    listing_average_rating: null,
+    listing_reviews: []
   })
 
   const { listingId } = useParams()
@@ -73,7 +71,7 @@ export const ListingDetails = ({ currentUser }) => {
                 gutterBottom
               >
                 <b>{listing.listing?.title}</b>{" "}
-                <AverageRating listing={listing}/>
+                <AverageRating listing={listing} size="large"/>
               </Typography>
               <Link
                 to={{
@@ -175,6 +173,17 @@ export const ListingDetails = ({ currentUser }) => {
                 label={t.name}
               />
             ))}
+          </Box>
+          <Typography
+            component="h2"
+            variant="subtitle1"
+            sx={{ fontSize: 24, color: "#334e6f", mt:2 }}
+            gutterBottom
+          >
+            <b>Reviews</b>
+          </Typography>
+          <Box>
+            <Reviews reviews={listing.listing_reviews}/>
           </Box>
         </Box>
       </Grid>
