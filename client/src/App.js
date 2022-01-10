@@ -12,6 +12,7 @@ import { LogoutUser } from "./features/users/LogoutUser"
 import { Switch, Route, Redirect } from "react-router-dom"
 import { ListingDetails } from "./features/listings/ListingDetails"
 import { EditUserForm } from "./features/users/EditUserForm"
+import { Inbox } from "./features/messages/Inbox"
 // import { RedirectToMain } from "./components/RedirectToMain"
 
 function App() {
@@ -79,6 +80,9 @@ function App() {
           </Route>
           <Route path="/my-reservations">
             <Reservations currentUser={currentUser} fetchCurrentUser={fetchCurrentUser}/>
+          </Route>
+          <Route path="/inbox">
+            <Inbox currentUser={currentUser}/>
           </Route>
         
           <Route path="/logout">

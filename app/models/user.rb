@@ -42,4 +42,10 @@ class User < ApplicationRecord
     end
     
   end 
+
+  def message_senders
+    
+    self.received_messages.joins(:sender).left_outer_joins(:listing).select('users.username as sender_username, messages.id, messages.sender_id, messages.listing_id, messages.content, max(messages.created_at) AS last_received_on, listings.title AS listing_title').group('users.username, messages.id, listings.title')
+    
+  end
 end

@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       get "/current_user", to: "users#current_user_details"
       resources :users, only: [:index, :update, :show]
       # get "/current_user_details", to: "users#current_user_details"
+      # get "/users/:id/senders", to: "users#senders"
 
       #Listings
       resources :listings, only: [:index, :create, :show, :update]
