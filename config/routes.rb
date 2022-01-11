@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
       #Messages
       resources :messages, only: [:create]
+      get "/inbox/users/:sender_id/listings/:listing_id", to: "messages#show_messages_between_two_users"
 
       #Reviews
       resources :reviews, only: [:create]

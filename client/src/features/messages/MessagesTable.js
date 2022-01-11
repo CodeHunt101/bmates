@@ -16,14 +16,12 @@ const columns = [
     id: 'listing',
     label: 'Listing',
     minWidth: "fit-content",
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
   },
 ];
 
-function createData(message_id, username, received_on, listing) {
+function createData(message_id, sender_id, username, received_on, listing) {
   const date_received_on = new Date(received_on)
-  return { message_id, username, received_on: date_received_on.toLocaleString() , listing };
+  return { message_id, sender_id, username, received_on: date_received_on.toLocaleString() , listing };
 }
 
 // const rows = [
@@ -44,7 +42,7 @@ function createData(message_id, username, received_on, listing) {
   // createData('Brazil', 'BR', 210147125, 8515767),
 // ];
 
-export const MessagesTable = ({currentUser}) => {
+export const MessagesTable = ({currentUser, handleOnRowClick}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -56,12 +54,13 @@ export const MessagesTable = ({currentUser}) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  
+
+   
   const rows = currentUser && currentUser.message_senders.sort((a,b) => {
     const dateA = new Date(a.last_received_on)
     const dateB = new Date(b.last_received_on)
     return dateB-dateA
-}).map(sender => createData(sender.message_id, sender.sender_username, sender.last_received_on, sender.listing_title))
+}).map(sender => createData(sender.message_id, sender.sender_id, sender.sender_username, sender.last_received_on, sender.listing_title))
 
   return (
     currentUser && <Paper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -72,7 +71,6 @@ export const MessagesTable = ({currentUser}) => {
               {columns.map((column) => (
                 <TableCell
                   key={column.id}
-                  align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
@@ -85,11 +83,11 @@ export const MessagesTable = ({currentUser}) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.message_id}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.message_id} onClick={()=>handleOnRowClick(row)}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell key={column.id} >
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
@@ -114,3 +112,6 @@ export const MessagesTable = ({currentUser}) => {
     </Paper>
   );
 }
+
+
+

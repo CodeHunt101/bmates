@@ -85,15 +85,19 @@ class User < ApplicationRecord
   end
 
   def last_message_from_listing(sender_username,listing_id)
-    self.messages_from_sender(sender_username).filter{|m| m.listing_id === listing_id}.map{|m|{
-      listing_id: m.listing_id,
-      listing_title: m.listing ? m.listing.title : nil,
-      message_id: m.id,
-      sender_username: m.sender.username,
-      sender_profile_picture: m.sender.image.url,
-      content: m.content,
-      last_received_on: m.created_at,
-    }}.max_by{|m| m[:last_received_on]}
+    self.messages_from_sender(sender_username).filter{|m| m.listing_id === listing_id}.map do |m|
+      {
+        listing_id: m.listing_id,
+        listing_title: m.listing ? m.listing.title : nil,
+        message_id: m.id,
+        sender_id: m.sender_id,
+        sender_username: m.sender.username,
+        sender_profile_picture: m.sender.image.url,
+        content: m.content,
+        last_received_on: m.created_at,
+      }
+    end.max_by{|m| m[:last_received_on]}
+
   end
 
   def messages_from_sender(sender_username)

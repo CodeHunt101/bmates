@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useHistory, useRouteMatch, useParams } from "react-router-dom"
+import { Link, useHistory, useRouteMatch} from "react-router-dom"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
 import CardActions from "@mui/material/CardActions"
@@ -12,8 +12,7 @@ import { AverageRating } from "../reviews/AverageRating"
 
 export const ListingPreview = ({ listing }) => {
   const history = useHistory()
-  const { url, path } = useRouteMatch()
-  const {userId} = useParams()
+  const { url } = useRouteMatch()
   const handleOnClick = () => history.push(`/listings/${listing.listing.id}`)
   
   return (
