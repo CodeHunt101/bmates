@@ -43,9 +43,61 @@ class User < ApplicationRecord
     
   end 
 
-  def message_senders
+  # def last_received_messages
     
-    self.received_messages.joins(:sender).left_outer_joins(:listing).select('users.username as sender_username, messages.id, messages.sender_id, messages.listing_id, messages.content, max(messages.created_at) AS last_received_on, listings.title AS listing_title').group('users.username, messages.id, listings.title')
-    
+  #   self.received_messages
+  #   .joins(:sender)
+  #   .left_outer_joins(:listing)
+  #   .select(
+  #     'users.username as sender_username, 
+  #     messages.id, 
+  #     messages.sender_id, 
+  #     messages.listing_id, 
+  #     messages.content, 
+  #     max(messages.created_at) AS last_received_on, 
+  #     listings.title AS listing_title')
+  #   .group(
+  #     'messages.listing_id,
+  #     users.username, 
+  #     messages.id, 
+  #     listings.title')
+  #   .order('messages.sender_id, 
+  #     messages.listing_id')
+     
+  # end
+
+  def last_received_messages
+    senders = []
+    self.senders_usernames.each do |sender_username|
+      self.senders_listing_ids.each do |listing_id|
+          senders << last_message_from_listing(sender_username,listing_id)
+      end
+    end
+    senders.compact
   end
+
+  def senders_usernames
+    self.received_messages.map{|m| m.sender.username}.uniq
+  end
+
+  def senders_listing_ids
+    self.received_messages.map{|m| m.listing_id}.uniq
+  end
+
+  def last_message_from_listing(sender_username,listing_id)
+    self.messages_from_sender(sender_username).filter{|m| m.listing_id === listing_id}.map{|m|{
+      listing_id: m.listing_id,
+      listing_title: m.listing ? m.listing.title : nil,
+      message_id: m.id,
+      sender_username: m.sender.username,
+      sender_profile_picture: m.sender.image.url,
+      content: m.content,
+      last_received_on: m.created_at,
+    }}.max_by{|m| m[:last_received_on]}
+  end
+
+  def messages_from_sender(sender_username)
+    self.received_messages.filter{|m| m.sender.username === sender_username }
+  end
+
 end

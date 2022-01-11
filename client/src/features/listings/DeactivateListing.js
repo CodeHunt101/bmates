@@ -32,7 +32,6 @@ const ChildModal = ({ listing }) => {
   }
 
   const deactivateListing = () => {
-    console.log(listing.listing)
     return fetch(`/api/v1/listings/${listing.listing.id}`, {
       method: "PATCH",
       headers: {

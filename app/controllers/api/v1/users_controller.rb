@@ -51,7 +51,7 @@ class Api::V1::UsersController < ApplicationController
           received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,
           made_reservations: current_user.made_reservations.reservations_with_listing_provider_details
         },
-        message_senders: current_user.message_senders
+        message_senders: current_user.last_received_messages
       }, except: [:updated_at, :password_digest, :user_provider_id]
     else
       render json: {
@@ -60,13 +60,6 @@ class Api::V1::UsersController < ApplicationController
     end
 
   end
-
-  # def senders
-  #   user = User.find(params[:id])
-  #   if user.valid?
-  #     render json: {senders: user.message_senders}, except: [:updated_at]
-  #   end
-  # end
 
   private
 
