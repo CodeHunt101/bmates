@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import { Grid, Box } from "@mui/material"
 import { MessagesTable } from "./MessagesTable"
 import { MessagesBody } from "./MessagesBody"
+import { MessageForm } from "./MessageForm"
 
 export const Inbox = ({ currentUser }) => {
   const [messages, setMessages] = useState([])
   const [rowIdx, setRowIdx] = useState("")
+  const [row, setRow] = useState({})
 
   const handleOnRowClick = (row, idx) => {
     console.log(row)
@@ -19,8 +21,10 @@ export const Inbox = ({ currentUser }) => {
         })
         setMessages(messages)
         setRowIdx(idx)
+        setRow(row)
       })
   }
+  
   return (
     <Grid
       container
@@ -55,8 +59,12 @@ export const Inbox = ({ currentUser }) => {
             rowIdx={rowIdx}
           />
         </Box>
+        <Box>
+          <MessageForm userReceiverId={row.sender_id} listingId={row.listing_id}/>
+        </Box>
       </Grid>
       <Grid item xs={12} sm={6} md={7}>
+        
         <Box
           sx={{
             my: 3,

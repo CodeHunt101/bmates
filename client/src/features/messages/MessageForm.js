@@ -4,12 +4,21 @@ import Paper from "@mui/material/Paper"
 
 
 
-export const MessageForm = ({userReceiverId, listing}) => {
+export const MessageForm = ({userReceiverId, listing, listingId}) => {
   
   const [message, setMessage] = useState('')
 
   const handleOnMessageChange = (e) => {
     setMessage(e.target.value)
+  }
+  
+  const listingIdToPost = () => {
+    if (listing) {
+      return listing.listing.id
+    } 
+    else if (listingId) {
+      return listingId
+    } else return null
   }
   
   const handleOnMessageSubmit = (e,v) => {
@@ -23,7 +32,7 @@ export const MessageForm = ({userReceiverId, listing}) => {
         message: {
           receiver_id: userReceiverId || listing.user_info.id,
           content: message,
-          listing_id: listing ? listing.listing.id : null
+          listing_id: listingIdToPost()
         },
       }),
     })
