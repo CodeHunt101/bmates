@@ -23,6 +23,8 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera"
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
+import Autocomplete from "@mui/material/Autocomplete"
+import Stack from "@mui/material/Stack"
 
 export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
   const history = useHistory()
@@ -36,6 +38,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     bio: "",
     username: "",
     email: "",
+    topics: [],
     password: "",
     passwordConfirmation: "",
     
@@ -56,6 +59,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         bio: currentUser.current_user.bio,
         username: currentUser.current_user.username,
         email: currentUser.current_user.email,
+        topics: currentUser.user_topics.map((t) => t.id.toString()),
         password: "",
         passwordConfirmation: "",
       })
@@ -121,6 +125,20 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         method: "PUT",
         body: appendUserInfoWithPassword(),
       })
+      .then(()=>(
+        
+        fetch(`/api/v1/users/${formData.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user: {
+              topic_ids: formData.topics,
+            },
+          })
+        })
+      ))
       .then(()=>handleUserSubmittedImage(true))
       .then(() => redirectToUserDetails(formData.id))
     }
@@ -129,10 +147,68 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         method: "PUT",
         body: appendUserInfoWithoutPassword(),
       })
+      .then(()=>(
+        fetch(`/api/v1/users/${formData.id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user: {
+              topic_ids: formData.topics,
+            },
+          })
+        })
+      ))
       .then(()=>handleUserSubmittedImage(true))
       .then(() => redirectToUserDetails(formData.id))
     }
   }
+
+  const handleAutoCompleteChange = (event, values) => {
+    const selectedTopics = values.map((value) => value.id.toString())
+    setFormData({
+      ...formData,
+      topics: selectedTopics,
+    })
+  }
+  
+  const [allTopicOptions, setAllTopicOptions] = useState([])
+  useEffect(() => {
+    fetch("/api/v1/topics")
+      .then((resp) => resp.json())
+      .then((topics) => {
+        setAllTopicOptions(topics.topics)
+      })
+  }, [])
+
+  const handleDefaultValues = (allTopicOptions) =>
+    // Topics in state that matches all topic options, are automatically selected
+    allTopicOptions.filter((topic) =>
+      formData.topics.includes(topic.id.toString())
+    )
+
+  const renderTopics = () =>
+    allTopicOptions && (
+      <Stack spacing={3} sx={{ minWidth: 240 }}>
+        <Autocomplete
+          onChange={handleAutoCompleteChange}
+          value={handleDefaultValues(allTopicOptions)}
+          multiple
+          id="tags-standard"
+          options={allTopicOptions}
+          getOptionLabel={(option) => option.name}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="standard"
+              label="Topics you like"
+              placeholder="Topics"
+            />
+          )}
+        />
+      </Stack>
+    )
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -180,8 +256,9 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                 </label>
               </Grid>
 
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={6}>
                 <TextField
+                  sx={{ minWidth: '100%' }}
                   autoComplete="given-first-name"
                   name="firstName"
                   required
@@ -191,8 +268,9 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   onChange={handleOnChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={6}>
                 <TextField
+                  sx={{ minWidth: '100%' }}
                   autoComplete="given-last-name"
                   name="lastName"
                   required
@@ -202,8 +280,8 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   onChange={handleOnChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <FormControl sx={{ minWidth: 100 }}>
+              <Grid item xs={12} sm={6}>
+                <FormControl sx={{ minWidth: '80%' }}>
                   <InputLabel id="demo-simple-select-helper-label">
                     Gender
                   </InputLabel>
@@ -220,20 +298,20 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   </Select>
                 </FormControl>
               </Grid>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  disableFuture
-                  label="DOB dd/mm/yyyy"
-                  openTo="year"
-                  views={['year', 'month', 'day']}
-                  value={formData.dob}
-                  // onChange={(newValue) => {
-                  //   setValue(newValue);
-                  // }}
-                  onChange={handleOnDobChange}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    disableFuture
+                    label="DOB dd/mm/yyyy"
+                    openTo="year"
+                    views={['year', 'month', 'day']}
+                    value={formData.dob}
+                    maxDate={new Date(new Date().setFullYear(new Date().getFullYear()-18))}
+                    onChange={handleOnDobChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="bio"
@@ -270,6 +348,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   onChange={handleOnChange}
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>{renderTopics()}</Grid>
               <Grid item xs={12}>
                 <FormGroup>
                   <FormControlLabel
@@ -309,6 +388,8 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                       onChange={handleOnChange}
                     />
                   </Grid>
+                  
+                  
                 </>
               )}
               <Button

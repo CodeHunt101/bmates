@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_one_attached :image
   
   has_many :listings, foreign_key: :user_provider_id
+  has_many :user_topics
+  has_many :topics, through: :user_topics
   
   #As a user, it has many received reservations through listings
   has_many :received_reservations, through: :listings, source: :reservations

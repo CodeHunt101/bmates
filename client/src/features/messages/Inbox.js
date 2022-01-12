@@ -6,11 +6,10 @@ import { MessageForm } from "./MessageForm"
 
 export const Inbox = ({ currentUser }) => {
   const [messages, setMessages] = useState([])
-  const [rowIdx, setRowIdx] = useState("")
+  const [rowLocation, setRowLocation] = useState({idx:'', page:''})
   const [row, setRow] = useState({})
 
-  const handleOnRowClick = (row, idx) => {
-    console.log(row)
+  const handleOnRowClick = (row, idx, page) => {
     fetch(`/api/v1/inbox/users/${row.sender_id}/listings/${row.listing_id}`)
       .then((resp) => resp.json())
       .then((resp) => {
@@ -20,7 +19,7 @@ export const Inbox = ({ currentUser }) => {
           return dateB - dateA
         })
         setMessages(messages)
-        setRowIdx(idx)
+        setRowLocation({idx, page})
         setRow(row)
       })
   }
@@ -56,7 +55,7 @@ export const Inbox = ({ currentUser }) => {
           <MessagesTable
             currentUser={currentUser}
             handleOnRowClick={handleOnRowClick}
-            rowIdx={rowIdx}
+            rowLocation={rowLocation}
           />
         </Box>
         <Box>

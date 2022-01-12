@@ -169,7 +169,7 @@ gender = ['M', 'F']
 
 #Create a given amount of users with random info
 i=2
-while i < 50 do
+while i < 20 do
   User.create(
     first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
@@ -190,7 +190,7 @@ users = User.all
 
 #Create a given amount of listings with random info and assign them to random users. Assign between 3 to 10 random topics, available dates in the future and past
 i=0
-while i < 200 do
+while i < 80 do
   listing = Listing.create({
     title: Faker::Lorem.sentence,
     listing_type: "Mate",
@@ -211,10 +211,14 @@ listings = Listing.all
 
 # A given amount of times, pick a random listing and a random user receiver, pick a random available date...
 i=0
-while i < 401 do
+while i < 161 do
   rand_listing = listings[rand(0..listings.count - 1)]
   rand_listing_user_provider = rand_listing.user_provider
   rand_user_receiver = users[rand(0..users.count - 1)]
+
+  if rand_listing_user_provider == rand_user_receiver
+    next
+  end
 
   if rand_user_receiver != rand_listing_user_provider
     receiver_to_provider_1 = Message.create(sender: rand_user_receiver, receiver: rand_listing_user_provider, listing:rand_listing, content: Faker::Lorem.paragraph(sentence_count: 15))

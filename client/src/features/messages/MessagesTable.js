@@ -37,7 +37,7 @@ function createData(
   }
 }
 
-export const MessagesTable = ({ currentUser, handleOnRowClick, rowIdx }) => {
+export const MessagesTable = ({ currentUser, handleOnRowClick, rowLocation }) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -90,12 +90,12 @@ export const MessagesTable = ({ currentUser, handleOnRowClick, rowIdx }) => {
             hover
             sx={{
               cursor: "pointer",
-              backgroundColor: idx === rowIdx && "#bbdefb",
+              backgroundColor: idx === rowLocation.idx && page === rowLocation.page && "#bbdefb",
             }}
             role="checkbox"
             tabIndex={-1}
             key={row.message_id}
-            onClick={() => handleOnRowClick(row, idx)}
+            onClick={() => handleOnRowClick(row, idx, page)}
           >
             {renderColumns(row)}
           </TableRow>

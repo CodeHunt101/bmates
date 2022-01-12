@@ -58,7 +58,6 @@ export const ListingsList = () => {
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderListingsOnPage = (page = 1) => {
-    console.log(listings.length)
     
     if (typeof(listings) === "string") {
       return <Typography

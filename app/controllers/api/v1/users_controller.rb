@@ -33,6 +33,7 @@ class Api::V1::UsersController < ApplicationController
       user_info: user,
       user_average_rating: user.average_rating,
       user_profile_picture: user.image.url,
+      user_topics: user.topics.select(:id,:name),
       listings: user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
       reservations: {
         received_reservations: user.received_reservations.reservations_with_listing_receiver_details,
@@ -46,6 +47,7 @@ class Api::V1::UsersController < ApplicationController
       render json: {
         current_user: current_user,
         profile_picture_url: current_user.image.url,
+        user_topics: current_user.topics.select(:id,:name),
         listings: current_user.listings.listings_with_user_provider_details_topics_available_dates_and_reservations,
         reservations: {
           received_reservations: current_user.received_reservations.reservations_with_listing_receiver_details,
@@ -75,7 +77,8 @@ class Api::V1::UsersController < ApplicationController
       :image,
       :is_admin,
       :password,
-      :password_confirmation
+      :password_confirmation,
+      topic_ids: []
     )
   end
 end

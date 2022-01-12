@@ -7,5 +7,8 @@ export const Home = ({currentUser}) => (
     {currentUser && <Link to="/listings">
       <b>Search Listings</b>
     </Link>}
+    {currentUser && <Link to="/users">
+      <b>Search Users</b>
+    </Link>}
   </div>
 )
