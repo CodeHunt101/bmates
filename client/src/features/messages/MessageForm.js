@@ -2,8 +2,6 @@ import React, { useState } from "react"
 import { Box, FormControl, Button, TextField } from "@mui/material"
 import Paper from "@mui/material/Paper"
 
-
-
 export const MessageForm = ({userReceiverId, listing, listingId}) => {
   
   const [message, setMessage] = useState('')
@@ -20,9 +18,9 @@ export const MessageForm = ({userReceiverId, listing, listingId}) => {
       return listingId
     } else return null
   }
-  
+
   const handleOnMessageSubmit = (e,v) => {
-    e.preventDefault()
+    !listingId && e.preventDefault()
     fetch(`/api/v1/messages`,         {
       method: 'POST',
       headers: {

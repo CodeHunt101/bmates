@@ -9,53 +9,58 @@ import Container from "@mui/material/Container"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
+import { LinearProgress } from "@mui/material"
 
 export const ListingsList = () => {
   const [listings, setListings] = useState([])
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
   
+  const generateListingFromResponse = (response) => {
+    if (response.listings.length > 0) {
+      setListings(
+        response.listings.filter((listing) => listing.listing.is_active)
+      )
+    }
+    if (response.listings.length === 0) {
+      setListings(
+        'N/A'
+      )
+    }
+  }
+  
   useEffect(() => {
     // Depending on the current path, the listings state with fetch the date from a different server path
     path === "/listings" &&
       fetch("/api/v1/listings")
         .then((resp) => resp.json())
-        .then((resp) =>
-          setListings(
-            resp.listings.filter((listing) => listing.listing.is_active)
-          )
-        )
+        .then((resp) =>{
+          generateListingFromResponse(resp)
+        })
 
     path === "/my-listings" &&
       fetch(`/api/v1/current_user`)
         .then((resp) => resp.json())
         .then((resp) =>
-          setListings(
-            resp.listings.filter((listing) => listing.listing.is_active)
-          )
+          generateListingFromResponse(resp)
         )
 
     path.includes("/users/:userId") &&
       fetch(`/api/v1/users/${userId}`)
         .then((resp) => resp.json())
         .then((resp) =>
-          setListings(
-            resp.listings.filter((listing) => listing.listing.is_active)
-          )
+          generateListingFromResponse(resp)
         )
   }, [listingId, path, userId])
 
   const [page, setPage] = useState(1)
+  
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderListingsOnPage = (page = 1) => {
-    if (listings.length>0) {
-      return listings
-        .slice(page * 8 - 8, page * 8)
-        .map((listing) => (
-          <ListingPreview key={listing.listing.id} listing={listing} />
-        ))
-    } else {
+    console.log(listings.length)
+    
+    if (typeof(listings) === "string") {
       return <Typography
         variant="h6"
         align="center"
@@ -63,6 +68,26 @@ export const ListingsList = () => {
         There are no listings to show!
       </Typography>
     }
+    
+    else if (listings.length === 0) {
+      return (
+        <Box sx={{ width: '50%' }}>
+          <LinearProgress />
+        </Box>
+      )
+    }
+    
+   else {
+      return listings
+        .slice(page * 8 - 8, page * 8)
+        .map((listing) => (
+          <ListingPreview key={listing.listing.id} listing={listing} />
+        ))
+    } 
+    
+    
+    
+
   }
 
   const theme = createTheme()
