@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { ListingPreview } from "./ListingPreview"
-import { useParams, useRouteMatch } from "react-router"
+import { useParams, useRouteMatch, useLocation, useHistory } from "react-router"
 import CssBaseline from "@mui/material/CssBaseline"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
@@ -15,7 +15,9 @@ export const ListingsList = () => {
   const [listings, setListings] = useState([])
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
-  
+  const location = useLocation()
+  const history = useHistory()
+
   const generateListingFromResponse = (response) => {
     if (response.listings.length > 0) {
       setListings(
@@ -23,70 +25,82 @@ export const ListingsList = () => {
       )
     }
     if (response.listings.length === 0) {
-      setListings(
-        'N/A'
-      )
+      setListings("N/A")
     }
   }
-  
+
+  // Clears the location state so that it renders all listings
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => history.replace(), [])
+
   useEffect(() => {
+    // If there is a location state, render the repsective listings
+    if (location.state?.filteredListings.length > 0) {
+      setListings(
+        location.state.filteredListings.filter(
+          (listing) => listing.listing.is_active
+        )
+      )
+    }
     // Depending on the current path, the listings state with fetch the date from a different server path
-    path === "/listings" &&
-      fetch("/api/v1/listings")
-        .then((resp) => resp.json())
-        .then((resp) =>{
-          generateListingFromResponse(resp)
-        })
+    if (!location.state || location.state?.filteredListings.length === 0) {
+      path === "/listings" &&
+        fetch("/api/v1/listings")
+          .then((resp) => resp.json())
+          .then((resp) => {
+            generateListingFromResponse(resp)
+          })
 
-    path === "/my-listings" &&
-      fetch(`/api/v1/current_user`)
-        .then((resp) => resp.json())
-        .then((resp) =>
-          generateListingFromResponse(resp)
-        )
+      path === "/my-listings" &&
+        fetch(`/api/v1/current_user`)
+          .then((resp) => resp.json())
+          .then((resp) => generateListingFromResponse(resp))
 
-    path.includes("/users/:userId") &&
-      fetch(`/api/v1/users/${userId}`)
-        .then((resp) => resp.json())
-        .then((resp) =>
-          generateListingFromResponse(resp)
-        )
-  }, [listingId, path, userId])
+      path.includes("/users/:userId") &&
+        fetch(`/api/v1/users/${userId}`)
+          .then((resp) => resp.json())
+          .then((resp) => generateListingFromResponse(resp))
+    }
+  }, [listingId, path, userId, location])
+
+  const renderNoMatchesMessage = () =>
+    location.state?.filteredListings.length === 0 && (
+      <Typography
+        component="h2"
+        variant="subtitle1"
+        align="center"
+        color="error"
+        gutterBottom
+      >
+        Sorry, we couldn't find listings that match your search criteria, but
+        there you have all listings:
+      </Typography>
+    )
 
   const [page, setPage] = useState(1)
-  
+
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderListingsOnPage = (page = 1) => {
-    
-    if (typeof(listings) === "string") {
-      return <Typography
-        variant="h6"
-        align="center"
-      >
-        There are no listings to show!
-      </Typography>
-    }
-    
-    else if (listings.length === 0) {
+    if (typeof listings === "string") {
       return (
-        <Box sx={{ width: '50%' }}>
+        <Typography variant="h6" align="center">
+          There are no listings to show!
+        </Typography>
+      )
+    } else if (listings.length === 0) {
+      return (
+        <Box sx={{ width: "50%" }}>
           <LinearProgress />
         </Box>
       )
-    }
-    
-   else {
+    } else {
       return listings
         .slice(page * 8 - 8, page * 8)
         .map((listing) => (
           <ListingPreview key={listing.listing.id} listing={listing} />
         ))
-    } 
-    
-    
-    
-
+    }
   }
 
   const theme = createTheme()
@@ -101,13 +115,13 @@ export const ListingsList = () => {
         sm={8}
         md={10.1}
         component={Paper}
-        elevation={path !== "/users/:userId" ? 6:3}
+        elevation={path !== "/users/:userId" ? 6 : 3}
         circle="true"
       >
         {/* Hero unit */}
         <Box
           sx={{
-            pt: path !== "/users/:userId" ? 8:1,
+            pt: path !== "/users/:userId" ? 8 : 1,
             pb: 6,
           }}
         >
@@ -120,6 +134,7 @@ export const ListingsList = () => {
           >
             {path !== "/users/:userId" && "Listings"}
           </Typography>
+          {renderNoMatchesMessage()}
         </Box>
         {listings.length > 0 && (
           <Container

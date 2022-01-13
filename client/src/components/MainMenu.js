@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 import AppBar from "@mui/material/AppBar"
+import { styled, alpha } from "@mui/material/styles"
+import InputBase from "@mui/material/InputBase"
 import Box from "@mui/material/Box"
 import Toolbar from "@mui/material/Toolbar"
 import IconButton from "@mui/material/IconButton"
@@ -16,6 +18,7 @@ import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
+import SearchIcon from "@mui/icons-material/Search"
 
 const pagesWithoutCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },
@@ -35,6 +38,48 @@ const settings = [
   { name: "My Reservations", href: "/my-reservations" },
   { name: "Logout", href: "/logout" },
 ]
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "180px",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}))
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}))
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  fontSize: "15px",
+  // width: '100px',
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "22ch",
+    },
+  },
+}))
 
 export const MainMenu = ({
   currentUser,
@@ -92,8 +137,40 @@ export const MainMenu = ({
     </Button>
   )
 
+  const [searchTerm, setSearchTerm] = useState("")
+  const [listings, setListings] = useState([])
+
+  useEffect(() => {
+    fetch("/api/v1/listings")
+      .then((resp) => resp.json())
+      .then((resp) => {
+        setListings(resp)
+      })
+  }, [])
+
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
+  useEffect(() => {
+    if (searchTerm.length > 2) {
+      const filteredListings = listings.listings.filter((listing) =>
+        listing.listing.description.includes(searchTerm)
+      )
+      history.replace({
+        pathname: "/listings",
+        state: { filteredListings: filteredListings, searchTerm },
+      })
+    }
+    if (searchTerm.length > 0 && searchTerm.length <= 2) {
+      history.replace({
+        pathname: "/listings",
+      })
+    }
+  }, [searchTerm])
+
   return (
-    <AppBar position="sticky" sx={{minWidth: '100vw'}}>
+    <AppBar position="sticky" sx={{ minWidth: "100vw" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -135,13 +212,13 @@ export const MainMenu = ({
               }}
             >
               {!currentUser &&
-                pagesWithoutCurrentUser.map((page) => (
+                pagesWithoutCurrentUser.map((page) =>
                   renderMenuDropDownItem(page)
-                ))}
+                )}
               {currentUser &&
-                pagesWithCurrentUser.map((page) => (
+                pagesWithCurrentUser.map((page) =>
                   renderMenuDropDownItem(page)
-                ))}
+                )}
             </Menu>
           </Box>
           <Typography
@@ -154,31 +231,39 @@ export const MainMenu = ({
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {!currentUser &&
-              pagesWithoutCurrentUser.map((page) => (
-                renderMenuNavBarItem(page)
-              ))}
+              pagesWithoutCurrentUser.map((page) => renderMenuNavBarItem(page))}
             {currentUser &&
-              pagesWithCurrentUser.map((page) => (
-                renderMenuNavBarItem(page)
-              ))}
+              pagesWithCurrentUser.map((page) => renderMenuNavBarItem(page))}
           </Box>
+          <Search>
+            <SearchIconWrapper>
+              <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+              placeholder="Looking for..."
+              inputProps={{ "aria-label": "search" }}
+              name="searchTerm"
+              onChange={handleSearchTermChange}
+              value={searchTerm}
+            />
+          </Search>
           {currentUser && (
             <>
               <Box sx={{ flexGrow: 0.02 }}>
                 <WelcomeUser currentUser={currentUser} />
               </Box>
               <Box sx={{ flexGrow: 0 }}>
-                <Button >
+                <Button>
                   {/* <Badge badgeContent={4} color="warning"> */}
-                    <Link
-                      sx={{ height: "24px" }}
-                      className="main-menu-item"
-                      href="/inbox"
-                    >
-                      <MailRoundedIcon />
-                    </Link>
+                  <Link
+                    sx={{ height: "24px" }}
+                    className="main-menu-item"
+                    href="/inbox"
+                  >
+                    <MailRoundedIcon />
+                  </Link>
                   {/* </Badge > */}
-                </Button >
+                </Button>
               </Box>
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
@@ -205,9 +290,7 @@ export const MainMenu = ({
                   open={!!anchorElUser}
                   onClose={handleCloseUserMenu}
                 >
-                  {settings.map((setting) => (
-                    renderMenuDropDownItem(setting)
-                  ))}
+                  {settings.map((setting) => renderMenuDropDownItem(setting))}
                 </Menu>
               </Box>
             </>
