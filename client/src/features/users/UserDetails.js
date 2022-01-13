@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from "react"
-import { MessageForm } from '../messages/MessageForm'
+import { MessageForm } from "../messages/MessageForm"
 import { useParams } from "react-router"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
 import { Grid, Box, Typography } from "@mui/material"
 import { ListingsList } from "../listings/ListingsList"
 import Avatar from "@mui/material/Avatar"
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Divider from '@mui/material/Divider';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
-import CakeOutlinedIcon from '@mui/icons-material/CakeOutlined';
-import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
+import List from "@mui/material/List"
+import ListItem from "@mui/material/ListItem"
+import ListItemText from "@mui/material/ListItemText"
+import ListItemAvatar from "@mui/material/ListItemAvatar"
+import Divider from "@mui/material/Divider"
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded"
+import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined"
+import PublicRoundedIcon from "@mui/icons-material/PublicRounded"
 import Paper from "@mui/material/Paper"
 import { AverageRating } from "../reviews/AverageRating"
 import { calculateAge } from "../../helper_functions"
 
-
-function InsetDividers({user}) {
+function InsetDividers({ user }) {
   return (
     <List
       sx={{
-        width: '100%',
+        width: "100%",
         maxWidth: 360,
-        bgcolor: 'background.paper',
-        mt: 'auto',
-        mb: 'auto'
+        bgcolor: "background.paper",
+        mt: "auto",
+        mb: "auto",
       }}
     >
       <ListItem>
@@ -36,7 +35,13 @@ function InsetDividers({user}) {
             <AccountCircleRoundedIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={user.user_info.first_name || user.user_info.username} secondary={(user.user_info.first_name && "is my name") || (user.user_info.username && "is my username")} />
+        <ListItemText
+          primary={user.user_info.first_name || user.user_info.username}
+          secondary={
+            (user.user_info.first_name && "is my name") ||
+            (user.user_info.username && "is my username")
+          }
+        />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -45,7 +50,10 @@ function InsetDividers({user}) {
             <CakeOutlinedIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={calculateAge(new Date(user.user_info.dob))} secondary="is my age" />
+        <ListItemText
+          primary={calculateAge(new Date(user.user_info.dob))}
+          secondary="is my age"
+        />
       </ListItem>
       <Divider variant="inset" component="li" />
       <ListItem>
@@ -54,12 +62,14 @@ function InsetDividers({user}) {
             <PublicRoundedIcon />
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary="COUNTRY OF BIRTH" secondary="is where I come from" />
+        <ListItemText
+          primary={user.user_country_name}
+          secondary="is where I currently live"
+        />
       </ListItem>
     </List>
-  );
+  )
 }
-
 
 export const UserDetails = () => {
   const { userId } = useParams()
@@ -92,11 +102,17 @@ export const UserDetails = () => {
               textAlign: "center",
             }}
           >
-            <Box >
+            <Box>
               <Typography
                 component={Paper}
                 variant="h3"
-                sx={{ color: "#334e6f",width: "fit-content", ml: "auto", mr: "auto", p:1}}
+                sx={{
+                  color: "#334e6f",
+                  width: "fit-content",
+                  ml: "auto",
+                  mr: "auto",
+                  p: 1,
+                }}
                 gutterBottom
               >
                 <b>{user.user_info.first_name || user.user_info.username}</b>{" "}
@@ -108,7 +124,8 @@ export const UserDetails = () => {
                 ) : (
                   <MaleRoundedIcon
                     sx={{ color: "#42a5f5" }}
-                    fontSize="x-large" />
+                    fontSize="x-large"
+                  />
                 )}
               </Typography>
             </Box>
@@ -118,9 +135,18 @@ export const UserDetails = () => {
               alt="profile"
               sx={{ margin: "auto", width: 300, height: 300 }}
             ></Avatar>
-            <Box component={Paper} sx={{width: "fit-content", ml: "auto", mr: "auto", pt:1, mt:2}}>
+            <Box
+              component={Paper}
+              sx={{
+                width: "fit-content",
+                ml: "auto",
+                mr: "auto",
+                pt: 1,
+                mt: 2,
+              }}
+            >
               <Typography>
-                <AverageRating user={user} size="large"/>
+                <AverageRating user={user} size="large" />
               </Typography>
             </Box>
           </Box>
@@ -151,7 +177,9 @@ export const UserDetails = () => {
                 sx={{ fontSize: 24, color: "#334e6f" }}
                 gutterBottom
               >
-                <b>About {user.user_info.first_name || user.user_info.username}</b>
+                <b>
+                  About {user.user_info.first_name || user.user_info.username}
+                </b>
               </Typography>
               <Box
                 component={Paper}
@@ -162,16 +190,14 @@ export const UserDetails = () => {
                   display: "flex",
                 }}
               >
-                <Box sx={{mt: 'auto', mb: 'auto'}}>
+                <Box sx={{ mt: "auto", mb: "auto" }}>
                   <Avatar
                     src={user.user_profile_picture}
                     alt="profile"
                     sx={{ width: 150, height: 150 }}
                   ></Avatar>
                 </Box>
-                <Box sx={{ ml: 5 }}>
-                  {InsetDividers({user})}
-                </Box>
+                <Box sx={{ ml: 5 }}>{InsetDividers({ user })}</Box>
               </Box>
               <Typography
                 component="h2"
@@ -211,7 +237,7 @@ export const UserDetails = () => {
               >
                 <b>Get in touch</b>
               </Typography>
-              {<MessageForm userReceiverId={userId}/>}
+              {<MessageForm userReceiverId={userId} />}
             </Box>
           </Grid>
         </Grid>

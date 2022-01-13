@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_12_195930) do
+ActiveRecord::Schema.define(version: 2022_01_13_044907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,12 @@ ActiveRecord::Schema.define(version: 2022_01_12_195930) do
     t.datetime "available_date"
     t.integer "listing_id"
     t.boolean "is_reserved", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "countries", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -116,6 +122,7 @@ ActiveRecord::Schema.define(version: 2022_01_12_195930) do
     t.string "last_name"
     t.string "gender"
     t.datetime "dob"
+    t.string "country_id"
     t.text "bio"
     t.boolean "is_admin", default: false
     t.string "password_digest"

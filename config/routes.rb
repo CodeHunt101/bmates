@@ -18,6 +18,9 @@ Rails.application.routes.draw do
       resources :listings, only: [:index, :create, :show, :update]
       patch "/listings/:id/update_image", to: "listings#update_image"
 
+      #Countries
+      resources :countries, only: [:index]
+      
       #Topics
       resources :topics, only: [:index]
 

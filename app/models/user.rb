@@ -22,6 +22,8 @@ class User < ApplicationRecord
 
   has_many :given_reviews, foreign_key: :user_id, class_name: "Review"
 
+  belongs_to :country
+
 
   def self.users_with_pp
     all.map{|user| {

@@ -47,7 +47,6 @@ export const ReviewReservation = ({ reservation, handleReview }) => {
 
   const handleOnSubmit = (e) => {
     e.preventDefault()
-    console.log(e)
     fetch("api/v1/reviews", {
       method: "POST",
       headers: {

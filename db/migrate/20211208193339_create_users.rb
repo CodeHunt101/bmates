@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :last_name
       t.string :gender
       t.datetime :dob
+      t.string :country_id
       t.text :bio
       t.boolean :is_admin, default: false
       t.string :password_digest

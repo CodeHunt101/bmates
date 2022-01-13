@@ -20,9 +20,9 @@ import Checkbox from "@mui/material/Checkbox"
 import Input from "@mui/material/Input"
 import IconButton from "@mui/material/IconButton"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import AdapterDateFns from "@mui/lab/AdapterDateFns"
+import LocalizationProvider from "@mui/lab/LocalizationProvider"
+import DatePicker from "@mui/lab/DatePicker"
 import Autocomplete from "@mui/material/Autocomplete"
 import Stack from "@mui/material/Stack"
 
@@ -35,13 +35,13 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     lastName: "",
     gender: "",
     dob: new Date(),
+    country: "",
     bio: "",
     username: "",
     email: "",
     topics: [],
     password: "",
     passwordConfirmation: "",
-    
   })
 
   const [attachedImage, setAttachedImage] = useState(null)
@@ -55,7 +55,8 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         firstName: currentUser.current_user.first_name,
         lastName: currentUser.current_user.last_name,
         gender: currentUser.current_user.gender,
-        dob: currentUser.current_user.dob,
+        dob: new Date(currentUser.current_user.dob),
+        country: currentUser.current_user.country_id,
         bio: currentUser.current_user.bio,
         username: currentUser.current_user.username,
         email: currentUser.current_user.email,
@@ -75,7 +76,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
   const handleOnDobChange = (value) => {
     setFormData({
       ...formData,
-      dob: new Date(value.setHours(0,0,0,0)),
+      dob: new Date(value.setHours(0, 0, 0, 0)),
     })
   }
 
@@ -92,7 +93,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
   const handleOnSubmit = (e) => {
     // PUTs the new user info through a FormData instance. The information can be send with or without new password
     e.preventDefault()
-    
+
     // Images can only be sent to the server through a FormData instance
     const newUserInfo = new FormData()
 
@@ -101,6 +102,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
       newUserInfo.append("user[first_name]", formData.firstName)
       newUserInfo.append("user[last_name]", formData.lastName)
       newUserInfo.append("user[gender]", formData.gender)
+      newUserInfo.append("user[country_id]", formData.country)
       newUserInfo.append("user[dob]", formData.dob)
       newUserInfo.append("user[bio]", formData.bio)
       newUserInfo.append("user[username]", formData.username)
@@ -112,7 +114,10 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     const appendUserInfoWithPassword = () => {
       appendUserInfoWithoutPassword()
       newUserInfo.append("user[password]", formData.password)
-      newUserInfo.append("user[password_confirmation]",formData.passwordConfirmation)
+      newUserInfo.append(
+        "user[password_confirmation]",
+        formData.passwordConfirmation
+      )
       return newUserInfo
     }
     // TODO: the if statemente has to be handled by the server
@@ -125,54 +130,63 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
         method: "PUT",
         body: appendUserInfoWithPassword(),
       })
-      .then(()=>(
-        
-        fetch(`/api/v1/users/${formData.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: {
-              topic_ids: formData.topics,
+        .then(() =>
+          fetch(`/api/v1/users/${formData.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
             },
+            body: JSON.stringify({
+              user: {
+                topic_ids: formData.topics,
+              },
+            }),
           })
-        })
-      ))
-      .then(()=>handleUserSubmittedImage(true))
-      .then(() => redirectToUserDetails(formData.id))
+        )
+        .then(() => handleUserSubmittedImage(true))
+        .then(() => redirectToUserDetails(formData.id))
     }
     if (!passwordChangeRequired) {
       fetch(`/api/v1/users/${formData.id}`, {
         method: "PUT",
         body: appendUserInfoWithoutPassword(),
       })
-      .then(()=>(
-        fetch(`/api/v1/users/${formData.id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: {
-              topic_ids: formData.topics,
+        .then(() =>
+          fetch(`/api/v1/users/${formData.id}`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
             },
+            body: JSON.stringify({
+              user: {
+                topic_ids: formData.topics,
+              },
+            }),
           })
-        })
-      ))
-      .then(()=>handleUserSubmittedImage(true))
-      .then(() => redirectToUserDetails(formData.id))
+        )
+        .then(() => handleUserSubmittedImage(true))
+        .then(() => redirectToUserDetails(formData.id))
     }
   }
 
-  const handleAutoCompleteChange = (event, values) => {
+  const handleTopicsChange = (event, values) => {
     const selectedTopics = values.map((value) => value.id.toString())
     setFormData({
       ...formData,
       topics: selectedTopics,
     })
   }
-  
+
+  const handleCountryChange = (event, value) => {
+    const selectedCountry = value.id.toString()
+    setFormData({
+      ...formData,
+      country: selectedCountry,
+    })
+  }
+
+  const [allCountriesOptions, setAllCountriesOptions] = useState([])
+
   const [allTopicOptions, setAllTopicOptions] = useState([])
   useEffect(() => {
     fetch("/api/v1/topics")
@@ -180,24 +194,35 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
       .then((topics) => {
         setAllTopicOptions(topics.topics)
       })
+
+    fetch("/api/v1/countries")
+      .then((resp) => resp.json())
+      .then((countries) => {
+        setAllCountriesOptions(countries.countries)
+      })
   }, [])
 
-  const handleDefaultValues = (allTopicOptions) =>
+  const handleCurrentTopicValues = (allTopicOptions) =>
     // Topics in state that matches all topic options, are automatically selected
     allTopicOptions.filter((topic) =>
       formData.topics.includes(topic.id.toString())
     )
 
+  const handleCurrentCountryValue = (allCountriesOptions) =>
+    allCountriesOptions.find(
+      (country) => country.id.toString() === formData.country
+    ) || null
+
   const renderTopics = () =>
     allTopicOptions && (
       <Stack spacing={3} sx={{ minWidth: 240 }}>
         <Autocomplete
-          onChange={handleAutoCompleteChange}
-          value={handleDefaultValues(allTopicOptions)}
+          onChange={handleTopicsChange}
+          value={handleCurrentTopicValues(allTopicOptions)}
           multiple
           id="tags-standard"
           options={allTopicOptions}
-          getOptionLabel={(option) => option.name}
+          getOptionLabel={(option) => option && option.name}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -255,10 +280,9 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   />
                 </label>
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <TextField
-                  sx={{ minWidth: '100%' }}
+                  sx={{ minWidth: "100%" }}
                   autoComplete="given-first-name"
                   name="firstName"
                   required
@@ -270,7 +294,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  sx={{ minWidth: '100%' }}
+                  sx={{ minWidth: "100%" }}
                   autoComplete="given-last-name"
                   name="lastName"
                   required
@@ -281,7 +305,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl sx={{ minWidth: '80%' }}>
+                <FormControl sx={{ minWidth: "80%" }}>
                   <InputLabel id="demo-simple-select-helper-label">
                     Gender
                   </InputLabel>
@@ -304,13 +328,31 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                     disableFuture
                     label="DOB dd/mm/yyyy"
                     openTo="year"
-                    views={['year', 'month', 'day']}
+                    views={["year", "month", "day"]}
                     value={formData.dob}
-                    maxDate={new Date(new Date().setFullYear(new Date().getFullYear()-18))}
+                    maxDate={
+                      new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 18)
+                      )
+                    }
                     onChange={handleOnDobChange}
                     renderInput={(params) => <TextField {...params} />}
                   />
                 </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {/* <InputLabel id="demo-simple-select-helper-label">Age</InputLabel> */}
+                <Autocomplete
+                  disablePortal
+                  id="country-of-location"
+                  options={allCountriesOptions}
+                  value={handleCurrentCountryValue(allCountriesOptions)}
+                  onChange={handleCountryChange}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Country" />
+                  )}
+                />
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -348,7 +390,9 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   onChange={handleOnChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>{renderTopics()}</Grid>
+              <Grid item xs={12} sm={6}>
+                {renderTopics()}
+              </Grid>
               <Grid item xs={12}>
                 <FormGroup>
                   <FormControlLabel
@@ -388,8 +432,6 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                       onChange={handleOnChange}
                     />
                   </Grid>
-                  
-                  
                 </>
               )}
               <Button
