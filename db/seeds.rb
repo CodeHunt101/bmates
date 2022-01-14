@@ -419,16 +419,25 @@ end
 #CREATION OF RANDOM USERS
 #---------------------------#
 
-gender = ['M', 'F']
+gender = ['M', 'F', 'O']
+def generate_rand_gender(iterator)
+  if iterator % 2 == 0 && iterator % 10 !=0
+    'F'
+  elsif iterator % 10 == 0
+    'O'
+  else
+    'M'
+  end
+end
 
 
 #Create a given amount of users with random info
 i=2
-while i < 20 do
+while i < 30 do
   User.create(
     first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
-    gender: i % 2 != 0 ? 'M' : 'F',
+    gender: generate_rand_gender(i),
     bio: Faker::Lorem.paragraph(sentence_count: 30),
     country: countries[rand(0..countries.count - 1)],
     dob: rand(18.years..60.years).ago,
@@ -446,7 +455,7 @@ users = User.all
 
 #Create a given amount of listings with random info and assign them to random users. Assign between 3 to 10 random topics, available dates in the future and past
 i=0
-while i < 80 do
+while i < 120 do
   listing = Listing.create({
     title: Faker::Lorem.sentence,
     listing_type: "Mate",
@@ -467,7 +476,7 @@ listings = Listing.all
 
 # A given amount of times, pick a random listing and a random user receiver, pick a random available date...
 i=0
-while i < 161 do
+while i < 241 do
   rand_listing = listings[rand(0..listings.count - 1)]
   rand_listing_user_provider = rand_listing.user_provider
   rand_user_receiver = users[rand(0..users.count - 1)]
