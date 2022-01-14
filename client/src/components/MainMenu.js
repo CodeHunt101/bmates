@@ -152,22 +152,50 @@ export const MainMenu = ({
     setSearchTerm(e.target.value)
   }
 
-  useEffect(() => {
-    if (searchTerm.length > 2) {
-      const filteredListings = listings.listings.filter((listing) =>
-        listing.listing.description.includes(searchTerm)
-      )
-      history.replace({
-        pathname: "/listings",
-        state: { filteredListings: filteredListings, searchTerm },
-      })
+  const handleListingSearchOnKeyPress = (e) => {
+    if (e.key === "Enter") {
+      if (searchTerm.length > 2) {
+        const filteredListings = listings.listings.filter(
+          (listing) =>
+            listing.listing.title
+              .replace(/[^a-zA-Z ]/g, "")
+              .toLowerCase()
+              .split(" ")
+              .includes(searchTerm.toLowerCase()) ||
+            listing.listing.description
+              .replace(/[^a-zA-Z ]/g, "")
+              .toLowerCase()
+              .split(" ")
+              .includes(searchTerm.toLowerCase()) ||
+            listing.topics
+              .map((topic) => topic.name.toLowerCase())
+              .includes(searchTerm.toLowerCase()) ||
+            listing.user_info.username
+              .toLowerCase()
+              .split(" ")
+              .includes(searchTerm.toLowerCase())
+        )
+        if (filteredListings.length > 0) {
+          history.replace({
+            pathname: "/listings",
+            state: { filteredListings: filteredListings, searchTerm },
+          })
+        }
+
+        if (filteredListings.length === 0) {
+          history.replace({
+            pathname: "/listings",
+            state: { filteredListings: "Not found", searchTerm },
+          })
+        }
+      }
+      if (searchTerm.length === 0) {
+        history.replace({
+          pathname: "/listings",
+        })
+      }
     }
-    if (searchTerm.length > 0 && searchTerm.length <= 2) {
-      history.replace({
-        pathname: "/listings",
-      })
-    }
-  }, [searchTerm])
+  }
 
   return (
     <AppBar position="sticky" sx={{ minWidth: "100vw" }}>
@@ -244,6 +272,7 @@ export const MainMenu = ({
               inputProps={{ "aria-label": "search" }}
               name="searchTerm"
               onChange={handleSearchTermChange}
+              onKeyPress={handleListingSearchOnKeyPress}
               value={searchTerm}
             />
           </Search>
@@ -300,3 +329,21 @@ export const MainMenu = ({
     </AppBar>
   )
 }
+
+// useEffect(() => {
+//   if (searchTerm.length > 2) {
+//     const filteredListings = listings.listings.filter((listing) =>
+//       listing.listing.description.replace(/[^a-zA-Z ]/g, "").toLowerCase().split(" ").includes(searchTerm.toLowerCase())
+//     )
+//     console.log(filteredListings)
+//     history.push({
+//       pathname: "/listings",
+//       state: { filteredListings: filteredListings, searchTerm },
+//     })
+//   }
+//   // if (searchTerm.length > 0 && searchTerm.length <= 2) {
+//   //   history.replace({
+//   //     pathname: "/listings",
+//   //   })
+//   // }
+// }, [searchTerm])

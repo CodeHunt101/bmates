@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { ListingPreview } from "./ListingPreview"
-import { useParams, useRouteMatch, useLocation, useHistory } from "react-router"
+import { useParams, useRouteMatch, useLocation } from "react-router"
 import CssBaseline from "@mui/material/CssBaseline"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
@@ -12,11 +12,11 @@ import Paper from "@mui/material/Paper"
 import { LinearProgress } from "@mui/material"
 
 export const ListingsList = () => {
-  const [listings, setListings] = useState([])
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
   const location = useLocation()
-  const history = useHistory()
+
+  const [listings, setListings] = useState([])
 
   const generateListingFromResponse = (response) => {
     if (response.listings.length > 0) {
@@ -29,13 +29,12 @@ export const ListingsList = () => {
     }
   }
 
-  // Clears the location state so that it renders all listings
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => history.replace(), [])
-
   useEffect(() => {
     // If there is a location state, render the repsective listings
-    if (location.state?.filteredListings.length > 0) {
+    if (
+      location.state?.filteredListings !== "Not found" &&
+      location.state?.filteredListings.length > 0
+    ) {
       setListings(
         location.state.filteredListings.filter(
           (listing) => listing.listing.is_active
@@ -43,7 +42,12 @@ export const ListingsList = () => {
       )
     }
     // Depending on the current path, the listings state with fetch the date from a different server path
-    if (!location.state || location.state?.filteredListings.length === 0) {
+    // Fetch only if there is no location state, or user couldn't find anything from the search
+    if (
+      !location.state ||
+      location.state?.filteredListings === "Not found" ||
+      location.state?.filteredListings.length === 0
+    ) {
       path === "/listings" &&
         fetch("/api/v1/listings")
           .then((resp) => resp.json())
@@ -61,10 +65,10 @@ export const ListingsList = () => {
           .then((resp) => resp.json())
           .then((resp) => generateListingFromResponse(resp))
     }
-  }, [listingId, path, userId, location])
+  }, [listingId, path, userId, location.state])
 
   const renderNoMatchesMessage = () =>
-    location.state?.filteredListings.length === 0 && (
+    location.state?.filteredListings === "Not found" && (
       <Typography
         component="h2"
         variant="subtitle1"
