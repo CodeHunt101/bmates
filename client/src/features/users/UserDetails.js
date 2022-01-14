@@ -3,6 +3,7 @@ import { MessageForm } from "../messages/MessageForm"
 import { useParams } from "react-router"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
+import TransgenderRoundedIcon from "@mui/icons-material/TransgenderRounded"
 import { Grid, Box, Typography } from "@mui/material"
 import { ListingsList } from "../listings/ListingsList"
 import Avatar from "@mui/material/Avatar"
@@ -81,6 +82,14 @@ export const UserDetails = () => {
       .then((resp) => setUser(resp))
   }, [userId])
 
+  const defineGenderIcon = (gender, fontSize) => {
+    return {
+      F: <FemaleRoundedIcon sx={{ color: "#f48fb1" }} fontSize={fontSize}/>,
+      M: <MaleRoundedIcon sx={{ color: "#42a5f5" }} fontSize={fontSize} />,
+      O: <TransgenderRoundedIcon sx={{ color: "#7e57c2" }} fontSize={fontSize} />
+    }[gender]
+  }
+  
   return (
     user && (
       <Grid
@@ -116,7 +125,8 @@ export const UserDetails = () => {
                 gutterBottom
               >
                 <b>{user.user_info.first_name || user.user_info.username}</b>{" "}
-                {user.user_info.gender === "F" ? (
+                {defineGenderIcon(user.user_info.gender, 'x-large')}
+                {/* {user.user_info.gender === "F" ? (
                   <FemaleRoundedIcon
                     sx={{ color: "#f48fb1" }}
                     fontSize="x-large"
@@ -126,7 +136,7 @@ export const UserDetails = () => {
                     sx={{ color: "#42a5f5" }}
                     fontSize="x-large"
                   />
-                )}
+                )} */}
               </Typography>
             </Box>
             <Avatar
