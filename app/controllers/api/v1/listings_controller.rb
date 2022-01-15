@@ -4,7 +4,7 @@ class Api::V1::ListingsController < ApplicationController
     listings = Listing.listings_with_user_provider_details_topics_available_dates_and_reservations
     render json: {
       listings: listings
-      }, except: [:created_at, :updated_at, :password_digest, :user_provider]
+      }, except: [:password_digest, :user_provider]
   end
 
   def create

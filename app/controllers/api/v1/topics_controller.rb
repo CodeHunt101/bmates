@@ -3,6 +3,6 @@ class Api::V1::TopicsController < ApplicationController
     topics = Topic.all
     render json: {
       topics: topics
-      }, except: [:created_at, :updated_at]
+      }, except: [:created_at, :updated_at, :listing_type]
   end
 end

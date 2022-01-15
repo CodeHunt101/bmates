@@ -25,12 +25,10 @@ const pagesWithoutCurrentUser = [
   { name: "Login", href: "/login" },
   { name: "Signup", href: "/signup" },
   { name: "Add Listing", href: "/listings/new" },
-  { name: "FAQ", href: "/faq" },
 ]
 const pagesWithCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },
   { name: "Add Listing", href: "/listings/new" },
-  { name: "FAQ", href: "/faq" },
 ]
 const settings = [
   { name: "Edit Profile", href: "/edit-profile" },
@@ -48,7 +46,7 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "180px",
+  width: "10px",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -76,7 +74,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "22ch",
+      width: "19ch",
     },
   },
 }))
@@ -194,6 +192,7 @@ export const MainMenu = ({
           pathname: "/listings",
         })
       }
+      setSearchTerm('')
     }
   }
 
