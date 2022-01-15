@@ -58,27 +58,31 @@ export const ReservationForm = ({ listing, currentUser }) => {
       })
     }
   }
-
   const handleOnSubmit = (e) => {
     // POSTs each selected date to the server as a reservation date
     e.preventDefault()
-    const promises = formData.selectedDates.map((selectedDate) => {
-      return fetch("/api/v1/reservations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          reservation: {
-            listing_id: listing.listing.id,
-            user_receiver_id: currentUser.current_user.id,
-            status: "pending",
-            reservation_date: selectedDate,
+    if (currentUser) {
+      const promises = formData.selectedDates.map((selectedDate) => {
+        return fetch("/api/v1/reservations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        }),
+          body: JSON.stringify({
+            reservation: {
+              listing_id: listing.listing.id,
+              user_receiver_id: currentUser.current_user.id,
+              status: "pending",
+              reservation_date: selectedDate,
+            },
+          }),
+        })
       })
-    })
-    Promise.all(promises).then(() => setCreatedReservations(true))
+      Promise.all(promises).then(() => setCreatedReservations(true))
+    }
+    else {
+      alert('Please login or create an account to make a reservation')
+    }
   }
 
   if (createdReservations) {
@@ -102,6 +106,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
           tileClassNameToDisabled={tileClassNameToDisabled}
           handleOnClickDay={handleOnClickDay}
           tileClassNameToSelected={tileClassNameToSelected}
+          
         />
         <Button 
           type="submit"

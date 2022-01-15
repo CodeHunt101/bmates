@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { Box, FormControl, Button, TextField } from "@mui/material"
 import Paper from "@mui/material/Paper"
 
-export const MessageForm = ({userReceiverId, listing, listingId}) => {
+export const MessageForm = ({currentUser, userReceiverId, listing, listingId}) => {
   
   const [message, setMessage] = useState('')
 
@@ -21,20 +21,25 @@ export const MessageForm = ({userReceiverId, listing, listingId}) => {
 
   const handleOnMessageSubmit = (e,v) => {
     !listingId && e.preventDefault()
-    fetch(`/api/v1/messages`,         {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: {
-          receiver_id: userReceiverId || listing.user_info.id,
-          content: message,
-          listing_id: listingIdToPost()
+    if (currentUser) {
+      fetch(`/api/v1/messages`,         {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
-    setMessage('')
+        body: JSON.stringify({
+          message: {
+            receiver_id: userReceiverId || listing.user_info.id,
+            content: message,
+            listing_id: listingIdToPost()
+          },
+        }),
+      })
+      setMessage('')
+    }
+    else {
+      alert('Please login or create an account to send enquiries')
+    }
   }
   
   return (
@@ -52,6 +57,7 @@ export const MessageForm = ({userReceiverId, listing, listingId}) => {
         >
           <FormControl sx={{width: '-webkit-fill-available'}}>
             <TextField
+              disabled={!currentUser}
               name="bio"
               required
               multiline

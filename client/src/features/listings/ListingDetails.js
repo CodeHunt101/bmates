@@ -100,9 +100,6 @@ export const ListingDetails = ({ currentUser }) => {
             >
               <b>{listing.user_info?.username}</b>
             </Typography>
-            <Typography component="div" variant="body2" gutterBottom>
-              ADD REVIEWS HERE
-            </Typography>
           </Box>
           <Typography
             component="h2"
@@ -225,7 +222,7 @@ export const ListingDetails = ({ currentUser }) => {
             >
               <b>Listing enquiries</b>
             </Typography>
-            {<MessageForm listing={listing}/>}
+            <MessageForm listing={listing} currentUser={currentUser}/>
           </Box>
           <Typography
             component="h2"

@@ -6,7 +6,7 @@ body {
     sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(https://source.unsplash.com/random?friends);
+  background-image: url(./images/home.jpeg);
   background-attachment: fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -50,6 +50,10 @@ section.main-container {
 
 div.MuiGrid-container {
   background-color: transparent;
+}
+
+a.search {
+  width: 140px
 }
 
 @media screen and (max-width: 400px) {
