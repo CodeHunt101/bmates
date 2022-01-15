@@ -314,7 +314,7 @@ export const Users = () => {
         </Container>
       </Grid>
       {/* Footer */}
-      <Box sx={{ p: 6 }} component="footer">
+      <Box sx={{ pt: 3, pb:3 }} component="footer">
         <Typography variant="h6" align="center" gutterBottom>
           Footer
         </Typography>

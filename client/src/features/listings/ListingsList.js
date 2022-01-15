@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { ListingPreview } from "./ListingPreview"
 import { SortAndFilterListings } from "../customSearch/SortAndFilterListings"
-import { useParams, useRouteMatch, useLocation} from "react-router"
-import CssBaseline from "@mui/material/CssBaseline"
+import { useParams, useRouteMatch, useLocation } from "react-router"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 import { LinearProgress } from "@mui/material"
@@ -18,8 +16,7 @@ export const ListingsList = () => {
   const location = useLocation()
   const [listings, setListings] = useState([])
 
-  const [filterMessage, setFilterMessage] = useState("")
-
+  // Page state & handlers
   const [page, setPage] = useState(1)
 
   const handleOnPageChange = (event, page) => setPage(page)
@@ -47,11 +44,51 @@ export const ListingsList = () => {
   }
 
   // SortAndFilterListings states & handlers
-  const [allTopicOptions, setAllTopicOptions] = useState([])
+
   const [topics, setTopics] = useState([])
 
+  const handleTopicsChange = (event, values) => {
+    setTopics(values)
+  }
+
+  const [filterMessage, setFilterMessage] = useState("")
+
+  const renderFilterMessage = () => {
+    if (filterMessage === "error") {
+      return (
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          align="center"
+          color="error"
+          gutterBottom
+        >
+          <b>
+            Sorry, we couldn't find listings that match your search criteria,
+            but there you have all mates:
+          </b>
+        </Typography>
+      )
+    }
+    if (filterMessage === "success") {
+      return (
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          align="center"
+          color="#2e7d32"
+          gutterBottom
+        >
+          <b>
+            We found the following listings that satisfy your search criteria:
+          </b>
+        </Typography>
+      )
+    }
+  }
+
   useEffect(() => {
-    // If there is a location state, render the repsective listings
+    // If there is a location state, render the repective listings
     if (
       location.state?.filteredListings !== "Not found" &&
       location.state?.filteredListings.length > 0
@@ -81,6 +118,7 @@ export const ListingsList = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listingId, path, userId, location.state])
 
+  const [allTopicOptions, setAllTopicOptions] = useState([])
   useEffect(() => {
     fetch("/api/v1/topics")
       .then((resp) => resp.json())
@@ -128,10 +166,6 @@ export const ListingsList = () => {
         .then((resp) => {
           generateListingsFromResponse(resp)
         })
-  }
-
-  const handleTopicsChange = (event, values) => {
-    setTopics(values)
   }
 
   const [sortParameters, setSortParameters] = useState({
@@ -195,44 +229,8 @@ export const ListingsList = () => {
     setTopics([])
   }
 
-  const renderFilterMessage = () => {
-    if (filterMessage === "error") {
-      return (
-        <Typography
-          component="h2"
-          variant="subtitle1"
-          align="center"
-          color="error"
-          gutterBottom
-        >
-          <b>
-            Sorry, we couldn't find listings that match your search criteria,
-            but there you have all mates:
-          </b>
-        </Typography>
-      )
-    }
-    if (filterMessage === "success") {
-      return (
-        <Typography
-          component="h2"
-          variant="subtitle1"
-          align="center"
-          color="#2e7d32"
-          gutterBottom
-        >
-          <b>
-            We found the following listings that satisfy your search criteria:
-          </b>
-        </Typography>
-      )
-    }
-  }
-  const theme = createTheme()
-
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <Grid
         item
         sx={{ mx: "auto", minHeight: "75vh" }}
@@ -295,6 +293,6 @@ export const ListingsList = () => {
           </Grid>
         </Container>
       </Grid>
-    </ThemeProvider>
+    </>
   )
 }
