@@ -52,6 +52,12 @@ div.MuiGrid-container {
   background-color: transparent;
 }
 
+@media screen and (max-width: 400px) {
+  #welcome-user {
+      display: none;
+  }
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;

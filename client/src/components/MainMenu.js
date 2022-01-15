@@ -46,7 +46,7 @@ const Search = styled("div")(({ theme }) => ({
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "10px",
+  width: "150px",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
@@ -74,7 +74,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "19ch",
+      width: '19ch',
     },
   },
 }))
@@ -246,21 +246,23 @@ export const MainMenu = ({
                 pagesWithCurrentUser.map((page) =>
                   renderMenuDropDownItem(page)
                 )}
+            
             </Menu>
           </Box>
-          <Typography
+          {/* <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
           >
             LOGO
-          </Typography>
+          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {!currentUser &&
               pagesWithoutCurrentUser.map((page) => renderMenuNavBarItem(page))}
             {currentUser &&
               pagesWithCurrentUser.map((page) => renderMenuNavBarItem(page))}
+          
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -277,7 +279,9 @@ export const MainMenu = ({
           </Search>
           {currentUser && (
             <>
-              <Box sx={{ flexGrow: 0.02 }}>
+                      
+          
+              <Box id="welcome-user" sx={{ flexGrow: 0.02 }}>
                 <WelcomeUser currentUser={currentUser} />
               </Box>
               <Box sx={{ flexGrow: 0 }}>
