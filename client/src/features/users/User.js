@@ -1,4 +1,5 @@
 import React from "react"
+import { AverageRating } from "../reviews/AverageRating"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
 import CardActions from "@mui/material/CardActions"
@@ -49,16 +50,15 @@ export const User = ({ user }) => {
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography gutterBottom variant="h5" component="h2">
           {user.user_info?.username} |{" "}
-          {/* {user.user_info?.gender === "F" ? (
-            <FemaleRoundedIcon fontSize="large" />
-          ) : (
-            <MaleRoundedIcon fontSize="large" />
-          )} */}
           {defineGenderIcon(user.user_info?.gender)}
         </Typography>
-        <Typography>Name: {user.user_info?.first_name}</Typography>
+        <AverageRating user={user} size="medium" />
         <Typography>
-          {user.user_info?.bio.split(" ").slice(0, 25).join(" ") + ".."}
+          {user.user_info?.first_name ? "Name:" : "Username:"}{" "}
+          <b>{user.user_info?.first_name || user.user_info?.username}</b>
+        </Typography>
+        <Typography>
+          {user.user_info?.bio.split(" ").slice(0, 25).join(" ") + "..."}
         </Typography>
       </CardContent>
       <CardActions>

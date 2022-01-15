@@ -1,10 +1,10 @@
 class Api::V1::UsersController < ApplicationController
   
   def index
-    users = User.users_with_pp
+    users = User.users_with_pp_and_rating
     render json: {
       current_user: current_user, 
-      users: users}, except: [:created_at, :updated_at, :password_digest]
+      users: users}, except: [:password_digest]
   end
 
   def create

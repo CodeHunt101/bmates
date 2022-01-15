@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { User } from "./User"
-import { SortAndFilterUsers } from "./SortAndFilterUsers"
-import CssBaseline from "@mui/material/CssBaseline"
+import { SortAndFilterUsers } from "../customSearch/SortAndFilterUsers"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
 import Link from "@mui/material/Link"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 import { calculateAge } from "../../helper_functions"
@@ -17,14 +15,7 @@ const minDistance = 5
 export const Users = () => {
   const [users, setUsers] = useState([])
 
-  const fetchCountries = () => {
-    fetch("/api/v1/countries")
-      .then((resp) => resp.json())
-      .then((countries) => {
-        setAllCountriesOptions(countries.countries)
-      })
-  }
-
+  // Pagination state and handlers
   const [page, setPage] = useState(1)
   const handleOnPageChange = (event, page) => setPage(page)
 
@@ -35,7 +26,88 @@ export const Users = () => {
       </Grid>
     ))
 
-  // States & handlers for SortAndFilterUsers
+  //Countries state & handlers
+  const [country, setCountry] = useState("")
+
+  const handleCountryChange = (event, value) => {
+    const selectedCountry = value?.id.toString() || ""
+    setCountry(selectedCountry)
+  }
+
+  const [allCountriesOptions, setAllCountriesOptions] = useState([])
+
+  const fetchCountries = () => {
+    fetch("/api/v1/countries")
+      .then((resp) => resp.json())
+      .then((countries) => {
+        setAllCountriesOptions(countries.countries)
+      })
+  }
+
+  useEffect(() => {
+    fetchCountries()
+  }, [])
+
+  const handleCurrentCountryValue = (allCountriesOptions) =>
+    allCountriesOptions.find(
+      (countryOption) => countryOption.id.toString() === country
+    ) || null
+
+  // SortAndFilterUsers states & handlers
+  const [sortParameters, setSortParameters] = useState({
+    method: "modified",
+    order: "descending",
+  })
+
+  const fetchUsers = () => {
+    fetch("/api/v1/users")
+      .then((resp) => resp.json())
+      .then((resp) => {
+        const sortedUsers = sortUsers(
+          resp.users,
+          sortParameters.method,
+          sortParameters.order
+        )
+        setUsers(sortedUsers)
+      })
+  }
+
+  useEffect(() => {
+    fetchUsers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleSortParametersChange = (e) => {
+    setSortParameters({
+      ...sortParameters,
+      [e.target.name]: e.target.value,
+    })
+  }
+
+  const sortUsers = (usersResponse, method, order) => {
+    const methodAttribute = {
+      created: "created_at",
+      modified: "updated_at",
+      rating: "user_average_rating",
+    }[method]
+
+    if (["created", "modified"].includes(method)) {
+      return usersResponse.sort((a, b) => {
+        const dateA = new Date(a.user_info[methodAttribute])
+        const dateB = new Date(b.user_info[methodAttribute])
+        return order === "descending" ? dateB - dateA : dateA - dateB
+      })
+    }
+
+    if (["rating"].includes(method)) {
+      return usersResponse.sort((a, b) => {
+        const ratingA = a[methodAttribute]
+        const ratingB = b[methodAttribute]
+        return order === "descending" ? ratingB - ratingA : ratingA - ratingB
+      })
+    }
+  }
+
   const [ageRange, setAgeRange] = useState([18, 130])
 
   const handleAgeChange = (event, newValue, activeThumb) => {
@@ -69,65 +141,94 @@ export const Users = () => {
     })
   }
 
-  const [country, setCountry] = useState("")
+  const [filterMessage, setFilterMessage] = useState("")
 
-  const handleCountryChange = (event, value) => {
-    const selectedCountry = value?.id.toString() || ""
-    setCountry(selectedCountry)
+  const filterUsers = (usersResponse) => {
+    const filteredByGender = usersResponse.filter((user) => {
+      return (
+        (genders.female && user.user_info.gender === "F") ||
+        (genders.male && user.user_info.gender === "M") ||
+        (genders.other && user.user_info.gender === "O")
+      )
+    })
+    const filteredByCountry = usersResponse.filter((user) => {
+      return country === "" ? user : country === user.user_info.country_id
+    })
+
+    const filteredByAgeRange = usersResponse.filter((user) => {
+      return (
+        calculateAge(new Date(user.user_info.dob)) >= ageRange[0] &&
+        calculateAge(new Date(user.user_info.dob)) <= ageRange[1]
+      )
+    })
+
+    const filteredUsers = () => {
+      if (filteredByGender.length === 0) {
+        return usersResponse
+          .filter((user) => filteredByCountry.includes(user))
+          .filter((user) => filteredByAgeRange.includes(user))
+      } else {
+        return filteredByGender
+          .filter((user) => filteredByCountry.includes(user))
+          .filter((user) => filteredByAgeRange.includes(user))
+      }
+    }
+
+    if (filteredUsers().length === 0) {
+      setUsers(usersResponse)
+      setFilterMessage("error")
+    } else {
+      setUsers(filteredUsers)
+      setFilterMessage("success")
+    }
   }
 
-  const [allCountriesOptions, setAllCountriesOptions] = useState([])
+  const handleOnSubmit = (e) => {
+    e.preventDefault()
+    fetch("/api/v1/users")
+      .then((resp) => resp.json())
+      .then((resp) => {
+        const sortedUsers = sortUsers(
+          resp.users,
+          sortParameters.method,
+          sortParameters.order
+        )
+        // filterUsers(resp.users)
+        filterUsers(sortedUsers)
+      })
+  }
 
-  useEffect(() => {
-    fetchCountries()
-  }, [])
-
-  useEffect(() => {
-    if (allCountriesOptions.length > 0) {
-      fetch("/api/v1/users")
-        .then((resp) => resp.json())
-        .then((resp) => {
-          const filteredByGender = resp.users.filter((user) => {
-            return (
-              (genders.female && user.user_info.gender === "F") ||
-              (genders.male && user.user_info.gender === "M") ||
-              (genders.other && user.user_info.gender === "O")
-            )
-          })
-          const filteredByCountry = resp.users.filter((user) => {
-            return country === "" ? user : country === user.user_info.country_id
-          })
-
-          const filteredByAgeRange = resp.users.filter((user) => {
-            return (
-              calculateAge(new Date(user.user_info.dob)) >= ageRange[0] &&
-              calculateAge(new Date(user.user_info.dob)) <= ageRange[1]
-            )
-          })
-
-          const filteredUsers = () => {
-            if (filteredByGender.length === 0) {
-              return resp.users
-                .filter((user) => filteredByCountry.includes(user))
-                .filter((user) => filteredByAgeRange.includes(user))
-            } else {
-              return filteredByGender
-                .filter((user) => filteredByCountry.includes(user))
-                .filter((user) => filteredByAgeRange.includes(user))
-            }
-          }
-
-          filteredUsers().length === 0
-            ? setUsers(resp.users)
-            : setUsers(filteredUsers)
-        })
+  const renderFilterMessage = () => {
+    if (filterMessage === "error") {
+      return (
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          align="center"
+          color="error"
+          gutterBottom
+        >
+          <b>
+            Sorry, we couldn't find mates that match your filter criteria, but
+            there you have all mates:
+          </b>
+        </Typography>
+      )
     }
-  }, [genders, country, allCountriesOptions, ageRange])
-
-  const handleCurrentCountryValue = (allCountriesOptions) =>
-    allCountriesOptions.find(
-      (countryOption) => countryOption.id.toString() === country
-    ) || null
+    if (filterMessage === "success") {
+      return (
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          align="center"
+          color="#2e7d32"
+          gutterBottom
+        >
+          <b>We found the following mates that satisfy your filter criteria:</b>
+        </Typography>
+      )
+    }
+  }
 
   function Copyright(props) {
     return (
@@ -147,11 +248,8 @@ export const Users = () => {
     )
   }
 
-  const theme = createTheme()
-
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <Grid
         item
         sx={{ mx: "auto", minHeight: "75vh" }}
@@ -186,7 +284,11 @@ export const Users = () => {
           handleAgeChange={handleAgeChange}
           ageRange={ageRange}
           handleGendersCheck={handleGendersCheck}
+          handleOnSubmit={handleOnSubmit}
+          handleSortParametersChange={handleSortParametersChange}
+          sortParameters={sortParameters}
         />
+        {renderFilterMessage()}
         {users && (
           <Container
             sx={{ display: "flex", justifyContent: "center" }}
@@ -227,6 +329,7 @@ export const Users = () => {
         <Copyright />
       </Box>
       {/* End footer */}
-    </ThemeProvider>
+    </>
   )
 }
+

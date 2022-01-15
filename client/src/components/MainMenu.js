@@ -330,20 +330,3 @@ export const MainMenu = ({
   )
 }
 
-// useEffect(() => {
-//   if (searchTerm.length > 2) {
-//     const filteredListings = listings.listings.filter((listing) =>
-//       listing.listing.description.replace(/[^a-zA-Z ]/g, "").toLowerCase().split(" ").includes(searchTerm.toLowerCase())
-//     )
-//     console.log(filteredListings)
-//     history.push({
-//       pathname: "/listings",
-//       state: { filteredListings: filteredListings, searchTerm },
-//     })
-//   }
-//   // if (searchTerm.length > 0 && searchTerm.length <= 2) {
-//   //   history.replace({
-//   //     pathname: "/listings",
-//   //   })
-//   // }
-// }, [searchTerm])

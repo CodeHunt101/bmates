@@ -25,9 +25,10 @@ class User < ApplicationRecord
   belongs_to :country
 
 
-  def self.users_with_pp
+  def self.users_with_pp_and_rating
     all.map{|user| {
       user_info: user,
+      user_average_rating: user.average_rating,
       user_profile_picture: user.image.url
     }}
   end
@@ -40,7 +41,8 @@ class User < ApplicationRecord
     end.flatten
 
     if ratings.size > 0
-      ((ratings.sum.to_f/ratings.size) * 2).round/2.0
+      # ((ratings.sum.to_f/ratings.size) * 2).round/2.0
+      ratings.sum.to_f/ratings.size
     else
       nil
     end
