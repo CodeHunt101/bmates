@@ -35,7 +35,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     firstName: "",
     lastName: "",
     gender: "",
-    dob: new Date(),
+    dob: "",
     country: "",
     bio: "",
     username: "",
@@ -53,12 +53,12 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
     currentUser &&
       setFormData({
         id: currentUser.current_user.id,
-        firstName: currentUser.current_user.first_name,
-        lastName: currentUser.current_user.last_name,
-        gender: currentUser.current_user.gender,
-        dob: new Date(currentUser.current_user.dob),
-        country: currentUser.current_user.country_id,
-        bio: currentUser.current_user.bio,
+        firstName: currentUser.current_user.first_name || "",
+        lastName: currentUser.current_user.last_name || "",
+        gender: currentUser.current_user.gender || "",
+        dob: currentUser.current_user.dob && new Date(currentUser.current_user.dob),
+        country: currentUser.current_user.country_id || "",
+        bio: currentUser.current_user.bio || "",
         username: currentUser.current_user.username,
         email: currentUser.current_user.email,
         topics: currentUser.user_topics.map((t) => t.id.toString()),
@@ -100,14 +100,14 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
 
     const appendUserInfoWithoutPassword = () => {
       newUserInfo.append("user[id]", formData.id)
-      newUserInfo.append("user[first_name]", formatNames(formData.firstName))
-      newUserInfo.append("user[last_name]", formatNames(formData.lastName))
-      newUserInfo.append("user[gender]", formData.gender)
-      newUserInfo.append("user[country_id]", formData.country)
-      newUserInfo.append("user[dob]", formData.dob)
-      newUserInfo.append("user[bio]", formData.bio)
-      newUserInfo.append("user[username]", formData.username.toLowerCase())
-      newUserInfo.append("user[email]", formData.email)
+      formData.firstName !== "" && newUserInfo.append("user[first_name]", formatNames(formData.firstName))
+      formData.lastName !== "" && newUserInfo.append("user[last_name]", formatNames(formData.lastName))
+      formData.gender !== "" && newUserInfo.append("user[gender]", formData.gender)
+      formData.country !== "" && newUserInfo.append("user[country_id]", formData.country)
+      formData.dob && newUserInfo.append("user[dob]", formData.dob)
+      formData.bio !== "" && newUserInfo.append("user[bio]", formData.bio)
+      formData.username !== "" && newUserInfo.append("user[username]", formData.username.toLowerCase())
+      formData.email !== "" && newUserInfo.append("user[email]", formData.email)
       attachedImage && newUserInfo.append("user[image]", attachedImage)
       return newUserInfo
     }
@@ -286,7 +286,6 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   sx={{ minWidth: "100%" }}
                   autoComplete="given-first-name"
                   name="firstName"
-                  required
                   id="edit-user-first-name"
                   label="First Name"
                   value={formData.firstName}
@@ -298,7 +297,6 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   sx={{ minWidth: "100%" }}
                   autoComplete="given-last-name"
                   name="lastName"
-                  required
                   id="edit-user-last-name"
                   label="Last name"
                   value={formData.lastName}
@@ -320,6 +318,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
                   >
                     <MenuItem value={"M"}>Male</MenuItem>
                     <MenuItem value={"F"}>Female</MenuItem>
+                    <MenuItem value={"O"}>Other</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

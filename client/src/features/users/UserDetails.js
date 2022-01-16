@@ -72,7 +72,7 @@ function InsetDividers({ user }) {
   )
 }
 
-export const UserDetails = () => {
+export const UserDetails = ({currentUser}) => {
   const { userId } = useParams()
   const [user, setUser] = useState(null)
 
@@ -247,7 +247,7 @@ export const UserDetails = () => {
               >
                 <b>Get in touch</b>
               </Typography>
-              {<MessageForm userReceiverId={userId} />}
+              {<MessageForm userReceiverId={userId} currentUser={currentUser}/>}
             </Box>
           </Grid>
         </Grid>

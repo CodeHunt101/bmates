@@ -64,7 +64,7 @@ function App() {
             <Reservations />
           </Route>
           <Route path="/users/:userId">
-            <UserDetails />
+            <UserDetails currentUser={currentUser} />
           </Route>
           <Route path="/users">
             <Users />

@@ -242,7 +242,7 @@ export const ListingsList = () => {
         circle="true"
       >
         {/* Hero unit */}
-        <Box
+        {path !== "/users/:userId" && <Box
           sx={{
             pt: path !== "/users/:userId" ? 8 : 1,
             pb: 6,
@@ -258,7 +258,7 @@ export const ListingsList = () => {
           >
             <b>{path === "/my-listings" ? "My Listings" :"Listings"}</b>
           </Typography>
-        </Box>
+        </Box>}
         <SortAndFilterListings
             allTopicOptions={allTopicOptions}
             // handleTopicValues={handleTopicValues}

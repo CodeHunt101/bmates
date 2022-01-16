@@ -37,6 +37,7 @@ class Listing < ApplicationRecord
       listing_average_rating: self.average_rating,
       listing_reviews: self.reviews.map{|r| r.review_with_user_info},
       user_info:self.user_provider,
+      user_average_rating: self.user_provider.average_rating,
       user_profile_picture: self.user_provider.image.url,
       topics: self.topics.select(:id,:name),
       available_dates: self.available_dates_not_reserved.select(:id, :available_date),
