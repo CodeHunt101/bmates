@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom"
 import { ReservationForm } from "../reservations/ReservationForm"
 import { MessageForm } from "../messages/MessageForm"
 import { User } from "../users/User"
-import { AverageRating } from '../reviews/AverageRating'
+import { AverageRating } from "../reviews/AverageRating"
 import {
   Grid,
   Paper,
@@ -19,7 +19,7 @@ import { Reviews } from "../reviews/Reviews"
 export const ListingDetails = ({ currentUser }) => {
   const [listing, setListing] = useState({
     listing_average_rating: null,
-    listing_reviews: []
+    listing_reviews: [],
   })
 
   const { listingId } = useParams()
@@ -31,6 +31,59 @@ export const ListingDetails = ({ currentUser }) => {
         setListing(resp.listing)
       })
   }, [currentUser, listingId])
+
+  const renderLinkToEditListing = () =>
+    currentUser &&
+    listing.user_info.id === currentUser.current_user.id && (
+      <Link
+        to={{
+          pathname: `/listings/${listing.listing?.id}/edit`,
+          state: { listing },
+        }}
+      >
+        <IconButton aria-label="delete">
+          <EditRoundedIcon color="warning" />
+        </IconButton>
+      </Link>
+    )
+
+  const renderReservationsForm = () =>
+    currentUser &&
+    listing.user_info.id !== currentUser.current_user.id && (
+      <>
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          sx={{ fontSize: 24, color: "#334e6f" }}
+          gutterBottom
+        >
+          <b>Make reservations</b>
+        </Typography>
+        <ReservationForm listing={listing} currentUser={currentUser} />
+      </>
+    )
+
+  const renderMessageForm = () =>
+    currentUser &&
+    listing.user_info.id !== currentUser.current_user.id && (
+      <Box
+        sx={{
+          my: 1,
+          mx: 2,
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          component="h2"
+          variant="subtitle1"
+          sx={{ fontSize: 24, color: "#334e6f" }}
+          gutterBottom
+        >
+          <b>Listing enquiries</b>
+        </Typography>
+        <MessageForm listing={listing} currentUser={currentUser} />
+      </Box>
+    )
 
   return (
     <Grid
@@ -71,18 +124,9 @@ export const ListingDetails = ({ currentUser }) => {
                 gutterBottom
               >
                 <b>{listing.listing?.title}</b>{" "}
-                <AverageRating listing={listing} size="large"/>
+                <AverageRating listing={listing} size="large" />
               </Typography>
-              <Link
-                to={{
-                  pathname: `/listings/${listing.listing?.id}/edit`,
-                  state: { listing },
-                }}
-              >
-                <IconButton aria-label="delete">
-                  <EditRoundedIcon color="warning" />
-                </IconButton>
-              </Link>
+              {renderLinkToEditListing()}
             </Box>
             <Typography
               component="small"
@@ -174,13 +218,13 @@ export const ListingDetails = ({ currentUser }) => {
           <Typography
             component="h2"
             variant="subtitle1"
-            sx={{ fontSize: 24, color: "#334e6f", mt:2 }}
+            sx={{ fontSize: 24, color: "#334e6f", mt: 2 }}
             gutterBottom
           >
             <b>Reviews</b>
           </Typography>
           <Box>
-            <Reviews reviews={listing.listing_reviews}/>
+            <Reviews reviews={listing.listing_reviews} />
           </Box>
         </Box>
       </Grid>
@@ -198,32 +242,8 @@ export const ListingDetails = ({ currentUser }) => {
             alignItems: "center",
           }}
         >
-          <Typography
-            component="h2"
-            variant="subtitle1"
-            sx={{ fontSize: 24, color: "#334e6f" }}
-            gutterBottom
-          >
-            <b>Make reservations</b>
-          </Typography>
-          <ReservationForm listing={listing} currentUser={currentUser} />
-          <Box
-            sx={{
-              my: 1,
-              mx: 2,
-              alignItems: "center",
-            }}
-          >
-            <Typography
-              component="h2"
-              variant="subtitle1"
-              sx={{ fontSize: 24, color: "#334e6f" }}
-              gutterBottom
-            >
-              <b>Listing enquiries</b>
-            </Typography>
-            <MessageForm listing={listing} currentUser={currentUser}/>
-          </Box>
+          {renderReservationsForm()}
+          {renderMessageForm()}
           <Typography
             component="h2"
             variant="subtitle1"

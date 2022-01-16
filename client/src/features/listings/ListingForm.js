@@ -225,168 +225,136 @@ export const ListingForm = ({ currentUser }) => {
       />
     )
   }
+  
+  //Redirect to Home if Listing doesn't belong to user
+  if (currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)) {
+    return <Redirect push to={{ pathname: "/" }} />
+  }
 
   return (
-    <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
-      <Grid
-        item
-        sx={{ mx: "auto" }}
-        xs={12}
-        sm={8}
-        md={5}
-        component={Paper}
-        elevation={6}
-        circle="true"
-        id="new-listing-paper"
-      >
-        <Box
-          sx={{
-            my: 8,
-            mx: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+    currentUser &&
+    currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId) && (
+      <Grid container component="main" sx={{ height: "100vh" }}>
+        <CssBaseline />
+        <Grid
+          item
+          sx={{ mx: "auto" }}
+          xs={12}
+          sm={8}
+          md={5}
+          component={Paper}
+          elevation={6}
+          circle="true"
+          id="new-listing-paper"
         >
-          <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
-            <PeopleIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {location.pathname === "/listings/new"
-              ? "New Listing"
-              : "Edit Listing"}
-          </Typography>
           <Box
-            component="form"
-            noValidate
-            onSubmit={handleOnSubmit}
-            sx={{ mt: 1, my: 5 }}
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <FormControl sx={{ minWidth: 100 }}>
-                  <InputLabel id="demo-simple-select-helper-label">
-                    Type
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={formData.listingType}
-                    label="Type"
-                    onChange={handleOnChange}
-                    name="listingType"
-                  >
-                    <MenuItem value={"Mate"}>Mate</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={8}>
-                <TextField
-                  sx={{ minWidth: 240 }}
-                  name="title"
-                  required
-                  id="listing-title"
-                  label="Title"
-                  value={formData.title}
-                  onChange={handleOnChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="description"
-                  required
-                  multiline
-                  minRows={2}
-                  fullWidth
-                  id="listing-description"
-                  label="Description"
-                  value={formData.description}
-                  onChange={handleOnChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <label htmlFor="icon-button-file">
-                  Listing picture
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="span"
-                  >
-                    <PhotoCamera />
-                  </IconButton>
-                  <Input
-                    accept="image/*"
-                    id="icon-button-file"
-                    type="file"
-                    name="image"
-                    multiple
-                    onChange={handleOnImageChange}
-                  />
-                </label>
-              </Grid>
-              <Grid item xs={12}>
-                {renderTopics()}
-              </Grid>
-              <Grid item xs={12}>
-                <ListingAvailability
-                  tileClassNameToAvailable={tileClassNameToAvailable}
-                  handleOnClickDay={handleOnClickDay}
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+            <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
+              <PeopleIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              {location.pathname === "/listings/new"
+                ? "New Listing"
+                : "Edit Listing"}
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleOnSubmit}
+              sx={{ mt: 1, my: 5 }}
             >
-              Submit
-            </Button>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={4}>
+                  <FormControl sx={{ minWidth: 100 }}>
+                    <InputLabel id="demo-simple-select-helper-label">
+                      Type
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={formData.listingType}
+                      label="Type"
+                      onChange={handleOnChange}
+                      name="listingType"
+                    >
+                      <MenuItem value={"Mate"}>Mate</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={8}>
+                  <TextField
+                    sx={{ minWidth: 240 }}
+                    name="title"
+                    required
+                    id="listing-title"
+                    label="Title"
+                    value={formData.title}
+                    onChange={handleOnChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    name="description"
+                    required
+                    multiline
+                    minRows={2}
+                    fullWidth
+                    id="listing-description"
+                    label="Description"
+                    value={formData.description}
+                    onChange={handleOnChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <label htmlFor="icon-button-file">
+                    Listing picture
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <PhotoCamera />
+                    </IconButton>
+                    <Input
+                      accept="image/*"
+                      id="icon-button-file"
+                      type="file"
+                      name="image"
+                      multiple
+                      onChange={handleOnImageChange}
+                    />
+                  </label>
+                </Grid>
+                <Grid item xs={12}>
+                  {renderTopics()}
+                </Grid>
+                <Grid item xs={12}>
+                  <ListingAvailability
+                    tileClassNameToAvailable={tileClassNameToAvailable}
+                    handleOnClickDay={handleOnClickDay}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Box>
           </Box>
-        </Box>
+        </Grid>
       </Grid>
-    </Grid>
+    )
   )
 }
 
-// const fetchListings = (method) => {
-// fetch(
-//   method === "POST"
-//     ? "/api/v1/listings"
-//     : `/api/v1/listings/${listingId}`,
-//   {
-//     method: method,
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       listing: {
-//         listing_type: formData.listingType,
-//         title: formData.title,
-//         description: formData.description,
-//         topic_ids: formData.topics,
-//         user_provider_id: currentUser.current_user.id,
-//       },
-//     }),
-//   }
-// )
-//     .then((resp) => resp.json())
-//     .then((submittedListing) => {
-//       const promises = formData.selectedDates.map((selectedDate) => {
-//         return fetch("/api/v1/available_dates", {
-//           method: "POST",
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//           body: JSON.stringify({
-//             available_date: {
-//               available_date: selectedDate,
-//               listing_id: submittedListing.listing.id,
-//             },
-//           }),
-//         })
-//       })
-//     Promise.all(promises).then(()=>setSubmittedListing(submittedListing))
-//     })
-// }
