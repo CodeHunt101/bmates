@@ -11,15 +11,9 @@ import Typography from "@mui/material/Typography"
 import { blue } from "@mui/material/colors"
 import Paper from "@mui/material/Paper"
 
-function Copyright(props) {
+function GitHubLink() {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
+    <Typography variant="body2" color="text.secondary" align="center">
       <Link color="inherit" href="https://github.com/CodeHunt101">
         My GitHub profile
       </Link>{" "}
@@ -34,6 +28,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
+  const [errors, setErrors] = useState(null)
 
   const onUsernameChanged = (e) => setUsername(e.target.value)
   const onEmailChanged = (e) => setEmail(e.target.value)
@@ -57,18 +52,24 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
           password_confirmation: passwordConfirmation,
         },
       }),
-    }).then(() =>
-      fetch("/api/v1/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username.toLowerCase(),
-          password,
-        }),
-      }).then(fetchCurrentUser)
-    )
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp?.errors_count) {
+          setErrors(resp)
+        } else {
+          fetch("/api/v1/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: username.toLowerCase(),
+              password,
+            }),
+          }).then(fetchCurrentUser)
+        }
+      })
   }
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -102,7 +103,18 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
           <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
             <AccessibilityNewIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:1.5}}>
+          <Typography
+            component="h1"
+            variant="h5"
+            color="white"
+            sx={{
+              backgroundColor: "#1976d2",
+              width: "fit-content",
+              margin: "auto",
+              borderRadius: "25px",
+              p: 1.5,
+            }}
+          >
             Sign up
           </Typography>
           <Box
@@ -114,6 +126,12 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors?.error_messages?.username}
+                  helperText={
+                    errors?.error_messages?.username
+                      ? `Username ${errors.error_messages.username[0]}`
+                      : false
+                  }
                   autoComplete="given-username"
                   name="userName"
                   required
@@ -126,10 +144,17 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  error={!!errors?.error_messages?.email}
+                  helperText={
+                    errors?.error_messages?.email
+                      ? `Email ${errors.error_messages.email[0]}`
+                      : false
+                  }
                   required
                   fullWidth
                   id="signup-email"
                   label="Email Address"
+                  type="email"
                   name="email"
                   autoComplete="email"
                   onChange={onEmailChanged}
@@ -137,6 +162,12 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors?.error_messages?.password}
+                  helperText={
+                    errors?.error_messages?.password
+                      ? `Password ${errors.error_messages.password[0]}`
+                      : false
+                  }
                   required
                   fullWidth
                   name="password"
@@ -149,6 +180,12 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
+                  error={!!errors?.error_messages?.password_confirmation}
+                  helperText={
+                    errors?.error_messages?.password_confirmation
+                      ? `Password confirmation ${errors.error_messages.password_confirmation[0]}`
+                      : false
+                  }
                   required
                   fullWidth
                   name="passwordConfirmation"
@@ -177,7 +214,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <GitHubLink sx={{ mt: 5 }} />
       </Grid>
     </Grid>
   )

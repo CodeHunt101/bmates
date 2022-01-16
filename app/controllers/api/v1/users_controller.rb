@@ -8,11 +8,12 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    # binding.pry
     user = User.create(user_params)
     if user.valid?
-      message = "#{user.username} has been successfully created with and email #{user.email}."
-      render json: {message: message, user: user}, except: [:created_at, :updated_at, :password_digest]
+      message = "#{user.username} has been successfully created."
+      render_valid_user(user, message)
+    else
+      render_errors(user)
     end
   end
 
@@ -22,7 +23,9 @@ class Api::V1::UsersController < ApplicationController
     
     if user.valid?
       message = "#{user.username} has been successfully updated."
-      render json: {message: message, user: user}, except: [:created_at, :updated_at, :password_digest]
+      render_valid_user(user, message)
+    else
+      render_errors(user)
     end
   end
 
@@ -83,5 +86,15 @@ class Api::V1::UsersController < ApplicationController
       :password_confirmation,
       topic_ids: []
     )
+  end
+
+  def render_errors(record)
+    errors_count = record.errors.count
+    error_messages = record.errors
+    render json: {errors_count: errors_count, error_messages: error_messages}
+  end
+
+  def render_valid_user(user, message)
+    render json: {message: message, user: user}, except: [:created_at, :updated_at, :password_digest]
   end
 end
