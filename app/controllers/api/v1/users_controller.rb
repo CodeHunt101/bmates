@@ -8,6 +8,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
+    # binding.pry
     user = User.create(user_params)
     if user.valid?
       message = "#{user.username} has been successfully created with and email #{user.email}."

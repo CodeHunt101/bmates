@@ -250,14 +250,16 @@ export const ListingsList = () => {
         >
           <Typography
             component="h2"
-            variant="h4"
+            variant="h3"
             align="center"
-            color="text.primary"
+            color="white"
+            sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:2}}
             gutterBottom
           >
-            {path !== "/users/:userId" && "Listings"}
+            <b>{path === "/my-listings" ? "My Listings" :"Listings"}</b>
           </Typography>
-          <SortAndFilterListings
+        </Box>
+        <SortAndFilterListings
             allTopicOptions={allTopicOptions}
             // handleTopicValues={handleTopicValues}
             topics={topics}
@@ -268,7 +270,6 @@ export const ListingsList = () => {
           />
           {/* {renderNoMatchesMessage()} */}
           {renderFilterMessage()}
-        </Box>
         {listings.length > 0 && (
           <Container
             sx={{ display: "flex", justifyContent: "center" }}

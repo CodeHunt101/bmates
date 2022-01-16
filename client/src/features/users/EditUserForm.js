@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useHistory } from "react-router"
+import { formatNames } from "../../helper_functions"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -99,13 +100,13 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
 
     const appendUserInfoWithoutPassword = () => {
       newUserInfo.append("user[id]", formData.id)
-      newUserInfo.append("user[first_name]", formData.firstName)
-      newUserInfo.append("user[last_name]", formData.lastName)
+      newUserInfo.append("user[first_name]", formatNames(formData.firstName))
+      newUserInfo.append("user[last_name]", formatNames(formData.lastName))
       newUserInfo.append("user[gender]", formData.gender)
       newUserInfo.append("user[country_id]", formData.country)
       newUserInfo.append("user[dob]", formData.dob)
       newUserInfo.append("user[bio]", formData.bio)
-      newUserInfo.append("user[username]", formData.username)
+      newUserInfo.append("user[username]", formData.username.toLowerCase())
       newUserInfo.append("user[email]", formData.email)
       attachedImage && newUserInfo.append("user[image]", attachedImage)
       return newUserInfo
@@ -251,7 +252,7 @@ export const EditUserForm = ({ currentUser, handleUserSubmittedImage }) => {
           <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
             <AccessibilityNewIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '10px', p:1}}>
             Edit Profile
           </Typography>
           <Box

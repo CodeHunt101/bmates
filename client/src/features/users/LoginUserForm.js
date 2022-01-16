@@ -66,7 +66,7 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
             <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
               <LoginIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5" color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '10px', p:1}}>
               Log In
             </Typography>
             <Box

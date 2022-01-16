@@ -265,16 +265,18 @@ export const Users = () => {
           sx={{
             pt: 8,
             pb: 6,
+            
           }}
         >
           <Typography
             component="h2"
-            variant="h4"
+            variant="h3"
             align="center"
-            color="text.primary"
+            color="white"
+            sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:2}}
             gutterBottom
           >
-            Users
+            <b>Mates</b>
           </Typography>
         </Box>
         <SortAndFilterUsers

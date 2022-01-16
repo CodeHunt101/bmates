@@ -41,7 +41,7 @@ export const Home = ({ currentUser }) => (
             <b>Listings</b>
           </Button>
           <Button className="search" variant="contained" href="/users">
-            <b>Users</b>
+            <b>Mates</b>
           </Button>
         </Stack>
       </Box>

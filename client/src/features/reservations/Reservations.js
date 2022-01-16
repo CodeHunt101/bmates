@@ -95,7 +95,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
             component="h2"
             variant="h4"
             align="center"
-            color="text.primary"
+            color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:1.5}}
             gutterBottom
           >
             Reservations

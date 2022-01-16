@@ -62,23 +62,29 @@ export const ReservationForm = ({ listing, currentUser }) => {
     // POSTs each selected date to the server as a reservation date
     e.preventDefault()
     if (currentUser) {
-      const promises = formData.selectedDates.map((selectedDate) => {
-        return fetch("/api/v1/reservations", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            reservation: {
-              listing_id: listing.listing.id,
-              user_receiver_id: currentUser.current_user.id,
-              status: "pending",
-              reservation_date: selectedDate,
+      if (formData.selectedDates.length > 0) {
+        const promises = formData.selectedDates.map((selectedDate) => {
+          return fetch("/api/v1/reservations", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
             },
-          }),
+            body: JSON.stringify({
+              reservation: {
+                listing_id: listing.listing.id,
+                user_receiver_id: currentUser.current_user.id,
+                status: "pending",
+                reservation_date: selectedDate,
+              },
+            }),
+          })
         })
-      })
-      Promise.all(promises).then(() => setCreatedReservations(true))
+        Promise.all(promises).then(() => setCreatedReservations(true))
+      }
+      else {
+        alert("You haven't selected any dates. Please try again")
+      }
+      
     }
     else {
       alert('Please login or create an account to make a reservation')
@@ -111,7 +117,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
         <Button 
           type="submit"
           variant="contained"
-          sx={{ mt: 3, mb: 2 }}>Submit</Button>
+          sx={{ width: 'fit-content', ml:'auto', mr:'auto', mt:2, mb:2 }}>Reserve</Button>
       </FormControl>
     </Box>
   )

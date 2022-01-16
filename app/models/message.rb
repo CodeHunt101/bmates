@@ -3,6 +3,8 @@ class Message < ApplicationRecord
   belongs_to :receiver, class_name: "User"
   belongs_to :listing, required: false
 
+  validates :content, length: { maximum: 1000 }
+
   def self.messages_between_two_users(user_1_id, user_2_id, listing_id)
     
     Message.all.select do |m| 

@@ -51,7 +51,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
       },
       body: JSON.stringify({
         user: {
-          username,
+          username: username.toLowerCase(),
           email,
           password,
           password_confirmation: passwordConfirmation,
@@ -64,7 +64,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username,
+          username: username.toLowerCase(),
           password,
         }),
       }).then(fetchCurrentUser)
@@ -102,7 +102,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
           <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
             <AccessibilityNewIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:1.5}}>
             Sign up
           </Typography>
           <Box

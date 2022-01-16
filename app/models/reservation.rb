@@ -3,6 +3,8 @@ class Reservation < ApplicationRecord
   belongs_to :user_receiver, class_name: "User"
   has_one :review
 
+  validates :reservation_date, presence: true
+
   def self.reservations_with_listing_provider_and_receiver_details
     
     all.map do |r| 

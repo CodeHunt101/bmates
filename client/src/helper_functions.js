@@ -12,3 +12,9 @@ export const calculateAge = (birthday) => { // birthday is a date
   const ageDate = new Date(ageDifMs); // miliseconds from epoch
   return Math.abs(ageDate.getUTCFullYear() - 1970);
 }
+
+export const formatNames = (fullName) => (
+  fullName.split(" ").map(name => (
+    name.slice(0,1).toUpperCase() + name.slice(1).toLowerCase()
+  )).join(" ")
+)

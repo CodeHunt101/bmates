@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
 import TransgenderRoundedIcon from "@mui/icons-material/TransgenderRounded"
+import QuestionMarkRoundedIcon from '@mui/icons-material/QuestionMarkRounded';
 
 export const User = ({ user }) => {
   const defineGender = (gender) => {
@@ -20,11 +21,25 @@ export const User = ({ user }) => {
   }
 
   const defineGenderIcon = (gender, fontSize) => {
-    return {
-      F: <FemaleRoundedIcon sx={{ color: "#f48fb1" }} fontSize={fontSize} />,
-      M: <MaleRoundedIcon sx={{ color: "#42a5f5" }} fontSize={fontSize} />,
-      O: <TransgenderRoundedIcon sx={{ color: "#7e57c2" }} fontSize={fontSize} />,
-    }[gender]
+    if (gender) {
+      return {
+        F: <FemaleRoundedIcon sx={{ color: "#f48fb1" }} fontSize={fontSize} />,
+        M: <MaleRoundedIcon sx={{ color: "#42a5f5" }} fontSize={fontSize} />,
+        O: <TransgenderRoundedIcon sx={{ color: "#7e57c2" }} fontSize={fontSize} />,
+      }[gender]
+    } else {
+      return <QuestionMarkRoundedIcon sx={{ color: "#7e57c2" }} fontSize={fontSize} />
+    }
+   
+  }
+
+  const generateBioPreview = () => {
+    const bio = user.user_info?.bio
+    if (bio) {
+      return bio.split(" ").slice(0, 25).join(" ") + "..."
+    } else {
+      return ""
+    }
   }
 
   return (
@@ -58,7 +73,7 @@ export const User = ({ user }) => {
           <b>{user.user_info?.first_name || user.user_info?.username}</b>
         </Typography>
         <Typography>
-          {user.user_info?.bio.split(" ").slice(0, 25).join(" ") + "..."}
+          {generateBioPreview()}
         </Typography>
       </CardContent>
       <CardActions>
