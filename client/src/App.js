@@ -33,6 +33,19 @@ function App() {
     fetchCurrentUser()
   },[])
 
+  const [errors, setErrors] = useState({
+    session: false,
+    users: false,
+    listings: false,
+    reservations: false,
+    sortAndFilters: false,
+  })
+
+  const handleErrors = (object) => {
+    setErrors(object)
+  }
+
+
   const [userSubmittedImage, setUserSubmittedImage] = useState(false)
 
   const handleUserSubmittedImage = (status) => {
@@ -91,16 +104,16 @@ function App() {
           </Route>
         
           <Route path="/login">
-            <LoginUserForm fetchCurrentUser={fetchCurrentUser}/>
+            <LoginUserForm fetchCurrentUser={fetchCurrentUser} handleErrors={handleErrors} errors={errors}/>
             {currentUser && <Redirect to="/"/>}
           </Route>
         
           <Route path="/signup" >
-            <SignupUserForm fetchCurrentUser={fetchCurrentUser}/>
+            <SignupUserForm fetchCurrentUser={fetchCurrentUser} handleErrors={handleErrors} errors={errors}/>
             {currentUser && <Redirect to="/"/>}
           </Route>
           <Route exact path="/">
-            <Home currentUser={currentUser}/>
+            <Home />
           </Route>
         
           {/* <Route exact path="/*" element={<RedirectToMain />}/> */}

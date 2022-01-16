@@ -2,7 +2,7 @@ import React from "react"
 import { Container, Grid, Box, Typography, Button, Stack } from "@mui/material"
 import Paper from "@mui/material/Paper"
 
-export const Home = ({ currentUser }) => (
+export const Home = () => (
   <Container id="home" maxWidth="xl">
     <Grid
       item
@@ -10,7 +10,7 @@ export const Home = ({ currentUser }) => (
       sx={{
         display: "flex",
         minHeight: "92.2vh",
-        backgroundColor: "rgba(66,165,245,0.8)",
+        backgroundColor: "#ffecb390",
       }}
     >
       <Box
@@ -20,8 +20,9 @@ export const Home = ({ currentUser }) => (
           textAlign: "center",
           alignItems: "center",
           height: "20%",
-          backgroundColor: "#e3f2fd",
+          backgroundColor: "rgba(227,242,253,0.7)",
           p: 4,
+          borderRadius: '20px'
         }}
       >
         <Typography component="h1" variant="h3" gutterBottom>

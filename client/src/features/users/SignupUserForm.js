@@ -23,12 +23,12 @@ function GitHubLink() {
   )
 }
 
-export const SignupUserForm = ({ fetchCurrentUser }) => {
+export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
-  const [errors, setErrors] = useState(null)
+  
 
   const onUsernameChanged = (e) => setUsername(e.target.value)
   const onEmailChanged = (e) => setEmail(e.target.value)
@@ -56,7 +56,10 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp?.errors_count) {
-          setErrors(resp)
+          handleErrors({
+            ...errors,
+            users: resp
+          })
         } else {
           fetch("/api/v1/login", {
             method: "POST",
@@ -67,7 +70,13 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               username: username.toLowerCase(),
               password,
             }),
-          }).then(fetchCurrentUser)
+          })
+          .then(()=>handleErrors({
+            ...errors,
+            users: false
+          }))
+          .then(fetchCurrentUser)
+          
         }
       })
   }
@@ -115,7 +124,7 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               p: 1.5,
             }}
           >
-            Sign up
+            Become a mate!
           </Typography>
           <Box
             component="form"
@@ -126,10 +135,10 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  error={!!errors?.error_messages?.username}
+                  error={!!errors.users?.error_messages?.username}
                   helperText={
-                    errors?.error_messages?.username
-                      ? `Username ${errors.error_messages.username[0]}`
+                    errors.users.error_messages?.username
+                      ? `Username ${errors.users.error_messages.username[0]}`
                       : false
                   }
                   autoComplete="given-username"
@@ -144,10 +153,10 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  error={!!errors?.error_messages?.email}
+                  error={!!errors.users?.error_messages?.email}
                   helperText={
-                    errors?.error_messages?.email
-                      ? `Email ${errors.error_messages.email[0]}`
+                    errors.users.error_messages?.email
+                      ? `Email ${errors.users.error_messages.email[0]}`
                       : false
                   }
                   required
@@ -162,10 +171,10 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  error={!!errors?.error_messages?.password}
+                  error={!!errors.users?.error_messages?.password}
                   helperText={
-                    errors?.error_messages?.password
-                      ? `Password ${errors.error_messages.password[0]}`
+                    errors.users.error_messages?.password
+                      ? `Password ${errors.users.error_messages.password[0]}`
                       : false
                   }
                   required
@@ -180,10 +189,10 @@ export const SignupUserForm = ({ fetchCurrentUser }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  error={!!errors?.error_messages?.password_confirmation}
+                  error={!!errors.users?.error_messages?.password_confirmation}
                   helperText={
-                    errors?.error_messages?.password_confirmation
-                      ? `Password confirmation ${errors.error_messages.password_confirmation[0]}`
+                    errors.users.error_messages?.password_confirmation
+                      ? `Password confirmation ${errors.users.error_messages.password_confirmation[0]}`
                       : false
                   }
                   required

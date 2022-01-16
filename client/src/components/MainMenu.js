@@ -23,7 +23,7 @@ import SearchIcon from "@mui/icons-material/Search"
 const pagesWithoutCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },
   { name: "Login", href: "/login" },
-  { name: "Signup", href: "/signup" },
+  { name: "Join", href: "/signup" },
   { name: "Add Listing", href: "/listings/new" },
 ]
 const pagesWithCurrentUser = [

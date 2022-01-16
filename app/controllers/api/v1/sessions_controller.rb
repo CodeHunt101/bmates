@@ -10,7 +10,7 @@ class Api::V1::SessionsController < ApplicationController
         session[:user_id] = user.id
         render json: { message: "loggen in" }
       else
-        render json: { message: "The information provided is incorrect, please try again." }
+        render json: { error_message: "The information provided is incorrect, please try again." }
       end
     end
   end

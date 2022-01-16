@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper"
 
 const theme = createTheme()
 
-export const LoginUserForm = ({ fetchCurrentUser }) => {
+export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -36,10 +36,31 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
       }),
     })
       .then((resp) => resp.json())
-      .then((resp) => console.log(resp.message))
-      .then(fetchCurrentUser)
+      .then((resp) => {
+        if (resp?.error_message) {
+          handleErrors({
+            ...errors,
+            session: resp
+          })
+        }
+        else {
+          handleErrors({
+            ...errors,
+            session: false
+          })
+          fetchCurrentUser()
+        }
+      })
   }
 
+  const renderErrorMessage = () => (
+    errors.session && (
+      <Typography component="small" variant="caption" color="error" sx={{width: "fit-content", textAlign:"center"}}>
+        {errors.session.error_message}
+      </Typography>
+    )
+  )
+  // #d32f2f
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -100,7 +121,9 @@ export const LoginUserForm = ({ fetchCurrentUser }) => {
                     onChange={onPasswordChanged}
                   />
                 </Grid>
+                
               </Grid>
+              {renderErrorMessage()}
               <Button
                 type="submit"
                 fullWidth
