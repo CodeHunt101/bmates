@@ -16,7 +16,7 @@ import { Inbox } from "./features/messages/Inbox"
 function App() {
   const location = useLocation()
   const path = location.pathname
-  
+
   const [currentUser, setCurrentUser] = useState(null)
   const [userResponseGiven, setUserResponseGiven] = useState(false)
 
@@ -34,8 +34,7 @@ function App() {
   const userIsLoggedIn = (condition = true) => {
     if (condition === true) {
       return !!(currentUser && userResponseGiven)
-    }
-    else {
+    } else {
       return !!(!currentUser && userResponseGiven)
     }
   }
@@ -56,13 +55,17 @@ function App() {
     setValidationErrors(object)
   }
 
-  useEffect(()=>setValidationErrors({
-    session: false,
-    users: false,
-    listings: false,
-    reservations: false,
-    sortAndFilters: false,
-  }),[path])
+  useEffect(
+    () =>
+      setValidationErrors({
+        session: false,
+        users: false,
+        listings: false,
+        reservations: false,
+        sortAndFilters: false,
+      }),
+    [path]
+  )
 
   const [userSubmittedImage, setUserSubmittedImage] = useState(false)
 
@@ -103,13 +106,21 @@ function App() {
 
           <Route path="/listings/new">
             {userIsLoggedIn() && (
-              <ListingForm currentUser={currentUser} />
+              <ListingForm
+                currentUser={currentUser}
+                handleValidationErrors={handleValidationErrors}
+                validationErrors={validationErrors}
+              />
             )}
             {userIsLoggedIn(false) && <Redirect to="/" />}
           </Route>
           <Route path="/listings/:listingId/edit">
             {userIsLoggedIn() && (
-              <ListingForm currentUser={currentUser} />
+              <ListingForm
+                currentUser={currentUser}
+                handleValidationErrors={handleValidationErrors}
+                validationErrors={validationErrors}
+              />
             )}
             {userIsLoggedIn(false) && <Redirect to="/" />}
           </Route>
@@ -138,9 +149,7 @@ function App() {
             {/* SHA: why the ternary operator won't work */}
             {/* {userIsLoggedIn() ? <ListingsList currentUser={currentUser} /> : <Redirect to="/"/>} */}
             {userIsLoggedIn(false) && <Redirect to="/" />}
-            {userIsLoggedIn() && (
-              <ListingsList currentUser={currentUser} />
-            )}
+            {userIsLoggedIn() && <ListingsList currentUser={currentUser} />}
           </Route>
           <Route path="/my-reservations">
             {userIsLoggedIn(false) ? (
@@ -153,9 +162,7 @@ function App() {
             )}
           </Route>
           <Route path="/inbox">
-            {userIsLoggedIn() && (
-              <Inbox currentUser={currentUser} />
-            )}
+            {userIsLoggedIn() && <Inbox currentUser={currentUser} />}
             {userIsLoggedIn(false) && <Redirect to="/" />}
           </Route>
 

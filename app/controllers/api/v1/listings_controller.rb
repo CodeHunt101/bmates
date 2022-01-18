@@ -10,11 +10,9 @@ class Api::V1::ListingsController < ApplicationController
   def create
     listing = Listing.create(listing_params)
     if listing.valid?
-      message = "Listing has been successfully created"
-      render json: {
-        message: message, 
-        listing: listing}, 
-        except: [:created_at, :updated_at]
+      render_valid_listing(listing)
+    else
+      render_errors(listing)
     end
   end
 
@@ -27,14 +25,14 @@ class Api::V1::ListingsController < ApplicationController
 
   def update
     listing = Listing.find(params[:id])
-    listing.available_dates.destroy_all
-    listing.update(listing_params)
+    listing.assign_attributes(listing_params)
+    
     if listing.valid?
-      message = "Listing has been successfully updated"
-      render json: {
-        message: message, 
-        listing: listing}, 
-        except: [:created_at, :updated_at]
+      listing.available_dates.destroy_all
+      listing.update(listing_params)
+      render_valid_listing(listing)
+    else
+      render_errors(listing)
     end
   end
 
@@ -63,5 +61,16 @@ class Api::V1::ListingsController < ApplicationController
       topic_ids: [],
       date_ids: []
     )
+  end
+
+  def render_errors(record)
+    errors_count = record.errors.count
+    error_messages = record.errors
+    render json: {errors_count: errors_count, error_messages: error_messages}
+  end
+
+  def render_valid_listing(listing)
+    message = "Listing has been successfully created"
+    render json: {message: message, listing: listing}, except: [:created_at, :updated_at]
   end
 end

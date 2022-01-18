@@ -21,7 +21,11 @@ import { Input } from "@mui/material"
 import { IconButton } from "@mui/material"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
 
-export const ListingForm = ({ currentUser }) => {
+export const ListingForm = ({
+  currentUser,
+  validationErrors,
+  handleValidationErrors,
+}) => {
   const location = useLocation()
   const { path } = useRouteMatch()
   const { listingId } = useParams()
@@ -37,7 +41,6 @@ export const ListingForm = ({ currentUser }) => {
     topics: [],
     selectedDates: [],
   })
-
   const [attachedImage, setAttachedImage] = useState(null)
 
   useEffect(() => {
@@ -55,7 +58,8 @@ export const ListingForm = ({ currentUser }) => {
     //     ),
     //   })
     // } else {
-      listingId && fetch(`/api/v1/listings/${listingId}`)
+    if (listingId) {
+      fetch(`/api/v1/listings/${listingId}`)
         .then((resp) => resp.json())
         .then((resp) => {
           const listing = resp.listing
@@ -69,6 +73,16 @@ export const ListingForm = ({ currentUser }) => {
             ),
           })
         })
+    } else {
+      setFormData({
+        listingType: "",
+        title: "",
+        description: "",
+        topics: [],
+        selectedDates: [],
+      })
+    }
+
     // }
   }, [location, listingId])
 
@@ -101,65 +115,94 @@ export const ListingForm = ({ currentUser }) => {
       return newListingInfo
     }
 
-    const fetchListings = (method) => {
+    const fetchListingWithImageAndDate = (method) => {
       // POSTs or PATCHes form without iterables (available dates)
-      fetch(
-        method === "POST"
-          ? "/api/v1/listings"
-          : `/api/v1/listings/${listingId}`,
-        {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            listing: {
-              listing_type: formData.listingType,
-              title: formData.title,
-              description: formData.description,
-              topic_ids: formData.topics,
-              user_provider_id: currentUser.current_user.id,
-            },
-          }),
-        }
+      const selectedDates = formData.selectedDates.filter(
+        (selectedDate) => selectedDate > new Date()
       )
-        .then((resp) => resp.json())
-        .then((submittedListing) => {
-          // POSTs iterables
-          const promises = formData.selectedDates.map((selectedDate) => {
-            return fetch("/api/v1/available_dates", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
+      // If user has selected at least one day (in the future) and one topic, it'll attempt to fetch everything.
+      if (selectedDates.length > 0 && formData.topics.length > 0) {
+        fetch(
+          method === "POST"
+            ? "/api/v1/listings"
+            : `/api/v1/listings/${listingId}`,
+          {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              listing: {
+                listing_type: formData.listingType,
+                title: formData.title,
+                description: formData.description,
+                topic_ids: formData.topics,
+                user_provider_id: currentUser.current_user.id,
               },
-              body: JSON.stringify({
-                available_date: {
-                  available_date: selectedDate,
-                  listing_id: submittedListing.listing.id,
-                },
-              }),
-            })
+            }),
+          }
+        )
+          .then((resp) => resp.json())
+          .then((resp) => {
+            // If server doesn't validates, correctly, it'll render the errors from state, otherwise it'll proceed to fetch dates and image
+            if (resp?.errors_count) {
+              handleValidationErrors({
+                ...validationErrors,
+                listings: resp,
+              })
+            } else {
+              // POSTs iterables
+              const promises = formData.selectedDates.map((selectedDate) => {
+                return fetch("/api/v1/available_dates", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    available_date: {
+                      available_date: selectedDate,
+                      listing_id: resp.listing.id,
+                    },
+                  }),
+                })
+              })
+              Promise.all(promises).then(() => {
+                setSubmittedListing(resp)
+                // PATCHes image (if any)
+                const promise =
+                  attachedImage &&
+                  fetch(`/api/v1/listings/${resp.listing.id}/update_image`, {
+                    method: "PATCH",
+                    body: appendListingInfo(),
+                  })
+                Promise.resolve(promise).then(() =>
+                  setAreAvailableDatesSubmitted(true)
+                )
+              })
+            }
           })
-          Promise.all(promises).then(() => {
-            setSubmittedListing(submittedListing)
-            // PATCHes image (if any)
-            const promise =
-              attachedImage &&
-              fetch(
-                `/api/v1/listings/${submittedListing.listing.id}/update_image`,
-                {
-                  method: "PATCH",
-                  body: appendListingInfo(),
-                }
-              )
-            // TODO: check if image is uploaded synchronously
-            Promise.resolve(promise).then(() =>
-              setAreAvailableDatesSubmitted(true)
-            )
-          })
+      } else {
+        handleValidationErrors({
+          ...validationErrors,
+          listings: {
+            calendar: {
+              error_message:
+                selectedDates.length === 0 &&
+                "You haven't selected any available date. Select at least one.",
+            },
+            topics: {
+              error_message:
+                formData.topics.length === 0 &&
+                "You haven't selected any topics. Select at least one.",
+            },
+          },
         })
+      }
     }
-    path === "/listings/new" ? fetchListings("POST") : fetchListings("PATCH")
+
+    path === "/listings/new"
+      ? fetchListingWithImageAndDate("POST")
+      : fetchListingWithImageAndDate("PATCH")
   }
 
   const [allTopicOptions, setAllTopicOptions] = useState([])
@@ -196,6 +239,16 @@ export const ListingForm = ({ currentUser }) => {
             />
           )}
         />
+        {validationErrors.listings.topics?.error_message && (
+          <Typography
+            component="small"
+            variant="caption"
+            color="error"
+            sx={{ display: "inherit", textAlign: "center" }}
+          >
+            {validationErrors.listings.topics?.error_message}
+          </Typography>
+        )}
       </Stack>
     )
 
@@ -241,15 +294,24 @@ export const ListingForm = ({ currentUser }) => {
       />
     )
   }
-  
+
   //Redirect to Home if user wants to edit a listing and Listing doesn't belong to user
-  if (path === '/listings/:listingId/edit' && currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)) {
+  if (
+    path === "/listings/:listingId/edit" &&
+    currentUser &&
+    !currentUser.listings
+      .map((listing) => listing.listing.id.toString())
+      .includes(listingId)
+  ) {
     return <Redirect push to={{ pathname: "/" }} />
   }
 
   return (
-    (path === '/listings/new' || (currentUser &&
-    currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId))) && (
+    (path === "/listings/new" ||
+      (currentUser &&
+        currentUser.listings
+          .map((listing) => listing.listing.id.toString())
+          .includes(listingId))) && (
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -306,6 +368,11 @@ export const ListingForm = ({ currentUser }) => {
                 </Grid>
                 <Grid item xs={12} sm={8}>
                   <TextField
+                    error={!!validationErrors.listings?.error_messages?.title}
+                    helperText={
+                      validationErrors.listings.error_messages?.title &&
+                      `Title ${validationErrors.listings.error_messages.title[0]}`
+                    }
                     sx={{ minWidth: 240 }}
                     name="title"
                     required
@@ -317,6 +384,13 @@ export const ListingForm = ({ currentUser }) => {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    error={
+                      !!validationErrors.listings?.error_messages?.description
+                    }
+                    helperText={
+                      validationErrors.listings.error_messages?.description &&
+                      `Description ${validationErrors.listings.error_messages.description[0]}`
+                    }
                     name="description"
                     required
                     multiline
@@ -356,16 +430,46 @@ export const ListingForm = ({ currentUser }) => {
                     tileClassNameToAvailable={tileClassNameToAvailable}
                     handleOnClickDay={handleOnClickDay}
                   />
+                  {validationErrors.listings.calendar?.error_message && (
+                    <Typography
+                      component="small"
+                      variant="caption"
+                      color="error"
+                      sx={{ display: "inherit", textAlign: "center" }}
+                    >
+                      {validationErrors.listings.calendar?.error_message}
+                    </Typography>
+                  )}
                 </Grid>
               </Grid>
               <Button
                 type="submit"
-                fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{
+                  width: "fit-content",
+                  mt: 2,
+                  display: "block",
+                  ml: "auto",
+                  mr: "auto",
+                }}
               >
                 Submit
               </Button>
+              {validationErrors.listings?.errors_count && (
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="error"
+                  sx={{ display: "inherit", textAlign: "center" }}
+                >
+                  {`We have found ${
+                    validationErrors.listings.errors_count === 1
+                      ? `${validationErrors.listings.errors_count} error`
+                      : `${validationErrors.listings.errors_count} erros`
+                  }.`}{" "}
+                  Please review your responses.
+                </Typography>
+              )}
             </Box>
           </Box>
         </Grid>
@@ -373,14 +477,3 @@ export const ListingForm = ({ currentUser }) => {
     )
   )
 }
-
-// const verifyListingBelongsToUser = (boolean) => {
-  //   const listingIdMatchesAnyofUserListings = currentUser && currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)
-  //   const listingIdNotMatchesAnyofUserListings = currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)
-  //   if (boolean === false) {
-  //     return !listingIdNotMatchesAnyofUserListings
-  //   }
-  //   if (boolean === true) {
-  //     return listingIdMatchesAnyofUserListings
-  //   }
-  // }

@@ -1,15 +1,6 @@
 class User < ApplicationRecord
   has_secure_password
 
-  validates :first_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { first_name.present? }
-  validates :last_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { last_name.present? }
-  validates :username, presence: true, length: { minimum: 5, maximum: 20 }
-  validates_uniqueness_of :username, case_sensitive: false
-  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :bio, length: { minimum: 100, maximum: 2000 }, if: -> { bio.present? }
-  validates_uniqueness_of :email, length: { maximum: 100 }, case_sensitive: false
-  validates :password, :password_confirmation, length: { in: 6..20 }, if: -> { password.present? }
-
   has_one_attached :image
 
   has_many :listings, foreign_key: :user_provider_id
@@ -27,6 +18,15 @@ class User < ApplicationRecord
   has_many :given_reviews, foreign_key: :user_id, class_name: "Review"
 
   belongs_to :country, required: false
+
+  validates :first_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { first_name.present? }
+  validates :last_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { last_name.present? }
+  validates :username, presence: true, length: { minimum: 5, maximum: 20 }
+  validates_uniqueness_of :username, case_sensitive: false
+  validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :bio, length: { minimum: 100, maximum: 2000 }, if: -> { bio.present? }
+  validates_uniqueness_of :email, length: { maximum: 100 }, case_sensitive: false
+  validates :password, :password_confirmation, length: { in: 6..20 }, if: -> { password.present? }
 
   def self.users_with_pp_and_rating
     all.map { |user|

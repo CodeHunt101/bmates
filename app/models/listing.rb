@@ -1,4 +1,6 @@
 class Listing < ApplicationRecord
+  has_one_attached :image
+  
   belongs_to :user_provider, class_name: "User"
   has_many :reservations
   has_many :listing_topics
@@ -7,7 +9,9 @@ class Listing < ApplicationRecord
   has_many :messages
   has_many :reviews, through: :reservations
 
-  has_one_attached :image
+  validates :title, length: { minimum: 10, maximum: 25 }
+  validates :description, length: { minimum: 100, maximum: 2000 }
+  # validates :available_dates, length: { minimum: 1}
 
   def self.listings_with_user_provider_details_topics_available_dates_and_reservations
     self.all.map{|l| {

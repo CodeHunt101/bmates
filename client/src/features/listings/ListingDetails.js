@@ -162,7 +162,11 @@ export const ListingDetails = ({ currentUser }) => {
           >
             <Typography
               component="p"
-              sx={{ color: "#878C9F", fontWeight: 500 }}
+              sx={{
+                color: "#878C9F",
+                fontWeight: 500,
+                wordBreak: "break-word",
+              }}
               variant="body1"
             >
               {listing.listing?.description}
