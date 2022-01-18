@@ -76,12 +76,28 @@ export const EditUserForm = ({
       })
   }, [currentUser])
 
+  const [bioCharaceters, setBioCharaceters] = useState(0)
+
   const handleOnChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
+
+    if (e.target.name === "bio") {
+      setBioCharaceters(e.target.value.length)
+    }
   }
+
+  useEffect(
+    () =>
+      handleValidationErrors({
+        ...validationErrors,
+        users: false,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }),
+    [bioCharaceters]
+  )
 
   const handleOnDobChange = (value) => {
     setFormData({
@@ -407,15 +423,17 @@ export const EditUserForm = ({
                 <TextField
                   error={!!validationErrors.users?.error_messages?.bio}
                   helperText={
-                    validationErrors.users.error_messages?.bio &&
-                    `Bio ${validationErrors.users.error_messages.bio[0]}`
+                    (validationErrors.users.error_messages?.bio &&
+                      `Bio ${validationErrors.users.error_messages.bio[0]}`) ||
+                    (bioCharaceters > 0 &&
+                      `Characeters count: ${bioCharaceters}`)
                   }
                   name="bio"
                   multiline
                   minRows={3}
                   fullWidth
                   id="edit-user-bio"
-                  label="Bio (minimum 100 characters)"
+                  label="Bio (must be between 100 - 2000 characters)"
                   value={formData.bio}
                   onChange={handleOnChange}
                 />

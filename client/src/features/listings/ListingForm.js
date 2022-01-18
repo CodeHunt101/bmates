@@ -86,11 +86,27 @@ export const ListingForm = ({
     // }
   }, [location, listingId])
 
-  const handleOnChange = (e) =>
+  const [descriptionCharaceters, setDescriptionCharaceters] = useState(0)
+
+  const handleOnChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     })
+    if (e.target.name === "description") {
+      setDescriptionCharaceters(e.target.value.length)
+    }
+  }
+
+  useEffect(
+    () =>
+      handleValidationErrors({
+        ...validationErrors,
+        listings: false,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }),
+    [descriptionCharaceters]
+  )
 
   const handleOnImageChange = (e) => {
     setAttachedImage(e.target.files[0])
@@ -388,8 +404,10 @@ export const ListingForm = ({
                       !!validationErrors.listings?.error_messages?.description
                     }
                     helperText={
-                      validationErrors.listings.error_messages?.description &&
-                      `Description ${validationErrors.listings.error_messages.description[0]}`
+                      (validationErrors.listings.error_messages?.description &&
+                        `Description ${validationErrors.listings.error_messages.description[0]}`) ||
+                      (descriptionCharaceters > 0 &&
+                        `Characeters count: ${descriptionCharaceters}`)
                     }
                     name="description"
                     required
@@ -397,7 +415,7 @@ export const ListingForm = ({
                     minRows={2}
                     fullWidth
                     id="listing-description"
-                    label="Description"
+                    label="Description (must be between 100 - 2000 characters)"
                     value={formData.description}
                     onChange={handleOnChange}
                   />

@@ -9,7 +9,7 @@ class Listing < ApplicationRecord
   has_many :messages
   has_many :reviews, through: :reservations
 
-  validates :title, length: { minimum: 10, maximum: 25 }
+  validates :title, length: { minimum: 10, maximum: 30 }
   validates :description, length: { minimum: 100, maximum: 2000 }
   # validates :available_dates, length: { minimum: 1}
 

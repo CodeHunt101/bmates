@@ -93,6 +93,7 @@ export const ListingsList = () => {
       location.state?.filteredListings !== "Not found" &&
       location.state?.filteredListings.length > 0
     ) {
+      setPage(1)
       setFilterMessage("success")
       setTopics([])
       setListings(
@@ -105,6 +106,7 @@ export const ListingsList = () => {
     // Fetch only if there is no location state, or user couldn't find anything from the search
     if (location.state?.filteredListings === "Not found") {
       setFilterMessage("error")
+      setPage(1)
     }
 
     if (
@@ -112,6 +114,7 @@ export const ListingsList = () => {
       location.state?.filteredListings === "Not found" ||
       location.state?.filteredListings.length === 0
     ) {
+      setPage(1)
       setTopics([])
       fetchListings()
     }

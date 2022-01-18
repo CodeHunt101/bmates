@@ -193,7 +193,6 @@ export const Users = () => {
           sortParameters.method,
           sortParameters.order
         )
-        // filterUsers(resp.users)
         filterUsers(sortedUsers)
       })
   }
