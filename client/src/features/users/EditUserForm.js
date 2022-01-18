@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useHistory} from "react-router"
+import { useHistory } from "react-router"
 import { formatNames } from "../../helper_functions"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
@@ -24,14 +24,17 @@ import PhotoCamera from "@mui/icons-material/PhotoCamera"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import LocalizationProvider from "@mui/lab/LocalizationProvider"
 import DatePicker from "@mui/lab/DatePicker"
-import auLocale from 'date-fns/locale/en-AU';
+import auLocale from "date-fns/locale/en-AU"
 import Autocomplete from "@mui/material/Autocomplete"
 import Stack from "@mui/material/Stack"
+import { FormHelperText } from "@mui/material"
 
 export const EditUserForm = ({
   currentUser,
   handleUserSubmittedImage,
-  }) => {
+  validationErrors,
+  handleValidationErrors,
+}) => {
   const history = useHistory()
 
   const [formData, setFormData] = useState({
@@ -54,7 +57,7 @@ export const EditUserForm = ({
   const [passwordChangeRequired, setPasswordChangeRequired] = useState(false)
 
   useEffect(() => {
-    currentUser && 
+    currentUser &&
       setFormData({
         id: currentUser.current_user.id,
         firstName: currentUser.current_user.first_name || "",
@@ -101,6 +104,19 @@ export const EditUserForm = ({
     // PUTs the new user info through a FormData instance. The information can be send with or without new password
     e.preventDefault()
 
+    const patchUserTopics = () =>
+      fetch(`/api/v1/users/${formData.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            topic_ids: formData.topics,
+          },
+        }),
+      })
+
     // Images can only be sent to the server through a FormData instance
     const newUserInfo = new FormData()
 
@@ -122,7 +138,6 @@ export const EditUserForm = ({
       attachedImage && newUserInfo.append("user[image]", attachedImage)
       return newUserInfo
     }
-
     const appendUserInfoWithPassword = () => {
       appendUserInfoWithoutPassword()
       newUserInfo.append("user[password]", formData.password)
@@ -132,52 +147,44 @@ export const EditUserForm = ({
       )
       return newUserInfo
     }
-    // TODO: the if statemente has to be handled by the server
-    if (
-      passwordChangeRequired & (formData.password.length >= 6) &&
-      formData.password.length <= 20 &&
-      formData.password === formData.passwordConfirmation
-    ) {
+
+    if (passwordChangeRequired) {
       fetch(`/api/v1/users/${formData.id}`, {
         method: "PUT",
         body: appendUserInfoWithPassword(),
       })
-        .then(() =>
-          fetch(`/api/v1/users/${formData.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user: {
-                topic_ids: formData.topics,
-              },
-            }),
-          })
-        )
-        .then(() => handleUserSubmittedImage(true))
-        .then(() => redirectToUserDetails(formData.id))
+        .then((resp) => resp.json())
+        .then((resp) => {
+          if (resp?.errors_count) {
+            handleValidationErrors({
+              ...validationErrors,
+              users: resp,
+            })
+          } else {
+            patchUserTopics()
+              .then(() => handleUserSubmittedImage(true))
+              .then(() => redirectToUserDetails(formData.id))
+          }
+        })
     }
     if (!passwordChangeRequired) {
       fetch(`/api/v1/users/${formData.id}`, {
         method: "PUT",
         body: appendUserInfoWithoutPassword(),
       })
-        .then(() =>
-          fetch(`/api/v1/users/${formData.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              user: {
-                topic_ids: formData.topics,
-              },
-            }),
-          })
-        )
-        .then(() => handleUserSubmittedImage(true))
-        .then(() => redirectToUserDetails(formData.id))
+        .then((resp) => resp.json())
+        .then((resp) => {
+          if (resp?.errors_count) {
+            handleValidationErrors({
+              ...validationErrors,
+              users: resp,
+            })
+          } else {
+            patchUserTopics()
+              .then(() => handleUserSubmittedImage(true))
+              .then(() => redirectToUserDetails(formData.id))
+          }
+        })
     }
   }
 
@@ -247,232 +254,272 @@ export const EditUserForm = ({
       </Stack>
     )
 
-  // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak 
-  // if (!currentUser && userResponseGiven) {
-  //   return <Redirect push to={{ pathname: "/" }} />
-  // }
-
   return (
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
+            <AccessibilityNewIcon />
+          </Avatar>
+          <Typography
+            component="h1"
+            variant="h5"
+            color="white"
             sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              backgroundColor: "#1976d2",
+              width: "fit-content",
+              margin: "auto",
+              borderRadius: "10px",
+              p: 1,
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
-              <AccessibilityNewIcon />
-            </Avatar>
-            <Typography
-              component="h1"
-              variant="h5"
-              color="white"
-              sx={{
-                backgroundColor: "#1976d2",
-                width: "fit-content",
-                margin: "auto",
-                borderRadius: "10px",
-                p: 1,
-              }}
-            >
-              Edit Profile
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleOnSubmit}
-              sx={{ mt: 1, my: 5 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <label htmlFor="icon-button-file">
-                    Profile picture
-                    <IconButton
-                      color="primary"
-                      aria-label="upload picture"
-                      component="span"
-                    >
-                      <PhotoCamera />
-                    </IconButton>
-                    <Input
-                      accept="image/*"
-                      id="icon-button-file"
-                      type="file"
-                      name="image"
-                      onChange={handleOnImageChange}
-                    />
-                  </label>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    sx={{ minWidth: "100%" }}
-                    autoComplete="given-first-name"
-                    name="firstName"
-                    id="edit-user-first-name"
-                    label="First Name"
-                    value={formData.firstName}
-                    onChange={handleOnChange}
+            Edit Profile
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleOnSubmit}
+            sx={{ mt: 1, my: 5 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <label htmlFor="icon-button-file">
+                  Profile picture
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <PhotoCamera />
+                  </IconButton>
+                  <Input
+                    accept="image/*"
+                    id="icon-button-file"
+                    type="file"
+                    name="image"
+                    onChange={handleOnImageChange}
                   />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    sx={{ minWidth: "100%" }}
-                    autoComplete="given-last-name"
-                    name="lastName"
-                    id="edit-user-last-name"
-                    label="Last name"
-                    value={formData.lastName}
-                    onChange={handleOnChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <FormControl sx={{ minWidth: "80%" }}>
-                    <InputLabel id="demo-simple-select-helper-label">
-                      Gender
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={formData.gender}
-                      label="Gender"
-                      onChange={handleOnChange}
-                      name="gender"
-                    >
-                      <MenuItem value={"M"}>Male</MenuItem>
-                      <MenuItem value={"F"}>Female</MenuItem>
-                      <MenuItem value={"O"}>Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns} locale={auLocale}>
-                    <DatePicker
-                      disableFuture
-                      label="DOB dd/mm/yyyy"
-                      openTo="year"
-                      views={["year", "month", "day"]}
-                      value={formData.dob}
-                      maxDate={
-                        new Date(
-                          new Date().setFullYear(new Date().getFullYear() - 18)
-                        )
-                      }
-                      onChange={handleOnDobChange}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  {/* <InputLabel id="demo-simple-select-helper-label">Age</InputLabel> */}
-                  <Autocomplete
-                    disablePortal
-                    id="country-of-location"
-                    options={allCountriesOptions}
-                    value={handleCurrentCountryValue(allCountriesOptions)}
-                    onChange={handleCountryChange}
-                    getOptionLabel={(option) => option.name}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Country" />
-                    )}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    name="bio"
-                    required
-                    multiline
-                    minRows={3}
-                    fullWidth
-                    id="edit-user-bio"
-                    label="Bio"
-                    value={formData.bio}
-                    onChange={handleOnChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    autoComplete="given-username"
-                    name="username"
-                    required
-                    fullWidth
-                    id="edit-user-userName"
-                    label="Username"
-                    value={formData.username}
-                    onChange={handleOnChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="edit-user-email"
-                    label="Email Address"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleOnChange}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  {renderTopics()}
-                </Grid>
-                <Grid item xs={12}>
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          onChange={handleOnCheck}
-                          inputProps={{ "aria-label": "controlled" }}
-                        />
-                      }
-                      label="I want to change my password"
-                    />
-                  </FormGroup>
-                </Grid>
-                {passwordChangeRequired && (
-                  <>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="edit-user-password"
-                        autoComplete="new-password"
-                        onChange={handleOnChange}
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <TextField
-                        required
-                        fullWidth
-                        name="passwordConfirmation"
-                        label="Password Confirmation"
-                        type="password"
-                        id="edit-user-password-confirmation"
-                        autoComplete="new-password"
-                        onChange={handleOnChange}
-                      />
-                    </Grid>
-                  </>
-                )}
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Submit
-                </Button>
+                </label>
               </Grid>
-            </Box>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={!!validationErrors.users?.error_messages?.first_name}
+                  helperText={
+                    validationErrors.users.error_messages?.first_name &&
+                    `First name ${validationErrors.users.error_messages.first_name[0]}`
+                  }
+                  sx={{ minWidth: "100%" }}
+                  autoComplete="given-first-name"
+                  name="firstName"
+                  id="edit-user-first-name"
+                  label="First Name"
+                  value={formData.firstName}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={!!validationErrors.users?.error_messages?.last_name}
+                  helperText={
+                    validationErrors.users.error_messages?.last_name &&
+                    `First name ${validationErrors.users.error_messages.last_name[0]}`
+                  }
+                  sx={{ minWidth: "100%" }}
+                  autoComplete="given-last-name"
+                  name="lastName"
+                  id="edit-user-last-name"
+                  label="Last name"
+                  value={formData.lastName}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl
+                  sx={{ minWidth: "80%" }}
+                  error={formData.gender === ""}
+                >
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Gender
+                  </InputLabel>
+                  <Select
+                    error={formData.gender === ""}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={formData.gender}
+                    label="Gender"
+                    onChange={handleOnChange}
+                    name="gender"
+                  >
+                    <MenuItem value={"M"}>Male</MenuItem>
+                    <MenuItem value={"F"}>Female</MenuItem>
+                    <MenuItem value={"O"}>Other</MenuItem>
+                  </Select>
+                  {formData.gender === "" && (
+                    <FormHelperText>Please select your gender</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={auLocale}
+                >
+                  <DatePicker
+                    disableFuture
+                    label="DOB dd/mm/yyyy"
+                    openTo="year"
+                    views={["year", "month", "day"]}
+                    value={formData.dob}
+                    maxDate={
+                      new Date(
+                        new Date().setFullYear(new Date().getFullYear() - 18)
+                      )
+                    }
+                    onChange={handleOnDobChange}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {/* <InputLabel id="demo-simple-select-helper-label">Age</InputLabel> */}
+                <Autocomplete
+                  disablePortal
+                  id="country-of-location"
+                  options={allCountriesOptions}
+                  value={handleCurrentCountryValue(allCountriesOptions)}
+                  onChange={handleCountryChange}
+                  getOptionLabel={(option) => option.name}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Country" />
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  error={!!validationErrors.users?.error_messages?.bio}
+                  helperText={
+                    validationErrors.users.error_messages?.bio &&
+                    `Bio ${validationErrors.users.error_messages.bio[0]}`
+                  }
+                  name="bio"
+                  multiline
+                  minRows={3}
+                  fullWidth
+                  id="edit-user-bio"
+                  label="Bio (minimum 100 characters)"
+                  value={formData.bio}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={!!validationErrors.users?.error_messages?.username}
+                  helperText={
+                    validationErrors.users.error_messages?.username &&
+                    `Username ${validationErrors.users.error_messages.username[0]}`
+                  }
+                  autoComplete="given-username"
+                  name="username"
+                  required
+                  fullWidth
+                  id="edit-user-userName"
+                  label="Username"
+                  value={formData.username}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  error={!!validationErrors.users?.error_messages?.email}
+                  helperText={
+                    validationErrors.users.error_messages?.email
+                      ? `Email ${validationErrors.users.error_messages.email[0]}`
+                      : false
+                  }
+                  required
+                  fullWidth
+                  id="edit-user-email"
+                  label="Email Address"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleOnChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {renderTopics()}
+              </Grid>
+              <Grid item xs={12}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        onChange={handleOnCheck}
+                        inputProps={{ "aria-label": "controlled" }}
+                      />
+                    }
+                    label="I want to change my password"
+                  />
+                </FormGroup>
+              </Grid>
+              {passwordChangeRequired && (
+                <>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      error={!!validationErrors.users?.error_messages?.password}
+                      helperText={
+                        validationErrors.users.error_messages?.password &&
+                        `Password ${validationErrors.users.error_messages.password[0]}`
+                      }
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="edit-user-password"
+                      autoComplete="new-password"
+                      onChange={handleOnChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      error={!!validationErrors.users?.error_messages?.password}
+                      helperText={
+                        validationErrors.users.error_messages?.password &&
+                        `Password ${validationErrors.users.error_messages.password[0]}`
+                      }
+                      required
+                      fullWidth
+                      name="passwordConfirmation"
+                      label="Password Confirmation"
+                      type="password"
+                      id="edit-user-password-confirmation"
+                      autoComplete="new-password"
+                      onChange={handleOnChange}
+                    />
+                  </Grid>
+                </>
+              )}
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Submit
+              </Button>
+            </Grid>
           </Box>
-        </Grid>
+        </Box>
       </Grid>
+    </Grid>
   )
 }

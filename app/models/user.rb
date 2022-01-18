@@ -1,12 +1,13 @@
 class User < ApplicationRecord
   has_secure_password
 
-  validates :first_name, length: { minimum: 2 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { first_name.present? }
-  validates :last_name, length: { minimum: 2 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { last_name.present? }
+  validates :first_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { first_name.present? }
+  validates :last_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { last_name.present? }
   validates :username, presence: true, length: { minimum: 5, maximum: 20 }
   validates_uniqueness_of :username, case_sensitive: false
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates_uniqueness_of :email, case_sensitive: false
+  validates :bio, length: { minimum: 100, maximum: 2000 }, if: -> { bio.present? }
+  validates_uniqueness_of :email, length: { maximum: 100 }, case_sensitive: false
   validates :password, :password_confirmation, length: { in: 6..20 }, if: -> { password.present? }
 
   has_one_attached :image

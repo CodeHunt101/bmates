@@ -23,12 +23,15 @@ function GitHubLink() {
   )
 }
 
-export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
+export const SignupUserForm = ({
+  fetchCurrentUser,
+  validationErrors,
+  handleValidationErrors,
+}) => {
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
-  
 
   const onUsernameChanged = (e) => setUsername(e.target.value)
   const onEmailChanged = (e) => setEmail(e.target.value)
@@ -56,9 +59,9 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp?.errors_count) {
-          handleErrors({
-            ...errors,
-            users: resp
+          handleValidationErrors({
+            ...validationErrors,
+            users: resp,
           })
         } else {
           fetch("/api/v1/login", {
@@ -71,12 +74,13 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
               password,
             }),
           })
-          .then(()=>handleErrors({
-            ...errors,
-            users: false
-          }))
-          .then(fetchCurrentUser)
-          
+            .then(() =>
+              handleValidationErrors({
+                ...validationErrors,
+                users: false,
+              })
+            )
+            .then(fetchCurrentUser)
         }
       })
   }
@@ -135,11 +139,10 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  error={!!errors.users?.error_messages?.username}
+                  error={!!validationErrors.users?.error_messages?.username}
                   helperText={
-                    errors.users.error_messages?.username
-                      ? `Username ${errors.users.error_messages.username[0]}`
-                      : false
+                    validationErrors.users.error_messages?.username &&
+                    `Username ${validationErrors.users.error_messages.username[0]}`
                   }
                   autoComplete="given-username"
                   name="userName"
@@ -153,11 +156,10 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  error={!!errors.users?.error_messages?.email}
+                  error={!!validationErrors.users?.error_messages?.email}
                   helperText={
-                    errors.users.error_messages?.email
-                      ? `Email ${errors.users.error_messages.email[0]}`
-                      : false
+                    validationErrors.users.error_messages?.email &&
+                    `Email ${validationErrors.users.error_messages.email[0]}`
                   }
                   required
                   fullWidth
@@ -171,11 +173,10 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  error={!!errors.users?.error_messages?.password}
+                  error={!!validationErrors.users?.error_messages?.password}
                   helperText={
-                    errors.users.error_messages?.password
-                      ? `Password ${errors.users.error_messages.password[0]}`
-                      : false
+                    validationErrors.users.error_messages?.password &&
+                    `Password ${validationErrors.users.error_messages.password[0]}`
                   }
                   required
                   fullWidth
@@ -189,11 +190,14 @@ export const SignupUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  error={!!errors.users?.error_messages?.password_confirmation}
+                  error={
+                    !!validationErrors.users?.error_messages
+                      ?.password_confirmation
+                  }
                   helperText={
-                    errors.users.error_messages?.password_confirmation
-                      ? `Password confirmation ${errors.users.error_messages.password_confirmation[0]}`
-                      : false
+                    validationErrors.users.error_messages
+                      ?.password_confirmation &&
+                    `Password confirmation ${validationErrors.users.error_messages.password_confirmation[0]}`
                   }
                   required
                   fullWidth

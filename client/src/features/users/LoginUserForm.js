@@ -14,7 +14,7 @@ import Paper from "@mui/material/Paper"
 
 const theme = createTheme()
 
-export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
+export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValidationErrors }) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -38,13 +38,13 @@ export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
       .then((resp) => resp.json())
       .then((resp) => {
         if (resp?.error_message) {
-          handleErrors({
-            ...errors,
+          handleValidationErrors({
+            ...validationErrors,
             session: resp,
           })
         } else {
-          handleErrors({
-            ...errors,
+          handleValidationErrors({
+            ...validationErrors,
             session: false,
           })
           fetchCurrentUser()
@@ -53,14 +53,14 @@ export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
   }
 
   const renderErrorMessage = () =>
-    errors.session && (
+    validationErrors.session && (
       <Typography
         component="small"
         variant="caption"
         color="error"
         sx={{ width: "fit-content", textAlign: "center" }}
       >
-        {errors.session.error_message}
+        {validationErrors.session.error_message}
       </Typography>
     )
   // #d32f2f

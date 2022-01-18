@@ -14,7 +14,7 @@ import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
 import { WelcomeUser } from "../features/users/WelcomeUser"
-import Link from "@mui/material/Link"
+// import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
@@ -25,7 +25,6 @@ const pagesWithoutCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },
   { name: "Login", href: "/login" },
   { name: "Join", href: "/signup" },
-  { name: "Add Listing", href: "/listings/new" },
 ]
 const pagesWithCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },

@@ -8,12 +8,15 @@ import { ListingForm } from "./features/listings/ListingForm"
 import { Reservations } from "./features/reservations/Reservations"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
-import { Switch, Route, Redirect } from "react-router-dom"
+import { Switch, Route, Redirect, useLocation } from "react-router-dom"
 import { ListingDetails } from "./features/listings/ListingDetails"
 import { EditUserForm } from "./features/users/EditUserForm"
 import { Inbox } from "./features/messages/Inbox"
 
 function App() {
+  const location = useLocation()
+  const path = location.pathname
+  
   const [currentUser, setCurrentUser] = useState(null)
   const [userResponseGiven, setUserResponseGiven] = useState(false)
 
@@ -41,7 +44,7 @@ function App() {
     setCurrentUser(value)
   }
 
-  const [errors, setErrors] = useState({
+  const [validationErrors, setValidationErrors] = useState({
     session: false,
     users: false,
     listings: false,
@@ -49,9 +52,17 @@ function App() {
     sortAndFilters: false,
   })
 
-  const handleErrors = (object) => {
-    setErrors(object)
+  const handleValidationErrors = (object) => {
+    setValidationErrors(object)
   }
+
+  useEffect(()=>setValidationErrors({
+    session: false,
+    users: false,
+    listings: false,
+    reservations: false,
+    sortAndFilters: false,
+  }),[path])
 
   const [userSubmittedImage, setUserSubmittedImage] = useState(false)
 
@@ -59,7 +70,6 @@ function App() {
     setUserSubmittedImage(status)
   }
 
-  // console.log(!logoutStatus, !currentUser)
   useEffect(() => {
     fetchCurrentUser()
 
@@ -119,6 +129,8 @@ function App() {
                 currentUser={currentUser}
                 fetchCurrentUser={fetchCurrentUser}
                 handleUserSubmittedImage={handleUserSubmittedImage}
+                handleValidationErrors={handleValidationErrors}
+                validationErrors={validationErrors}
               />
             )}
           </Route>
@@ -152,9 +164,8 @@ function App() {
             {!currentUser && (
               <LoginUserForm
                 fetchCurrentUser={fetchCurrentUser}
-                handleErrors={handleErrors}
-                errors={errors}
-                // handleLogoutStatus={handleLogoutStatus}
+                handleValidationErrors={handleValidationErrors}
+                validationErrors={validationErrors}
               />
             )}
           </Route>
@@ -164,8 +175,8 @@ function App() {
             {userIsLoggedIn(false) && (
               <SignupUserForm
                 fetchCurrentUser={fetchCurrentUser}
-                handleErrors={handleErrors}
-                errors={errors}
+                handleValidationErrors={handleValidationErrors}
+                validationErrors={validationErrors}
               />
             )}
           </Route>
