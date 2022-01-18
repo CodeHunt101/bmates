@@ -30,7 +30,7 @@ export const Home = () => (
         </Typography>
         <Typography component="p" variant="body1" gutterBottom>
           Start meeting new people! Choose whether you want to see all our
-          listings or all our users.
+          listings or all our mates.
         </Typography>
         <Stack
           direction="row"

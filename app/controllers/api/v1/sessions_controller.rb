@@ -8,7 +8,7 @@ class Api::V1::SessionsController < ApplicationController
       user = User.find_by(username: params[:username])
       if user && user.authenticate(params[:password])
         session[:user_id] = user.id
-        render json: { message: "loggen in" }
+        render json: { message: "logged in" }
       else
         render json: { error_message: "The information provided is incorrect, please try again." }
       end

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { ReservationForm } from "../reservations/ReservationForm"
 import { MessageForm } from "../messages/MessageForm"
 import { User } from "../users/User"
@@ -12,6 +12,7 @@ import {
   CardMedia,
   Chip,
   IconButton,
+  Link,
 } from "@mui/material"
 import EditRoundedIcon from "@mui/icons-material/Edit"
 import { Reviews } from "../reviews/Reviews"
@@ -34,38 +35,36 @@ export const ListingDetails = ({ currentUser }) => {
 
   const renderLinkToEditListing = () =>
     currentUser &&
-    listing.user_info.id === currentUser.current_user.id && (
-      <Link
-        to={{
-          pathname: `/listings/${listing.listing?.id}/edit`,
-          state: { listing },
-        }}
-      >
+    listing?.user_info?.id === currentUser?.current_user.id && (
+      <Link href={`/listings/${listing.listing?.id}/edit`}>
         <IconButton aria-label="delete">
           <EditRoundedIcon color="warning" />
         </IconButton>
       </Link>
     )
 
-  const renderReservationsForm = () =>
-    currentUser &&
-    listing.user_info.id !== currentUser.current_user.id && (
-      <>
-        <Typography
-          component="h2"
-          variant="subtitle1"
-          sx={{ fontSize: 24, color: "#334e6f" }}
-          gutterBottom
-        >
+  const renderReservationsForm = () => (
+    <>
+      <Typography
+        component="h2"
+        variant="subtitle1"
+        sx={{ fontSize: 24, color: "#334e6f" }}
+        gutterBottom
+      >
+        {currentUser &&
+        listing?.user_info?.id === currentUser?.current_user.id ? (
+          <b>My Listing Availability</b>
+        ) : (
           <b>Make reservations</b>
-        </Typography>
-        <ReservationForm listing={listing} currentUser={currentUser} />
-      </>
-    )
+        )}
+      </Typography>
+      <ReservationForm listing={listing} currentUser={currentUser} />
+    </>
+  )
 
   const renderMessageForm = () =>
     currentUser &&
-    listing.user_info.id !== currentUser.current_user.id && (
+    listing?.user_info?.id !== currentUser?.current_user.id && (
       <Box
         sx={{
           my: 1,

@@ -128,7 +128,7 @@ export const ListingsList = () => {
   }, [])
 
   const generateListingsFromResponse = (response) => {
-    if (response.listings.length > 0) {
+    if (response.listings?.length > 0) {
       const activeListings = response.listings.filter(
         (listing) => listing.listing.is_active
       )
@@ -140,7 +140,7 @@ export const ListingsList = () => {
       setListings(sortedListings)
       topics.length > 0 && filterListings(sortedListings)
     }
-    if (response.listings.length === 0) {
+    if (!response.listings || response.listings?.length === 0) {
       setListings("N/A")
     }
   }
@@ -242,34 +242,41 @@ export const ListingsList = () => {
         circle="true"
       >
         {/* Hero unit */}
-        {path !== "/users/:userId" && <Box
-          sx={{
-            pt: path !== "/users/:userId" ? 8 : 1,
-            pb: 6,
-          }}
-        >
-          <Typography
-            component="h2"
-            variant="h3"
-            align="center"
-            color="white"
-            sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:2}}
-            gutterBottom
+        {path !== "/users/:userId" && (
+          <Box
+            sx={{
+              pt: path !== "/users/:userId" ? 8 : 1,
+              pb: 6,
+            }}
           >
-            <b>{path === "/my-listings" ? "My Listings" :"Listings"}</b>
-          </Typography>
-        </Box>}
+            <Typography
+              component="h2"
+              variant="h3"
+              align="center"
+              color="white"
+              sx={{
+                backgroundColor: "#1976d2",
+                width: "fit-content",
+                margin: "auto",
+                borderRadius: "25px",
+                p: 2,
+              }}
+              gutterBottom
+            >
+              <b>{path === "/my-listings" ? "My Listings" : "Listings"}</b>
+            </Typography>
+          </Box>
+        )}
         <SortAndFilterListings
-            allTopicOptions={allTopicOptions}
-            // handleTopicValues={handleTopicValues}
-            topics={topics}
-            handleTopicsChange={handleTopicsChange}
-            handleOnSubmit={handleOnSubmit}
-            handleSortParametersChange={handleSortParametersChange}
-            sortParameters={sortParameters}
-          />
-          {/* {renderNoMatchesMessage()} */}
-          {renderFilterMessage()}
+          allTopicOptions={allTopicOptions}
+          topics={topics}
+          handleTopicsChange={handleTopicsChange}
+          handleOnSubmit={handleOnSubmit}
+          handleSortParametersChange={handleSortParametersChange}
+          sortParameters={sortParameters}
+        />
+        {/* {renderNoMatchesMessage()} */}
+        {renderFilterMessage()}
         {listings.length > 0 && (
           <Container
             sx={{ display: "flex", justifyContent: "center" }}

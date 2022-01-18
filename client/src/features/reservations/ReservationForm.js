@@ -105,6 +105,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
       component="form"
       noValidate
       onSubmit={handleOnSubmit}
+      sx={{mb:2}}
     >
       <FormControl sx={{width: '-webkit-fill-available'}}>
         <ListingAvailability
@@ -114,10 +115,13 @@ export const ReservationForm = ({ listing, currentUser }) => {
           tileClassNameToSelected={tileClassNameToSelected}
           
         />
-        <Button 
+        {currentUser && 
+    listing?.user_info?.id !== currentUser?.current_user.id && <Button 
           type="submit"
           variant="contained"
-          sx={{ width: 'fit-content', ml:'auto', mr:'auto', mt:2, mb:2 }}>Reserve</Button>
+          sx={{ width: 'fit-content', ml:'auto', mr:'auto', mt:2 }}>
+            Reserve
+        </Button>}
       </FormControl>
     </Box>
   )

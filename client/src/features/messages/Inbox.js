@@ -43,7 +43,6 @@ export const Inbox = ({ currentUser }) => {
         xs={12}
         sm={6}
         md={4}
-        // sx={{ mx: "auto" }}
       >
         <Box
           sx={{
@@ -59,7 +58,7 @@ export const Inbox = ({ currentUser }) => {
           />
         </Box>
         <Box>
-          <MessageForm userReceiverId={row.sender_id} listingId={row.listing_id}/>
+          <MessageForm userReceiverId={row.sender_id} listingId={row.listing_id} currentUser={currentUser}/>
         </Box>
       </Grid>
       <Grid item xs={12} sm={6} md={7}>

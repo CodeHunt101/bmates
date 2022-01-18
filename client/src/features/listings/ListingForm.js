@@ -42,19 +42,35 @@ export const ListingForm = ({ currentUser }) => {
 
   useEffect(() => {
     // Populates the form with the listing object provided from useLocation
-    if (location && location.state) {
-      const { listing } = location.state
-      setFormData({
-        listingType: listing.listing.listing_type,
-        title: listing.listing.title,
-        description: listing.listing.description,
-        topics: listing.topics.map((t) => t.id.toString()),
-        selectedDates: listing.available_dates.map(
-          (item) => new Date(item.available_date)
-        ),
-      })
-    }
-  }, [location])
+    // SHA: how to simplify
+    // if (location && location.state) {
+    //   const { listing } = location.state
+    //   setFormData({
+    //     listingType: listing.listing.listing_type,
+    //     title: listing.listing.title,
+    //     description: listing.listing.description,
+    //     topics: listing.topics.map((t) => t.id.toString()),
+    //     selectedDates: listing.available_dates.map(
+    //       (item) => new Date(item.available_date)
+    //     ),
+    //   })
+    // } else {
+      listingId && fetch(`/api/v1/listings/${listingId}`)
+        .then((resp) => resp.json())
+        .then((resp) => {
+          const listing = resp.listing
+          setFormData({
+            listingType: listing.listing.listing_type,
+            title: listing.listing.title,
+            description: listing.listing.description,
+            topics: listing.topics.map((t) => t.id.toString()),
+            selectedDates: listing.available_dates.map(
+              (item) => new Date(item.available_date)
+            ),
+          })
+        })
+    // }
+  }, [location, listingId])
 
   const handleOnChange = (e) =>
     setFormData({
@@ -226,14 +242,14 @@ export const ListingForm = ({ currentUser }) => {
     )
   }
   
-  //Redirect to Home if Listing doesn't belong to user
-  if (currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)) {
+  //Redirect to Home if user wants to edit a listing and Listing doesn't belong to user
+  if (path === '/listings/:listingId/edit' && currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)) {
     return <Redirect push to={{ pathname: "/" }} />
   }
 
   return (
-    currentUser &&
-    currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId) && (
+    (path === '/listings/new' || (currentUser &&
+    currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId))) && (
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -358,3 +374,13 @@ export const ListingForm = ({ currentUser }) => {
   )
 }
 
+// const verifyListingBelongsToUser = (boolean) => {
+  //   const listingIdMatchesAnyofUserListings = currentUser && currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)
+  //   const listingIdNotMatchesAnyofUserListings = currentUser && !currentUser.listings.map(listing=>listing.listing.id.toString()).includes(listingId)
+  //   if (boolean === false) {
+  //     return !listingIdNotMatchesAnyofUserListings
+  //   }
+  //   if (boolean === true) {
+  //     return listingIdMatchesAnyofUserListings
+  //   }
+  // }

@@ -41,7 +41,6 @@ export const MessageForm = ({currentUser, userReceiverId, listing, listingId}) =
       alert('Please login or create an account to send enquiries')
     }
   }
-  
   return (
     <Box
       component={Paper}

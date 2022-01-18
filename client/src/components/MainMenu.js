@@ -19,6 +19,7 @@ import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
 import SearchIcon from "@mui/icons-material/Search"
+import { Link as LinkRouter } from "react-router-dom"
 
 const pagesWithoutCurrentUser = [
   { name: <HomeRoundedIcon />, href: "/" },
@@ -34,7 +35,7 @@ const settings = [
   { name: "Edit Profile", href: "/edit-profile" },
   { name: "My Listings", href: "/my-listings" },
   { name: "My Reservations", href: "/my-reservations" },
-  { name: "Logout", href: "/logout" },
+  { name: "Logout" },
 ]
 
 const Search = styled("div")(({ theme }) => ({
@@ -83,11 +84,12 @@ export const MainMenu = ({
   currentUser,
   fetchCurrentUser,
   userSubmittedImage,
+  handleCurrentUser
 }) => {
   const history = useHistory()
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => fetchCurrentUser(), [userSubmittedImage])
+  // useEffect(() => fetchCurrentUser(), [userSubmittedImage])
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
 
@@ -112,7 +114,16 @@ export const MainMenu = ({
 
   const handleOnNavElClick = (navEl) => {
     // Goes to any navbar location onClick
-    history.push(navEl.href)
+    if (navEl.name === "Logout") {
+      fetch("/api/v1/logout")
+      .then(resp => resp.json())
+      .then(resp => {
+        handleCurrentUser(null)
+      })
+    }
+    else {
+      history.push(navEl.href)
+    }
     setAnchorElUser(null)
     setAnchorElNav(null)
   }
@@ -124,14 +135,20 @@ export const MainMenu = ({
   )
 
   const renderMenuNavBarItem = (navEl) => (
+    // SHA: compare which one looks better
+    // <Button key={navEl.name}>
+    //   <Link
+    //     sx={{ height: "24px" }}
+    //     className="main-menu-item"
+    //     href={navEl.href}
+    //   >
+    //     {navEl.name}
+    //   </Link>
+    // </Button>
     <Button key={navEl.name}>
-      <Link
-        sx={{ height: "24px" }}
-        className="main-menu-item"
-        href={navEl.href}
-      >
+      <LinkRouter style={{height: "24px"}} to={navEl.href} className="main-menu-item">
         {navEl.name}
-      </Link>
+      </LinkRouter>
     </Button>
   )
 
@@ -285,8 +302,7 @@ export const MainMenu = ({
                 <WelcomeUser currentUser={currentUser} />
               </Box>
               <Box sx={{ flexGrow: 0 }}>
-                <Button>
-                  {/* <Badge badgeContent={4} color="warning"> */}
+                {/* <Button>
                   <Link
                     sx={{ height: "24px" }}
                     className="main-menu-item"
@@ -294,7 +310,11 @@ export const MainMenu = ({
                   >
                     <MailRoundedIcon />
                   </Link>
-                  {/* </Badge > */}
+                </Button> */}
+                <Button>
+                  <LinkRouter style={{height: "24px"}} to={"/inbox"} className="main-menu-item">
+                    <MailRoundedIcon />
+                  </LinkRouter>
                 </Button>
               </Box>
               <Box sx={{ flexGrow: 0 }}>
@@ -323,6 +343,7 @@ export const MainMenu = ({
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => renderMenuDropDownItem(setting))}
+
                 </Menu>
               </Box>
             </>

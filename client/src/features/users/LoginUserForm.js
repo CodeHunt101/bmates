@@ -40,26 +40,29 @@ export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
         if (resp?.error_message) {
           handleErrors({
             ...errors,
-            session: resp
+            session: resp,
           })
-        }
-        else {
+        } else {
           handleErrors({
             ...errors,
-            session: false
+            session: false,
           })
           fetchCurrentUser()
         }
       })
   }
 
-  const renderErrorMessage = () => (
+  const renderErrorMessage = () =>
     errors.session && (
-      <Typography component="small" variant="caption" color="error" sx={{width: "fit-content", textAlign:"center"}}>
+      <Typography
+        component="small"
+        variant="caption"
+        color="error"
+        sx={{ width: "fit-content", textAlign: "center" }}
+      >
         {errors.session.error_message}
       </Typography>
     )
-  )
   // #d32f2f
   return (
     <ThemeProvider theme={theme}>
@@ -87,7 +90,18 @@ export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
             <Avatar sx={{ m: 1, bgcolor: blue[500] }}>
               <LoginIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '10px', p:1}}>
+            <Typography
+              component="h1"
+              variant="h5"
+              color="white"
+              sx={{
+                backgroundColor: "#1976d2",
+                width: "fit-content",
+                margin: "auto",
+                borderRadius: "10px",
+                p: 1,
+              }}
+            >
               Log In
             </Typography>
             <Box
@@ -121,7 +135,6 @@ export const LoginUserForm = ({ fetchCurrentUser, errors, handleErrors }) => {
                     onChange={onPasswordChanged}
                   />
                 </Grid>
-                
               </Grid>
               {renderErrorMessage()}
               <Button
