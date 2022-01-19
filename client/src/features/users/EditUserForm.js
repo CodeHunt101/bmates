@@ -94,8 +94,8 @@ export const EditUserForm = ({
       handleValidationErrors({
         ...validationErrors,
         users: false,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [bioCharaceters]
   )
 

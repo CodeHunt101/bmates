@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Footer } from "../../components/Footer"
 import Avatar from "@mui/material/Avatar"
 import Button from "@mui/material/Button"
 import CssBaseline from "@mui/material/CssBaseline"
@@ -66,7 +67,7 @@ export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValida
   // #d32f2f
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
         <CssBaseline />
         <Grid
           item
@@ -157,11 +158,11 @@ export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValida
         </Grid>
         <Grid
           item
+          id="login-image"
           xs={false}
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random?friends)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -172,6 +173,7 @@ export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValida
           }}
         />
       </Grid>
+      <Footer />
     </ThemeProvider>
   )
 }

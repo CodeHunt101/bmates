@@ -26,7 +26,7 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   const tileClassNameToSelected = ({ date, view }) => {
-    // Looks up through the selected dates. If they match with a calendar date, the className of the day tile is set to selected. 
+    // Looks up through the selected dates. If they match with a calendar date, the className of the day tile is set to selected.
     if (view === "month") {
       if (
         formData.selectedDates.find(
@@ -80,14 +80,11 @@ export const ReservationForm = ({ listing, currentUser }) => {
           })
         })
         Promise.all(promises).then(() => setCreatedReservations(true))
-      }
-      else {
+      } else {
         alert("You haven't selected any dates. Please try again")
       }
-      
-    }
-    else {
-      alert('Please login or create an account to make a reservation')
+    } else {
+      alert("Please login or create an account to make a reservation")
     }
   }
 
@@ -101,27 +98,24 @@ export const ReservationForm = ({ listing, currentUser }) => {
   }
 
   return (
-    <Box
-      component="form"
-      noValidate
-      onSubmit={handleOnSubmit}
-      sx={{mb:2}}
-    >
-      <FormControl sx={{width: '-webkit-fill-available'}}>
+    <Box component="form" noValidate onSubmit={handleOnSubmit} sx={{ mb: 2 }}>
+      <FormControl sx={{ width: "-webkit-fill-available" }}>
         <ListingAvailability
           availableDates={listing.available_dates}
           tileClassNameToDisabled={tileClassNameToDisabled}
           handleOnClickDay={handleOnClickDay}
           tileClassNameToSelected={tileClassNameToSelected}
-          
         />
-        {currentUser && 
-    listing?.user_info?.id !== currentUser?.current_user.id && <Button 
-          type="submit"
-          variant="contained"
-          sx={{ width: 'fit-content', ml:'auto', mr:'auto', mt:2 }}>
-            Reserve
-        </Button>}
+        {currentUser &&
+          listing?.user_info?.id !== currentUser?.current_user.id && (
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ width: "fit-content", ml: "auto", mr: "auto", mt: 2 }}
+            >
+              Reserve
+            </Button>
+          )}
       </FormControl>
     </Box>
   )

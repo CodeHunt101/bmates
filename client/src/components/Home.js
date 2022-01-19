@@ -1,8 +1,10 @@
 import React from "react"
 import { Container, Grid, Box, Typography, Button, Stack } from "@mui/material"
 import Paper from "@mui/material/Paper"
+import { Footer } from "./Footer"
 
 export const Home = () => (
+  <>
   <Container id="home" maxWidth="xl">
     <Grid
       item
@@ -48,4 +50,6 @@ export const Home = () => (
       </Box>
     </Grid>
   </Container>
+  <Footer/>
+  </>
 )

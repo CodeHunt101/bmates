@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Footer } from "../../components/Footer"
 import { Grid, Box } from "@mui/material"
 import { MessagesTable } from "./MessagesTable"
 import { MessagesBody } from "./MessagesBody"
@@ -73,6 +74,7 @@ export const Inbox = ({ currentUser }) => {
           <MessagesBody messages={messages} currentUser={currentUser} />
         </Box>
       </Grid>
+      <Footer />
     </Grid>
   )
 }

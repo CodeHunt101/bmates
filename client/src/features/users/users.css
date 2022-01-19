@@ -13,3 +13,11 @@ div.MuiListItemAvatar-root div.MuiAvatar-circular {
 div#login-signup {
   background-color: rgba(255, 255, 255)
 }
+
+div#login-image {
+  background-image: url('../../images/login.jpeg');
+}
+
+div#signup-image {
+  background-image: url('../../images/signup.jpeg');
+}

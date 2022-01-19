@@ -20,6 +20,7 @@ import FormControl from "@mui/material/FormControl"
 import { Input } from "@mui/material"
 import { IconButton } from "@mui/material"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
+import { Footer } from "../../components/Footer"
 
 export const ListingForm = ({
   currentUser,
@@ -89,6 +90,7 @@ export const ListingForm = ({
   const [descriptionCharaceters, setDescriptionCharaceters] = useState(0)
 
   const handleOnChange = (e) => {
+    
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -96,17 +98,14 @@ export const ListingForm = ({
     if (e.target.name === "description") {
       setDescriptionCharaceters(e.target.value.length)
     }
-  }
 
-  useEffect(
-    () =>
+    if (validationErrors.listings) {
       handleValidationErrors({
         ...validationErrors,
         listings: false,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }),
-    [descriptionCharaceters]
-  )
+      })
+    }
+  }
 
   const handleOnImageChange = (e) => {
     setAttachedImage(e.target.files[0])
@@ -491,6 +490,7 @@ export const ListingForm = ({
             </Box>
           </Box>
         </Grid>
+        <Footer />
       </Grid>
     )
   )

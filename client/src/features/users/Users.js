@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { User } from "./User"
 import { SortAndFilterUsers } from "../customSearch/SortAndFilterUsers"
+import { Footer } from "../../components/Footer"
 import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Typography from "@mui/material/Typography"
 import Container from "@mui/material/Container"
-import Link from "@mui/material/Link"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 import { calculateAge } from "../../helper_functions"
@@ -229,24 +229,6 @@ export const Users = () => {
     }
   }
 
-  function Copyright(props) {
-    return (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {"Copyright © "}
-        <Link color="inherit" href="https://github.com/CodeHunt101">
-          My GitHub profile
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    )
-  }
-
   return (
     <>
       <Grid
@@ -264,7 +246,6 @@ export const Users = () => {
           sx={{
             pt: 8,
             pb: 6,
-            
           }}
         >
           <Typography
@@ -272,7 +253,13 @@ export const Users = () => {
             variant="h3"
             align="center"
             color="white"
-            sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:2}}
+            sx={{
+              backgroundColor: "#1976d2",
+              width: "fit-content",
+              margin: "auto",
+              borderRadius: "25px",
+              p: 2,
+            }}
             gutterBottom
           >
             <b>Mates</b>
@@ -314,23 +301,7 @@ export const Users = () => {
           </Grid>
         </Container>
       </Grid>
-      {/* Footer */}
-      <Box sx={{ pt: 3, pb:3 }} component="footer">
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="text.secondary"
-          component="p"
-        >
-          Some footer!
-        </Typography>
-        <Copyright />
-      </Box>
-      {/* End footer */}
+      <Footer />
     </>
   )
 }
-

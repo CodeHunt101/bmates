@@ -16,6 +16,7 @@ import {
 } from "@mui/material"
 import EditRoundedIcon from "@mui/icons-material/Edit"
 import { Reviews } from "../reviews/Reviews"
+import { Footer } from "../../components/Footer"
 
 export const ListingDetails = ({ currentUser }) => {
   const [listing, setListing] = useState({
@@ -188,7 +189,6 @@ export const ListingDetails = ({ currentUser }) => {
               mb: 3,
             }}
           >
-            {/* TODO: render the Gallery images here with some iteration*/}
             <CardMedia
               component="img"
               sx={{
@@ -258,6 +258,7 @@ export const ListingDetails = ({ currentUser }) => {
           <User user={listing} />
         </Box>
       </Grid>
+      <Footer/>
     </Grid>
   )
 }

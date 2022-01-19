@@ -9,6 +9,7 @@ import Container from "@mui/material/Container"
 import Pagination from "@mui/material/Pagination"
 import Paper from "@mui/material/Paper"
 import { LinearProgress } from "@mui/material"
+import { Footer } from "../../components/Footer"
 
 export const ListingsList = () => {
   const { path } = useRouteMatch()
@@ -304,6 +305,7 @@ export const ListingsList = () => {
           </Grid>
         </Container>
       </Grid>
+      <Footer/>
     </>
   )
 }

@@ -7,9 +7,13 @@ import Grid from "@mui/material/Grid"
 import Box from "@mui/material/Box"
 import Paper from "@mui/material/Paper"
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import { Footer } from "../../components/Footer"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
-  const [reservations, setReservations] = useState({made_reservations: [], received_reservations: []})
+  const [reservations, setReservations] = useState({
+    made_reservations: [],
+    received_reservations: [],
+  })
   const [isReservationStatusChanged, setIsReservationStatusChanged] =
     useState(false)
 
@@ -43,15 +47,14 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
           <b>TO RECEIVE</b>
         </Typography>
         <div>
-          {
-            reservations.made_reservations.map((r) => (
-              <Reservation
-                key={r.reservation.id}
-                reservation={r}
-                handleStatusChange={handleStatusChange}
-                handleReview={handleReview}
-              />
-            ))}
+          {reservations.made_reservations.map((r) => (
+            <Reservation
+              key={r.reservation.id}
+              reservation={r}
+              handleStatusChange={handleStatusChange}
+              handleReview={handleReview}
+            />
+          ))}
         </div>
       </div>
       <div>
@@ -59,14 +62,13 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
           <b>TO PROVIDE</b>
         </Typography>
         <div>
-          {
-            reservations.received_reservations.map((r) => (
-              <Reservation
-                key={r.reservation.id}
-                reservation={r}
-                handleStatusChange={handleStatusChange}
-              />
-            ))}
+          {reservations.received_reservations.map((r) => (
+            <Reservation
+              key={r.reservation.id}
+              reservation={r}
+              handleStatusChange={handleStatusChange}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -95,7 +97,14 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
             component="h2"
             variant="h4"
             align="center"
-            color="white" sx={{backgroundColor: '#1976d2', width: 'fit-content', margin: "auto", borderRadius: '25px', p:1.5}}
+            color="white"
+            sx={{
+              backgroundColor: "#1976d2",
+              width: "fit-content",
+              margin: "auto",
+              borderRadius: "25px",
+              p: 1.5,
+            }}
             gutterBottom
           >
             Reservations
@@ -103,6 +112,7 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
         </Box>
         {renderReservations()}
       </Grid>
+      <Footer />
     </ThemeProvider>
   )
 }

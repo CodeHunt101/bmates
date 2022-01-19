@@ -8,10 +8,10 @@ import { ListingForm } from "./features/listings/ListingForm"
 import { Reservations } from "./features/reservations/Reservations"
 import { LoginUserForm } from "./features/users/LoginUserForm"
 import { SignupUserForm } from "./features/users/SignupUserForm"
-import { Switch, Route, Redirect, useLocation } from "react-router-dom"
 import { ListingDetails } from "./features/listings/ListingDetails"
 import { EditUserForm } from "./features/users/EditUserForm"
 import { Inbox } from "./features/messages/Inbox"
+import { Switch, Route, Redirect, useLocation } from "react-router-dom"
 
 function App() {
   const location = useLocation()
@@ -130,7 +130,7 @@ function App() {
           <Route path="/listings">
             <ListingsList currentUser={currentUser} />
           </Route>
-
+          
           <Route path="/edit-profile">
             {/* SHA: why the warning with the ternary operator */}
             {/* {userIsLoggedIn(false) ? <Redirect to="/"/> : <EditUserForm currentUser={currentUser} fetchCurrentUser={fetchCurrentUser} handleUserSubmittedImage={handleUserSubmittedImage}/>} */}

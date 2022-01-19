@@ -54,62 +54,67 @@ export const UserDetails = ({ currentUser }) => {
 
   const renderHeader = () => (
     <Box
-      className="user-background"
-      component={Paper}
-      elevation={1}
-      sx={{
-        p: 12,
-        mb: 3,
-        textAlign: "center",
-      }}
+    className="user-background"
+    component={Paper}
     >
-      <Box>
-        <Typography
+      <Box
+        elevation={1}
+        sx={{
+          p: 12,
+          mb: 3,
+          textAlign: "center",
+          width: "fit-content",
+          margin: "auto"
+        }}
+      >
+        <Box>
+          <Typography
+            component={Paper}
+            variant="h4"
+            sx={{
+              color: "#334e6f",
+              width: "fit-content",
+              ml: "auto",
+              mr: "auto",
+              p: 1,
+            }}
+            gutterBottom
+          >
+            <b>{user.user_info.first_name || user.user_info.username}</b>{" "}
+            {defineGenderIcon(user.user_info.gender, "x-large")}
+          </Typography>
+        </Box>
+        <Avatar
           component={Paper}
-          variant="h3"
+          src={user.user_profile_picture}
+          alt="profile"
+          sx={{ margin: "auto", width: 250, height: 250 }}
+        ></Avatar>
+        <Box
+          component={Paper}
           sx={{
-            color: "#334e6f",
             width: "fit-content",
             ml: "auto",
             mr: "auto",
-            p: 1,
+            pt: 1,
+            mt: 2,
           }}
-          gutterBottom
         >
-          <b>{user.user_info.first_name || user.user_info.username}</b>{" "}
-          {defineGenderIcon(user.user_info.gender, "x-large")}
-        </Typography>
-      </Box>
-      <Avatar
-        component={Paper}
-        src={user.user_profile_picture}
-        alt="profile"
-        sx={{ margin: "auto", width: 300, height: 300 }}
-      ></Avatar>
-      <Box
-        component={Paper}
-        sx={{
-          width: "fit-content",
-          ml: "auto",
-          mr: "auto",
-          pt: 1,
-          mt: 2,
-        }}
-      >
-        <Typography>
-          <AverageRating user={user} size="large" />
-        </Typography>
+          <Typography>
+            <AverageRating user={user} size="large" />
+          </Typography>
+        </Box>
       </Box>
     </Box>
   )
 
   const renderAbout = () => {
     return (
-      <>
+      <Box sx={{textAlign: "center"}}>
         <Typography
           component="h2"
           variant="subtitle1"
-          sx={{ fontSize: 24, color: "#334e6f" }}
+          sx={{ fontSize: 24, color: "#334e6f", align:"center" }}
           gutterBottom
         >
           <b>About {user.user_info.first_name || user.user_info.username}</b>
@@ -132,7 +137,7 @@ export const UserDetails = ({ currentUser }) => {
           </Box>
           <Box sx={{ ml: 5 }}>{InsetDividers({ user })}</Box>
         </Box>
-      </>
+      </Box>
     )
   }
 
@@ -140,14 +145,16 @@ export const UserDetails = ({ currentUser }) => {
     user.user_info.bio &&
     user.user_info.bio !== "" && (
       <>
-        <Typography
-          component="h2"
-          variant="subtitle1"
-          sx={{ fontSize: 24, color: "#334e6f" }}
-          gutterBottom
-        >
-          <b>Bio</b>
-        </Typography>
+        <Box sx={{textAlign: "center"}}>
+          <Typography
+            component="h2"
+            variant="subtitle1"
+            sx={{ fontSize: 24, color: "#334e6f" }}
+            gutterBottom
+          >
+            <b>Bio</b>
+          </Typography>
+        </Box>
         <Box
           component={Paper}
           elevation={1}
@@ -156,6 +163,7 @@ export const UserDetails = ({ currentUser }) => {
             mb: 3,
             display: "flex",
             justifyContent: "space-between",
+            textAlign: "justify"
           }}
         >
           <p style={{ wordBreak: "break-word" }}>{user.user_info.bio}</p>
@@ -171,6 +179,7 @@ export const UserDetails = ({ currentUser }) => {
             my: 1,
             mx: 2,
             alignItems: "center",
+            textAlign: "center"
           }}
         >
           <Typography
@@ -204,11 +213,10 @@ export const UserDetails = ({ currentUser }) => {
     user && (
       <Grid
         container
-        position="absolute"
         spacing={2}
         component="main"
         id="user-details-layout"
-        sx={{ minHeight: "100vh", backgroundColor: "#f9f9f9" }}
+        sx={{ minHeight: "100vh", width: "105vw", backgroundColor: "#f9f9f9" }}
       >
         <Grid item sx={{ mx: "auto" }} xs={12} elevation={3} circle="true">
           {renderHeader()}
@@ -229,8 +237,7 @@ export const UserDetails = ({ currentUser }) => {
             <Box
               sx={{
                 my: 1,
-                mx: 2,
-                alignItems: "center",
+                mx: 0,
               }}
             >
               {renderAbout()}

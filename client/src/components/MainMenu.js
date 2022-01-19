@@ -21,22 +21,6 @@ import MailRoundedIcon from "@mui/icons-material/MailRounded"
 import SearchIcon from "@mui/icons-material/Search"
 import { Link as LinkRouter } from "react-router-dom"
 
-const pagesWithoutCurrentUser = [
-  { name: <HomeRoundedIcon />, href: "/" },
-  { name: "Login", href: "/login" },
-  { name: "Join", href: "/signup" },
-]
-const pagesWithCurrentUser = [
-  { name: <HomeRoundedIcon />, href: "/" },
-  { name: "Add Listing", href: "/listings/new" },
-]
-const settings = [
-  { name: "Edit Profile", href: "/edit-profile" },
-  { name: "My Listings", href: "/my-listings" },
-  { name: "My Reservations", href: "/my-reservations" },
-  { name: "Logout" },
-]
-
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
@@ -87,6 +71,23 @@ export const MainMenu = ({
 }) => {
   const history = useHistory()
 
+  const pagesWithoutCurrentUser = [
+    { name: <HomeRoundedIcon />, href: "/" },
+    { name: "Login", href: "/login" },
+    { name: "Join", href: "/signup" },
+  ]
+  const pagesWithCurrentUser = [
+    { name: <HomeRoundedIcon />, href: "/" },
+    { name: "Add Listing", href: "/listings/new" },
+  ]
+  const settings = [
+    { name: "My Profile", href: `/users/${currentUser?.current_user.id}` },
+    { name: "Edit Profile", href: "/edit-profile" },
+    { name: "My Listings", href: "/my-listings" },
+    { name: "My Reservations", href: "/my-reservations" },
+    { name: "Logout" },
+  ]
+  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // useEffect(() => fetchCurrentUser(), [userSubmittedImage])
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -213,17 +214,10 @@ export const MainMenu = ({
   }
 
   return (
-    <AppBar position="sticky" sx={{ minWidth: "100vw" }}>
+    <AppBar position="sticky" sx={{ width: "100%" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-          >
-            LOGO
-          </Typography>
+          <img id="logo-bmates" src='/logo.png' alt="logo-bmates" width="90px"/>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
