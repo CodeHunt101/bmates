@@ -23,7 +23,7 @@ export const Footer = () => (
         <div className="icons8-twitter-circled"></div>
       </a>
       <a href="mailto:haroldtm55@gmail.com" target="_blank" rel="noreferrer">
-        <div class="icons8-gmail"></div>
+        <div className="icons8-gmail"></div>
       </a>
       <a href="https://wa.me/61401927123" target="_blank" rel="noreferrer">
         <div className="icons8-whatsapp"></div>

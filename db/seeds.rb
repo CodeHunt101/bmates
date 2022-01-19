@@ -410,7 +410,7 @@ today = Date.today
 #For Siri's reservations, if the date is before today, add a review to it and change the status to closed
 siri.made_reservations.each do |reservation|
   if reservation.reservation_date < today
-    review = Review.create(message: 'excellent service', user:siri, reservation: reservation, rating: 4)
+    review = Review.create(message: 'Good service', user:siri, reservation: reservation, rating: 4)
     reservation.update(status: "closed")
   end
 end
@@ -421,9 +421,9 @@ end
 
 gender = ['M', 'F', 'O']
 def generate_rand_gender(iterator)
-  if iterator % 2 == 0 && iterator % 10 !=0
+  if iterator % 2 == 0 && iterator % 6 != 0
     'F'
-  elsif iterator % 10 == 0
+  elsif iterator % 6 == 0
     'O'
   else
     'M'
@@ -433,7 +433,7 @@ end
 
 #Create a given amount of users with random info
 i=2
-while i < 30 do
+while i < 8 do
   User.create(
     first_name: i % 2 !=0 ? Faker::Name.male_first_name : Faker::Name.female_first_name,
     last_name: Faker::Name.last_name,
@@ -455,7 +455,7 @@ users = User.all
 
 #Create a given amount of listings with random info and assign them to random users. Assign between 3 to 10 random topics, available dates in the future and past
 i=0
-while i < 120 do
+while i < 32 do
   listing = Listing.create({
     title: Faker::Lorem.sentence,
     listing_type: "Mate",
@@ -476,7 +476,7 @@ listings = Listing.all
 
 # A given amount of times, pick a random listing and a random user receiver, pick a random available date...
 i=0
-while i < 241 do
+while i < 65 do
   rand_listing = listings[rand(0..listings.count - 1)]
   rand_listing_user_provider = rand_listing.user_provider
   rand_user_receiver = users[rand(0..users.count - 1)]

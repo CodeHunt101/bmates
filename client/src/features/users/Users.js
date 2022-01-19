@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper"
 import { calculateAge } from "../../helper_functions"
 
 const minDistance = 5
+const usersPerPage = 4
 
 export const Users = () => {
   const [users, setUsers] = useState([])
@@ -20,7 +21,7 @@ export const Users = () => {
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderUsersOnPage = (page = 1) =>
-    users.slice(page * 8 - 8, page * 8).map((user, idx) => (
+    users.slice(page * usersPerPage - usersPerPage, page * usersPerPage).map((user, idx) => (
       <Grid key={idx} item xs={12} sm={6} md={3}>
         <User key={user.user_info.id} user={user} />
       </Grid>
@@ -283,7 +284,7 @@ export const Users = () => {
             maxWidth="md"
           >
             <Pagination
-              count={Math.ceil(users.length / 8)}
+              count={Math.ceil(users.length / usersPerPage)}
               page={page}
               onChange={handleOnPageChange}
               color="primary"

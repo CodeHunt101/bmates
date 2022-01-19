@@ -17,10 +17,7 @@ export const Review = ({review}) => {
       <ListItemAvatar>
         <Avatar 
           alt="Remy Sharp" 
-          src={review.user_profile_picture === null?
-            `https://source.unsplash.com/random?${
-              review.user_info?.gender === "F" ? "female" : "male"
-            }`: review.user_profile_picture} 
+          src={review.user_profile_picture} 
         />
       </ListItemAvatar>
       <ListItemText

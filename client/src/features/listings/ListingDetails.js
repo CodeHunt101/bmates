@@ -173,37 +173,36 @@ export const ListingDetails = ({ currentUser }) => {
               {listing.listing?.description}
             </Typography>
           </Box>
-          <Typography
-            component="h2"
-            variant="subtitle1"
-            sx={{ fontSize: 24, color: "#334e6f" }}
-            gutterBottom
-          >
-            <b>Featured Image</b>
-          </Typography>
-          <Box
-            component={Paper}
-            elevation={1}
-            sx={{
-              p: 2,
-              mb: 3,
-            }}
-          >
-            <CardMedia
-              component="img"
-              sx={{
-                cursor: "pointer",
-              }}
-              height="300px"
-              image={
-                listing.listing_image === null
-                  ? "https://source.unsplash.com/random"
-                  : listing.listing_image
-              }
-              alt="listingImage"
-            />
-          </Box>
-
+          {listing.listing_image !== null && (
+            <>
+              <Typography
+                component="h2"
+                variant="subtitle1"
+                sx={{ fontSize: 24, color: "#334e6f" }}
+                gutterBottom
+              >
+                <b>Featured Image</b>
+              </Typography>
+              <Box
+                component={Paper}
+                elevation={1}
+                sx={{
+                  p: 2,
+                  mb: 3,
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  height="300px"
+                  image={listing.listing_image}
+                  alt="listingImage"
+                />
+              </Box>
+            </>
+          )}
           <Box
             sx={{
               p: 2,
@@ -258,7 +257,7 @@ export const ListingDetails = ({ currentUser }) => {
           <User user={listing} />
         </Box>
       </Grid>
-      <Footer/>
+      <Footer />
     </Grid>
   )
 }

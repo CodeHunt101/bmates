@@ -11,6 +11,8 @@ import Paper from "@mui/material/Paper"
 import { LinearProgress } from "@mui/material"
 import { Footer } from "../../components/Footer"
 
+const listingsPerPage = 8
+
 export const ListingsList = () => {
   const { path } = useRouteMatch()
   const { userId, listingId } = useParams()
@@ -37,7 +39,7 @@ export const ListingsList = () => {
       )
     } else {
       return listings
-        .slice(page * 8 - 8, page * 8)
+        .slice(page * listingsPerPage - listingsPerPage, page * listingsPerPage)
         .map((listing) => (
           <ListingPreview key={listing.listing.id} listing={listing} />
         ))
@@ -287,7 +289,7 @@ export const ListingsList = () => {
             maxWidth="md"
           >
             <Pagination
-              count={Math.ceil(listings.length / 8)}
+              count={Math.ceil(listings.length / listingsPerPage)}
               page={page}
               onChange={handleOnPageChange}
               color="primary"

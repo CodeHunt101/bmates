@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography"
 import Avatar from "@mui/material/Avatar"
 import { Link } from "@mui/material"
 import { ReviewReservation } from "../reviews/ReviewReservation"
+import { Paper } from "@mui/material"
 
 export const Reservation = ({
   reservation,
@@ -149,12 +150,21 @@ export const Reservation = ({
               )}
           </Box>
         </Box>
-        <CardMedia
+        {reservation.listing_image !== null ? <CardMedia
           component="img"
           sx={{ width: 151 }}
-          image="https://source.unsplash.com/random?activity"
+          image={reservation.listing_image}
           alt="Reservation"
-        />
+        />:
+          <Box sx={{ mt: "auto", mb:"auto", backgroundColor: "#bdbdbd", height: "100%" }}>
+            <Avatar
+              
+              src={reservation.listing_image}
+              alt="profile"
+              sx={{ ml: "auto",mr: "auto",mt:"45%", width: 151, height: 151 }}
+            ></Avatar>
+          </Box>
+        }
       </Card>
     </div>
   )
