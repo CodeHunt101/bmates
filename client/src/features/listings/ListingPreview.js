@@ -19,7 +19,7 @@ export const ListingPreview = ({ listing }) => {
   const handleOnClick = () => history.push(`/listings/${listing.listing.id}`)
 
   return (
-    <Grid item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={6} md={3} lg={3}>
       <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         {listing.listing_image !== null ? (
           <CardMedia
@@ -39,7 +39,7 @@ export const ListingPreview = ({ listing }) => {
               component={Paper}
               src={listing.listing_image}
               alt="profile"
-              sx={{ margin: "auto", width: 250, height: 250 }}
+              sx={{ margin: "auto", width: 165, height: 165, mt:'20%' }}
             ></Avatar>
           </Box>
         )}

@@ -14,7 +14,6 @@ import Button from "@mui/material/Button"
 import Tooltip from "@mui/material/Tooltip"
 import MenuItem from "@mui/material/MenuItem"
 import { WelcomeUser } from "../features/users/WelcomeUser"
-// import Link from "@mui/material/Link"
 import { useHistory } from "react-router"
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
 import MailRoundedIcon from "@mui/icons-material/MailRounded"
@@ -50,7 +49,6 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   fontSize: "15px",
-  // width: '100px',
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
@@ -65,8 +63,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export const MainMenu = ({
   currentUser,
-  fetchCurrentUser,
-  userSubmittedImage,
   handleCurrentUser
 }) => {
   const history = useHistory()
@@ -135,16 +131,6 @@ export const MainMenu = ({
   )
 
   const renderMenuNavBarItem = (navEl) => (
-    // SHA: compare which one looks better
-    // <Button key={navEl.name}>
-    //   <Link
-    //     sx={{ height: "24px" }}
-    //     className="main-menu-item"
-    //     href={navEl.href}
-    //   >
-    //     {navEl.name}
-    //   </Link>
-    // </Button>
     <Button key={navEl.name}>
       <LinkRouter style={{height: "24px"}} to={navEl.href} className="main-menu-item">
         {navEl.name}
@@ -259,14 +245,6 @@ export const MainMenu = ({
             
             </Menu>
           </Box>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-          >
-            LOGO
-          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {!currentUser &&
               pagesWithoutCurrentUser.map((page) => renderMenuNavBarItem(page))}
@@ -289,21 +267,10 @@ export const MainMenu = ({
           </Search>
           {currentUser && (
             <>
-                      
-          
               <Box id="welcome-user" sx={{ flexGrow: 0.02 }}>
                 <WelcomeUser currentUser={currentUser} />
               </Box>
               <Box sx={{ flexGrow: 0 }}>
-                {/* <Button>
-                  <Link
-                    sx={{ height: "24px" }}
-                    className="main-menu-item"
-                    href="/inbox"
-                  >
-                    <MailRoundedIcon />
-                  </Link>
-                </Button> */}
                 <Button>
                   <LinkRouter style={{height: "24px"}} to={"/inbox"} className="main-menu-item">
                     <MailRoundedIcon />
@@ -336,7 +303,6 @@ export const MainMenu = ({
                   onClose={handleCloseUserMenu}
                 >
                   {settings.map((setting) => renderMenuDropDownItem(setting))}
-
                 </Menu>
               </Box>
             </>

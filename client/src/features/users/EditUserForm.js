@@ -28,6 +28,7 @@ import auLocale from "date-fns/locale/en-AU"
 import Autocomplete from "@mui/material/Autocomplete"
 import Stack from "@mui/material/Stack"
 import { FormHelperText } from "@mui/material"
+import { Footer } from "../../components/Footer"
 
 export const EditUserForm = ({
   currentUser,
@@ -57,6 +58,7 @@ export const EditUserForm = ({
   const [passwordChangeRequired, setPasswordChangeRequired] = useState(false)
 
   useEffect(() => {
+    handleUserSubmittedImage(false)
     currentUser &&
       setFormData({
         id: currentUser.current_user.id,
@@ -74,6 +76,7 @@ export const EditUserForm = ({
         password: "",
         passwordConfirmation: "",
       })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser])
 
   const [bioCharaceters, setBioCharaceters] = useState(0)
@@ -537,7 +540,9 @@ export const EditUserForm = ({
             </Grid>
           </Box>
         </Box>
+        <Footer/>
       </Grid>
+      
     </Grid>
   )
 }

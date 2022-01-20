@@ -238,11 +238,12 @@ export const ListingsList = () => {
   return (
     <>
       <Grid
+        id="listings-list"
         item
-        sx={{ mx: "auto", minHeight: "75vh" }}
+        sx={{ mx: "auto", minHeight: "75vh", maxWidth:'1220px' }}
         xs={12}
-        sm={8}
-        md={10.1}
+        sm={12}
+        md={11}
         component={Paper}
         elevation={path !== "/users/:userId" ? 6 : 3}
         circle="true"

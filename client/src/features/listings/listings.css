@@ -6,3 +6,7 @@ button.available {
 div#new-listing-paper {
   background-color: rgba(255, 255, 255, 0.8);
 }
+
+#listings-list {
+  max-width: 1200px;
+}

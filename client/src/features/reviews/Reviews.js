@@ -10,6 +10,6 @@ export const Reviews = ({reviews}) => (
   component="p"
   variant="body1"
   >
-    This mate hasn't received any reviews yet
+    This listing hasn't received any reviews yet
   </Typography>
 )

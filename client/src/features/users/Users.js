@@ -22,9 +22,7 @@ export const Users = () => {
 
   const renderUsersOnPage = (page = 1) =>
     users.slice(page * usersPerPage - usersPerPage, page * usersPerPage).map((user, idx) => (
-      <Grid key={idx} item xs={12} sm={6} md={3}>
         <User key={user.user_info.id} user={user} />
-      </Grid>
     ))
 
   //Countries state & handlers
@@ -236,8 +234,8 @@ export const Users = () => {
         item
         sx={{ mx: "auto", minHeight: "75vh" }}
         xs={12}
-        sm={8}
-        md={10.1}
+        sm={12}
+        md={11}
         component={Paper}
         elevation={2}
         circle="true"

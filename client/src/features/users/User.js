@@ -1,4 +1,5 @@
 import React from "react"
+import { useRouteMatch } from "react-router"
 import { AverageRating } from "../reviews/AverageRating"
 import Button from "@mui/material/Button"
 import Card from "@mui/material/Card"
@@ -13,9 +14,12 @@ import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded"
 import { Avatar } from "@mui/material"
 import { Paper } from "@mui/material"
 import { Box } from "@mui/system"
+import Grid from "@mui/material/Grid"
 
 export const User = ({ user }) => {
 
+  const {path} = useRouteMatch()
+  console.log(path)
   const defineGenderIcon = (gender, fontSize) => {
     if (gender) {
       return {
@@ -47,46 +51,48 @@ export const User = ({ user }) => {
     }
   }
   return (
-    <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
-      {user.user_profile_picture !== null ? (
-        <CardMedia
-          component="img"
-          sx={{
-            // 16:9
-            pt: "10%",
-            cursor: "pointer",
-          }}
-          height="300px"
-          image={user.user_profile_picture}
-          alt="listingImage"
-        />
-      ) : (
-        <Box sx={{ height: "300px", pt: "10%" }}>
-          <Avatar
-            component={Paper}
-            src={user.user_profile_picture}
-            alt="profile"
-            sx={{ margin: "auto", width: 250, height: 250 }}
-          ></Avatar>
-        </Box>
-      )}
-      <CardContent sx={{ flexGrow: 1 }}>
-        <Typography gutterBottom variant="h5" component="h2">
-          {user.user_info?.username} |{" "}
-          {defineGenderIcon(user.user_info?.gender)}
-        </Typography>
-        <AverageRating user={user} size="medium" />
-        <Typography>
-          {user.user_info?.first_name ? "Name:" : "Username:"}{" "}
-          <b>{user.user_info?.first_name || user.user_info?.username}</b>
-        </Typography>
-        <Typography>{generateBioPreview()}</Typography>
-      </CardContent>
-      <CardActions>
-        <Button href={`/users/${user.user_info?.id}`} size="medium">
-          View User Details
-        </Button>
-      </CardActions>
-    </Card>
+    <Grid item xs={12} sm={6} md={3} lg={path==='/listings/:listingId' ? 12: 3}>
+      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }} >
+        {user.user_profile_picture !== null ? (
+          <CardMedia
+            component="img"
+            sx={{
+              // 16:9
+              pt: "10%",
+              cursor: "pointer",
+            }}
+            height="300px"
+            image={user.user_profile_picture}
+            alt="userImage"
+          />
+        ) : (
+          <Box sx={{ height: "300px", pt: "10%" }}>
+            <Avatar
+              component={Paper}
+              src={user.user_profile_picture}
+              alt="profile"
+              sx={{ margin: "auto",  width: 165, height: 165, mt:'20%' }}
+            ></Avatar>
+          </Box>
+        )}
+        <CardContent sx={{ flexGrow: 1 }}>
+          <Typography gutterBottom variant="h5" component="h2">
+            {user.user_info?.username} |{" "}
+            {defineGenderIcon(user.user_info?.gender)}
+          </Typography>
+          <AverageRating user={user} size="medium" />
+          <Typography>
+            {user.user_info?.first_name ? "Name:" : "Username:"}{" "}
+            <b>{user.user_info?.first_name || user.user_info?.username}</b>
+          </Typography>
+          <Typography>{generateBioPreview()}</Typography>
+        </CardContent>
+        <CardActions>
+          <Button href={`/users/${user.user_info?.id}`} size="medium">
+            View User Details
+          </Button>
+        </CardActions>
+      </Card>
+    </Grid>
   )
 }

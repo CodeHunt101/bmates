@@ -59,11 +59,6 @@ section.main-container {
   -ms-animation: fadeIn 1s;
 }
 
-/* Only for retrospective */
-/* #root > section > div  {
-  background-color: rgba(255, 255, 255, 0.9);
-} */
-
 #root > section > div.MuiPaper-root, div.react-calendar  {
   background-color: rgba(255, 255, 255, 0.9);
 }
@@ -71,7 +66,6 @@ section.main-container {
 footer.MuiBox-root {
   background-color: rgba(25, 118, 210, 1);
   width: 100vw;
-  margin-left: auto;
   margin-bottom: auto;
 }
 

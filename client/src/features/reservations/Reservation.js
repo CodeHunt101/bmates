@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography"
 import Avatar from "@mui/material/Avatar"
 import { Link } from "@mui/material"
 import { ReviewReservation } from "../reviews/ReviewReservation"
-import { Paper } from "@mui/material"
 
 export const Reservation = ({
   reservation,

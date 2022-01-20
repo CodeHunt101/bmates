@@ -233,7 +233,7 @@ export const UserDetails = ({ currentUser }) => {
           circle="true"
           component="main"
         >
-          <Grid item xs={12} sm={6} md={7}>
+          <Grid item xs={12} sm={6} md={7} lg={5}>
             <Box
               sx={{
                 my: 1,
