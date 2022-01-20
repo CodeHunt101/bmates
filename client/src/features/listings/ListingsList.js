@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react"
 import { ListingPreview } from "./ListingPreview"
 import { SortAndFilterListings } from "../customSearch/SortAndFilterListings"
-import { useParams, useRouteMatch, useLocation } from "react-router"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
-import Pagination from "@mui/material/Pagination"
-import Paper from "@mui/material/Paper"
-import { LinearProgress } from "@mui/material"
 import { Footer } from "../../components/Footer"
+import { useParams, useRouteMatch, useLocation } from "react-router"
+import {
+  LinearProgress,
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Pagination,
+  Paper,
+} from "@mui/material"
 
 const listingsPerPage = 8
 
@@ -240,7 +242,7 @@ export const ListingsList = () => {
       <Grid
         id="listings-list"
         item
-        sx={{ mx: "auto", minHeight: "75vh", maxWidth:'1220px' }}
+        sx={{ mx: "auto", minHeight: "75vh", maxWidth: "1220px" }}
         xs={12}
         sm={12}
         md={11}
@@ -248,7 +250,6 @@ export const ListingsList = () => {
         elevation={path !== "/users/:userId" ? 6 : 3}
         circle="true"
       >
-        {/* Hero unit */}
         {path !== "/users/:userId" && (
           <Box
             sx={{
@@ -308,7 +309,7 @@ export const ListingsList = () => {
           </Grid>
         </Container>
       </Grid>
-      <Footer/>
+      <Footer />
     </>
   )
 }

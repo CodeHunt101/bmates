@@ -1,6 +1,6 @@
 import React from "react"
-import Box from "@mui/material/Box"
 import {
+  Box,
   FormControlLabel,
   Autocomplete,
   TextField,
@@ -16,9 +16,9 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Typography
+  Typography,
 } from "@mui/material"
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material"
 
 export const SortAndFilterListings = ({
   allTopicOptions,
@@ -30,24 +30,29 @@ export const SortAndFilterListings = ({
 }) => {
   return (
     <Container sx={{ mb: 2 }}>
-      <Accordion sx={{background: 'transparent'}}>
+      <Accordion sx={{ background: "transparent" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography component="h3" variant="h6">Custom search</Typography>
+          <Typography component="h3" variant="h6">
+            Custom search
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Box component="form"
-          noValidate
-          onSubmit={handleOnSubmit}
-          >
+          <Box component="form" noValidate onSubmit={handleOnSubmit}>
             <Box
-              sx={{ mt: 1, my: 5, display: "flex", justifyContent: "space-evenly", alignItems: "center" }}
+              sx={{
+                mt: 1,
+                my: 5,
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
             >
               <Box sx={{ width: 300 }}>
-                <FormControl fullWidth sx={{m:2}}>
+                <FormControl fullWidth sx={{ m: 2 }}>
                   <InputLabel id="sort-listings">Sort Listings by</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -62,7 +67,7 @@ export const SortAndFilterListings = ({
                     <MenuItem value={"rating"}>Rating</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl component="fieldset" sx={{m:2}}>
+                <FormControl component="fieldset" sx={{ m: 2 }}>
                   <FormLabel component="legend">Order</FormLabel>
                   <RadioGroup
                     aria-label="order"
@@ -84,7 +89,7 @@ export const SortAndFilterListings = ({
                   </RadioGroup>
                 </FormControl>
               </Box>
-              <Box sx={{width: 400}}>
+              <Box sx={{ width: 400 }}>
                 <Autocomplete
                   id="country"
                   multiple
@@ -92,16 +97,20 @@ export const SortAndFilterListings = ({
                   value={topics}
                   onChange={handleTopicsChange}
                   getOptionLabel={(option) => option.name}
-                  renderInput={(params) => <TextField {...params} label="Topic" />}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Topic" />
+                  )}
                 />
               </Box>
-            
             </Box>
-              <Button type="submit" variant="contained" sx={{ mt: 1, mb: 2, m:"auto", display: 'block' }}>
-                Search
-              </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 1, mb: 2, m: "auto", display: "block" }}
+            >
+              Search
+            </Button>
           </Box>
-          
         </AccordionDetails>
       </Accordion>
     </Container>

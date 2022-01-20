@@ -1,21 +1,23 @@
 import React, { useState } from "react"
 import { Footer } from "../../components/Footer"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
+import {
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Paper,
+} from "@mui/material"
 import LoginIcon from "@mui/icons-material/Login"
-import Typography from "@mui/material/Typography"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
 import { blue } from "@mui/material/colors"
-import Paper from "@mui/material/Paper"
 
-const theme = createTheme()
-
-export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValidationErrors }) => {
+export const LoginUserForm = ({
+  fetchCurrentUser,
+  validationErrors,
+  handleValidationErrors,
+}) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
@@ -64,11 +66,10 @@ export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValida
         {validationErrors.session.error_message}
       </Typography>
     )
-  // #d32f2f
+
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
-        <CssBaseline />
         <Grid
           item
           xs={12}
@@ -174,6 +175,6 @@ export const LoginUserForm = ({ fetchCurrentUser, validationErrors, handleValida
         />
       </Grid>
       <Footer />
-    </ThemeProvider>
+    </>
   )
 }

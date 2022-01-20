@@ -1,16 +1,17 @@
 import React, { useState } from "react"
 import { Footer } from "../../components/Footer"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import Link from "@mui/material/Link"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
+import {
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Paper,
+} from "@mui/material"
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
-import Typography from "@mui/material/Typography"
 import { blue } from "@mui/material/colors"
-import Paper from "@mui/material/Paper"
 
 export const SignupUserForm = ({
   fetchCurrentUser,
@@ -76,7 +77,6 @@ export const SignupUserForm = ({
   return (
     <>
       <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
-        <CssBaseline />
         <Grid
           item
           id="signup-image"

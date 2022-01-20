@@ -1,13 +1,15 @@
 import React from "react"
-import Button from "@mui/material/Button"
-import Box from "@mui/material/Box"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
-import Typography from "@mui/material/Typography"
-import Avatar from "@mui/material/Avatar"
-import { Link } from "@mui/material"
 import { ReviewReservation } from "../reviews/ReviewReservation"
+import {
+  Button,
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Avatar,
+  Link,
+} from "@mui/material"
 
 export const Reservation = ({
   reservation,
@@ -125,7 +127,9 @@ export const Reservation = ({
           </CardContent>
           <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
             {reservation.user_provider_info &&
-              ['pending', 'accepted'].includes(reservation.reservation.status) && (
+              ["pending", "accepted"].includes(
+                reservation.reservation.status
+              ) && (
                 <>
                   <Button
                     onClick={() => handleOnStatusChangeClick("cancelled")}
@@ -149,21 +153,35 @@ export const Reservation = ({
               )}
           </Box>
         </Box>
-        {reservation.listing_image !== null ? <CardMedia
-          component="img"
-          sx={{ width: 151 }}
-          image={reservation.listing_image}
-          alt="Reservation"
-        />:
-          <Box sx={{ mt: "auto", mb:"auto", backgroundColor: "#bdbdbd", height: "100%" }}>
+        {reservation.listing_image !== null ? (
+          <CardMedia
+            component="img"
+            sx={{ width: 151 }}
+            image={reservation.listing_image}
+            alt="Reservation"
+          />
+        ) : (
+          <Box
+            sx={{
+              mt: "auto",
+              mb: "auto",
+              backgroundColor: "#bdbdbd",
+              height: "100%",
+            }}
+          >
             <Avatar
-              
               src={reservation.listing_image}
               alt="profile"
-              sx={{ ml: "auto",mr: "auto",mt:"45%", width: 151, height: 151 }}
+              sx={{
+                ml: "auto",
+                mr: "auto",
+                mt: "45%",
+                width: 151,
+                height: 151,
+              }}
             ></Avatar>
           </Box>
-        }
+        )}
       </Card>
     </div>
   )

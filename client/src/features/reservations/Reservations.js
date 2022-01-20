@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react"
+import { Footer } from "../../components/Footer"
 import { Reservation } from "./Reservation"
 import { useParams } from "react-router"
-import Typography from "@mui/material/Typography"
-import CssBaseline from "@mui/material/CssBaseline"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import Paper from "@mui/material/Paper"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { Footer } from "../../components/Footer"
+import { Typography, Grid, Box, Paper } from "@mui/material"
 
 export const Reservations = ({ currentUser, fetchCurrentUser }) => {
   const [reservations, setReservations] = useState({
@@ -73,10 +68,9 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
       </div>
     </div>
   )
-  const theme = createTheme()
+
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <>
       <Grid
         item
         sx={{ mx: "auto" }}
@@ -113,6 +107,6 @@ export const Reservations = ({ currentUser, fetchCurrentUser }) => {
         {renderReservations()}
       </Grid>
       <Footer />
-    </ThemeProvider>
+    </>
   )
 }

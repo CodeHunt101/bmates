@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { AverageRating } from "../reviews/AverageRating"
 import { ReservationForm } from "../reservations/ReservationForm"
 import { MessageForm } from "../messages/MessageForm"
 import { User } from "../users/User"
-import { AverageRating } from "../reviews/AverageRating"
+import { useParams } from "react-router-dom"
+import { Reviews } from "../reviews/Reviews"
+import { Footer } from "../../components/Footer"
 import {
   Grid,
   Paper,
@@ -15,8 +17,6 @@ import {
   Link,
 } from "@mui/material"
 import EditRoundedIcon from "@mui/icons-material/Edit"
-import { Reviews } from "../reviews/Reviews"
-import { Footer } from "../../components/Footer"
 
 export const ListingDetails = ({ currentUser }) => {
   const [listing, setListing] = useState({
@@ -230,13 +230,7 @@ export const ListingDetails = ({ currentUser }) => {
           </Box>
         </Box>
       </Grid>
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={3}
-        // sx={{ mx: "auto" }}
-      >
+      <Grid item xs={12} sm={6} md={3}>
         <Box
           sx={{
             my: 6,

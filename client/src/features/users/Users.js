@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react"
 import { User } from "./User"
 import { SortAndFilterUsers } from "../customSearch/SortAndFilterUsers"
 import { Footer } from "../../components/Footer"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import Typography from "@mui/material/Typography"
-import Container from "@mui/material/Container"
-import Pagination from "@mui/material/Pagination"
-import Paper from "@mui/material/Paper"
 import { calculateAge } from "../../helper_functions"
+import {
+  Grid,
+  Box,
+  Typography,
+  Container,
+  Pagination,
+  Paper,
+} from "@mui/material"
 
 const minDistance = 5
 const usersPerPage = 4
@@ -21,9 +23,9 @@ export const Users = () => {
   const handleOnPageChange = (event, page) => setPage(page)
 
   const renderUsersOnPage = (page = 1) =>
-    users.slice(page * usersPerPage - usersPerPage, page * usersPerPage).map((user, idx) => (
-        <User key={user.user_info.id} user={user} />
-    ))
+    users
+      .slice(page * usersPerPage - usersPerPage, page * usersPerPage)
+      .map((user, idx) => <User key={user.user_info.id} user={user} />)
 
   //Countries state & handlers
   const [country, setCountry] = useState("")

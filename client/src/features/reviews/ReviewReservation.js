@@ -1,9 +1,14 @@
 import React, { useState } from "react"
-import { Typography } from "@mui/material"
-import { Modal, Box } from "@mui/material"
-import { Button, Grid, TextField } from "@mui/material"
+import {
+  Modal,
+  Box,
+  Typography,
+  Button,
+  Grid,
+  TextField,
+  Rating,
+} from "@mui/material"
 import { styled } from "@mui/material/styles"
-import Rating from "@mui/material/Rating"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder"
 

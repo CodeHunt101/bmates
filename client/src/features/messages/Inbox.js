@@ -1,13 +1,13 @@
 import React, { useState } from "react"
 import { Footer } from "../../components/Footer"
-import { Grid, Box } from "@mui/material"
 import { MessagesTable } from "./MessagesTable"
 import { MessagesBody } from "./MessagesBody"
 import { MessageForm } from "./MessageForm"
+import { Grid, Box } from "@mui/material"
 
 export const Inbox = ({ currentUser }) => {
   const [messages, setMessages] = useState([])
-  const [rowLocation, setRowLocation] = useState({idx:'', page:''})
+  const [rowLocation, setRowLocation] = useState({ idx: "", page: "" })
   const [row, setRow] = useState({})
 
   const handleOnRowClick = (row, idx, page) => {
@@ -20,11 +20,11 @@ export const Inbox = ({ currentUser }) => {
           return dateB - dateA
         })
         setMessages(messages)
-        setRowLocation({idx, page})
+        setRowLocation({ idx, page })
         setRow(row)
       })
   }
-  
+
   return (
     <Grid
       container
@@ -39,12 +39,7 @@ export const Inbox = ({ currentUser }) => {
         backgroundColor: "#f9f9f9",
       }}
     >
-      <Grid
-        item
-        xs={12}
-        sm={6}
-        md={4}
-      >
+      <Grid item xs={12} sm={6} md={4}>
         <Box
           sx={{
             my: 6,
@@ -59,11 +54,14 @@ export const Inbox = ({ currentUser }) => {
           />
         </Box>
         <Box>
-          <MessageForm userReceiverId={row.sender_id} listingId={row.listing_id} currentUser={currentUser}/>
+          <MessageForm
+            userReceiverId={row.sender_id}
+            listingId={row.listing_id}
+            currentUser={currentUser}
+          />
         </Box>
       </Grid>
       <Grid item xs={12} sm={6} md={7}>
-        
         <Box
           sx={{
             my: 3,

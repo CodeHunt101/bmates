@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from "react"
-import { useHistory } from "react-router"
+import { Footer } from "../../components/Footer"
 import { formatNames } from "../../helper_functions"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import CssBaseline from "@mui/material/CssBaseline"
-import TextField from "@mui/material/TextField"
-import Grid from "@mui/material/Grid"
-import Box from "@mui/material/Box"
-import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
-import Typography from "@mui/material/Typography"
+import { useHistory } from "react-router"
+import {
+  FormHelperText,
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  Box,
+  Typography,
+  Paper,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Input,
+  Autocomplete,
+  Stack,
+} from "@mui/material"
 import { blue } from "@mui/material/colors"
-import Paper from "@mui/material/Paper"
-import Select from "@mui/material/Select"
-import MenuItem from "@mui/material/MenuItem"
-import InputLabel from "@mui/material/InputLabel"
-import FormControl from "@mui/material/FormControl"
-import FormGroup from "@mui/material/FormGroup"
-import FormControlLabel from "@mui/material/FormControlLabel"
-import Checkbox from "@mui/material/Checkbox"
-import Input from "@mui/material/Input"
+import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew"
 import IconButton from "@mui/material/IconButton"
 import PhotoCamera from "@mui/icons-material/PhotoCamera"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import LocalizationProvider from "@mui/lab/LocalizationProvider"
 import DatePicker from "@mui/lab/DatePicker"
 import auLocale from "date-fns/locale/en-AU"
-import Autocomplete from "@mui/material/Autocomplete"
-import Stack from "@mui/material/Stack"
-import { FormHelperText } from "@mui/material"
-import { Footer } from "../../components/Footer"
 
 export const EditUserForm = ({
   currentUser,
@@ -76,7 +77,7 @@ export const EditUserForm = ({
         password: "",
         passwordConfirmation: "",
       })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser])
 
   const [bioCharaceters, setBioCharaceters] = useState(0)
@@ -275,7 +276,6 @@ export const EditUserForm = ({
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
-      <CssBaseline />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <Box
           sx={{
@@ -540,9 +540,8 @@ export const EditUserForm = ({
             </Grid>
           </Box>
         </Box>
-        <Footer/>
+        <Footer />
       </Grid>
-      
     </Grid>
   )
 }

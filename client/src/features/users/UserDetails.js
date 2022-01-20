@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from "react"
 import { MessageForm } from "../messages/MessageForm"
+import { AverageRating } from "../reviews/AverageRating"
+import { ListingsList } from "../listings/ListingsList"
+import { calculateAge } from "../../helper_functions"
 import { useParams } from "react-router"
+import {
+  Grid,
+  Box,
+  Typography,
+  Avatar,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Divider,
+  Paper,
+} from "@mui/material"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
 import TransgenderRoundedIcon from "@mui/icons-material/TransgenderRounded"
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded"
-import { Grid, Box, Typography } from "@mui/material"
-import { ListingsList } from "../listings/ListingsList"
-import Avatar from "@mui/material/Avatar"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemText from "@mui/material/ListItemText"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
-import Divider from "@mui/material/Divider"
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded"
 import CakeOutlinedIcon from "@mui/icons-material/CakeOutlined"
 import PublicRoundedIcon from "@mui/icons-material/PublicRounded"
-import Paper from "@mui/material/Paper"
-import { AverageRating } from "../reviews/AverageRating"
-import { calculateAge } from "../../helper_functions"
 
 export const UserDetails = ({ currentUser }) => {
   const { userId } = useParams()
@@ -53,10 +57,7 @@ export const UserDetails = ({ currentUser }) => {
   }
 
   const renderHeader = () => (
-    <Box
-    className="user-background"
-    component={Paper}
-    >
+    <Box className="user-background" component={Paper}>
       <Box
         elevation={1}
         sx={{
@@ -64,7 +65,7 @@ export const UserDetails = ({ currentUser }) => {
           mb: 3,
           textAlign: "center",
           width: "fit-content",
-          margin: "auto"
+          margin: "auto",
         }}
       >
         <Box>
@@ -110,11 +111,11 @@ export const UserDetails = ({ currentUser }) => {
 
   const renderAbout = () => {
     return (
-      <Box sx={{textAlign: "center"}}>
+      <Box sx={{ textAlign: "center" }}>
         <Typography
           component="h2"
           variant="subtitle1"
-          sx={{ fontSize: 24, color: "#334e6f", align:"center" }}
+          sx={{ fontSize: 24, color: "#334e6f", align: "center" }}
           gutterBottom
         >
           <b>About {user.user_info.first_name || user.user_info.username}</b>
@@ -145,7 +146,7 @@ export const UserDetails = ({ currentUser }) => {
     user.user_info.bio &&
     user.user_info.bio !== "" && (
       <>
-        <Box sx={{textAlign: "center"}}>
+        <Box sx={{ textAlign: "center" }}>
           <Typography
             component="h2"
             variant="subtitle1"
@@ -163,7 +164,7 @@ export const UserDetails = ({ currentUser }) => {
             mb: 3,
             display: "flex",
             justifyContent: "space-between",
-            textAlign: "justify"
+            textAlign: "justify",
           }}
         >
           <p style={{ wordBreak: "break-word" }}>{user.user_info.bio}</p>
@@ -179,7 +180,7 @@ export const UserDetails = ({ currentUser }) => {
             my: 1,
             mx: 2,
             alignItems: "center",
-            textAlign: "center"
+            textAlign: "center",
           }}
         >
           <Typography

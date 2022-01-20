@@ -1,13 +1,11 @@
-import React from "react";
-import { Message } from './Message';
+import React from "react"
+import { Message } from "./Message"
 
-export const MessagesBody = ({messages, currentUser}) => {
-  const renderMessages = () => (
-    messages && messages.map( message => <Message key={message.id} message={message} currentUser={currentUser}/>)
-  )
-  
-  return (
-    <>
-      {renderMessages()}
-    </>)
-  }
+export const MessagesBody = ({ messages, currentUser }) => {
+  const renderMessages = () =>
+    messages?.map((message) => (
+      <Message key={message.id} message={message} currentUser={currentUser} />
+    ))
+
+  return renderMessages()
+}

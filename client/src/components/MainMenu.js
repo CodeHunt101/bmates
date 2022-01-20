@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react"
-import AppBar from "@mui/material/AppBar"
-import { styled, alpha } from "@mui/material/styles"
-import InputBase from "@mui/material/InputBase"
-import Box from "@mui/material/Box"
-import Toolbar from "@mui/material/Toolbar"
-import IconButton from "@mui/material/IconButton"
-import Typography from "@mui/material/Typography"
-import Menu from "@mui/material/Menu"
-import MenuIcon from "@mui/icons-material/Menu"
-import Container from "@mui/material/Container"
-import Avatar from "@mui/material/Avatar"
-import Button from "@mui/material/Button"
-import Tooltip from "@mui/material/Tooltip"
-import MenuItem from "@mui/material/MenuItem"
 import { WelcomeUser } from "../features/users/WelcomeUser"
 import { useHistory } from "react-router"
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded"
-import MailRoundedIcon from "@mui/icons-material/MailRounded"
-import SearchIcon from "@mui/icons-material/Search"
-import { Link as LinkRouter } from "react-router-dom"
+import { Link } from "react-router-dom"
+import { styled, alpha } from "@mui/material/styles"
+import {
+  AppBar,
+  InputBase,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from "@mui/material"
+import {
+  HomeRounded as HomeRoundedIcon,
+  MailRounded as MailRoundedIcon,
+  Menu as MenuIcon,
+  Search as SearchIcon,
+} from "@mui/icons-material"
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -56,15 +60,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("md")]: {
-      width: '19ch',
+      width: "19ch",
     },
   },
 }))
 
-export const MainMenu = ({
-  currentUser,
-  handleCurrentUser
-}) => {
+export const MainMenu = ({ currentUser, handleCurrentUser }) => {
   const history = useHistory()
 
   const pagesWithoutCurrentUser = [
@@ -83,7 +84,7 @@ export const MainMenu = ({
     { name: "My Reservations", href: "/my-reservations" },
     { name: "Logout" },
   ]
-  
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // useEffect(() => fetchCurrentUser(), [userSubmittedImage])
   const [anchorElNav, setAnchorElNav] = useState(null)
@@ -112,12 +113,11 @@ export const MainMenu = ({
     // Goes to any navbar location onClick
     if (navEl.name === "Logout") {
       fetch("/api/v1/logout")
-      .then(resp => resp.json())
-      .then(resp => {
-        handleCurrentUser(null)
-      })
-    }
-    else {
+        .then((resp) => resp.json())
+        .then((resp) => {
+          handleCurrentUser(null)
+        })
+    } else {
       history.push(navEl.href)
     }
     setAnchorElUser(null)
@@ -132,9 +132,13 @@ export const MainMenu = ({
 
   const renderMenuNavBarItem = (navEl) => (
     <Button key={navEl.name}>
-      <LinkRouter style={{height: "24px"}} to={navEl.href} className="main-menu-item">
+      <Link
+        style={{ height: "24px" }}
+        to={navEl.href}
+        className="main-menu-item"
+      >
         {navEl.name}
-      </LinkRouter>
+      </Link>
     </Button>
   )
 
@@ -195,7 +199,7 @@ export const MainMenu = ({
           pathname: "/listings",
         })
       }
-      setSearchTerm('')
+      setSearchTerm("")
     }
   }
 
@@ -203,7 +207,12 @@ export const MainMenu = ({
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img id="logo-bmates" src='/logo.png' alt="logo-bmates" width="90px"/>
+          <img
+            id="logo-bmates"
+            src="/logo.png"
+            alt="logo-bmates"
+            width="90px"
+          />
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -242,7 +251,6 @@ export const MainMenu = ({
                 pagesWithCurrentUser.map((page) =>
                   renderMenuDropDownItem(page)
                 )}
-            
             </Menu>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
@@ -250,7 +258,6 @@ export const MainMenu = ({
               pagesWithoutCurrentUser.map((page) => renderMenuNavBarItem(page))}
             {currentUser &&
               pagesWithCurrentUser.map((page) => renderMenuNavBarItem(page))}
-          
           </Box>
           <Search>
             <SearchIconWrapper>
@@ -272,9 +279,13 @@ export const MainMenu = ({
               </Box>
               <Box sx={{ flexGrow: 0 }}>
                 <Button>
-                  <LinkRouter style={{height: "24px"}} to={"/inbox"} className="main-menu-item">
+                  <Link
+                    style={{ height: "24px" }}
+                    to={"/inbox"}
+                    className="main-menu-item"
+                  >
                     <MailRoundedIcon />
-                  </LinkRouter>
+                  </Link>
                 </Button>
               </Box>
               <Box sx={{ flexGrow: 0 }}>
@@ -312,4 +323,3 @@ export const MainMenu = ({
     </AppBar>
   )
 }
-

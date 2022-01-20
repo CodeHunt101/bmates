@@ -513,3 +513,56 @@ while i < 65 do
 end
 
 Reservation.all.filter{|r| r.reservation_date < today && r.status=="pending"}.each{|r| r.update(status: "expired")}
+
+# reviewsList = {
+#   five: [
+#     'This mate deserves the world!',
+#     "This can't be better. I loved every single moment",
+#     "Absolutely marvelous!!!",
+#     "I will recommend this listing to everyone",
+#     "I'd love to meet this mate in person",
+#     "5 stars (or hearts)!!!"
+#   ],
+#   four: [
+#     "It's a pity that this mate doesn't have more available days. I loved their service.",
+#     "I didn't think it was going to be so good",
+#     "Very good service",
+#     "Nice way to spend my free time",
+#     "Awesome service",
+#     "I can't way to for my next reservation",
+#     "4 stars is fair",
+#     "I would like to try this again"
+#   ],
+#   three: [
+#     "Sometimes I disagreed with this mate, but overall it was good",
+#     "3 stars because he's a bit shy",
+#     "Not bad",
+#     "Could be better but I'm satisfied",
+#     "It's not what I expected but I enjoyed the moment",
+#     "This user did not like what I said but I know I have string",
+#     "It's just ok"
+#   ],
+#   two: [
+#     "I didn't like that person. But I'll try again with someone else",
+#     "Not what I expected",
+#     "The user said he likes videogames but I don't. He made a weird face.",
+#     "2 stars because the service was poor",
+#     "Next time I'll be more careful about the listings I pick",
+#     "Bad service",
+#     "Mediocre service",
+#     "This user is too shy for me"
+#   ],
+#   one: [
+#     "I hated every single moment",
+#     "I want my wasted time back!!!",
+#     "Please don't book this user",
+#     "Bitterly dissapointed",
+#     "Worst listing ever!!!"
+#   ]
+# }
+
+# i=0
+# Review.all.filter{|r| r.rating == 1}.each do |r|
+#   r.update(message: reviewsList[:one][i])
+#   i+=1
+# end

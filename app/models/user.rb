@@ -46,35 +46,11 @@ class User < ApplicationRecord
     end.flatten
 
     if ratings.size > 0
-      # ((ratings.sum.to_f/ratings.size) * 2).round/2.0
       ratings.sum.to_f / ratings.size
     else
       nil
     end
   end
-
-  # def last_received_messages
-
-  #   self.received_messages
-  #   .joins(:sender)
-  #   .left_outer_joins(:listing)
-  #   .select(
-  #     'users.username as sender_username,
-  #     messages.id,
-  #     messages.sender_id,
-  #     messages.listing_id,
-  #     messages.content,
-  #     max(messages.created_at) AS last_received_on,
-  #     listings.title AS listing_title')
-  #   .group(
-  #     'messages.listing_id,
-  #     users.username,
-  #     messages.id,
-  #     listings.title')
-  #   .order('messages.sender_id,
-  #     messages.listing_id')
-
-  # end
 
   def last_received_messages
     senders = []

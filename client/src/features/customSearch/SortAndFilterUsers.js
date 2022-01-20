@@ -1,7 +1,7 @@
 import React from "react"
-import Box from "@mui/material/Box"
-import Slider from "@mui/material/Slider"
 import {
+  Box,
+  Slider,
   Typography,
   FormGroup,
   FormControlLabel,
@@ -21,7 +21,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material"
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material"
 
 function valuetext(value) {
   return `${value} years old`
@@ -40,14 +40,16 @@ export const SortAndFilterUsers = ({
 }) => {
   return (
     <Container sx={{ mb: 2 }}>
-      <Accordion sx={{background: 'transparent'}}>
+      <Accordion sx={{ background: "transparent" }}>
         <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
-            <Typography component="h3" variant="h6">Custom search</Typography>
-          </AccordionSummary>
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography component="h3" variant="h6">
+            Custom search
+          </Typography>
+        </AccordionSummary>
         <AccordionDetails>
           <Box
             component="form"
@@ -55,10 +57,20 @@ export const SortAndFilterUsers = ({
             onSubmit={handleOnSubmit}
             sx={{ mt: 1, my: 5 }}
           >
-            <Box sx={{ mt: 1, my: 5, display: "flex", justifyContent: "space-evenly", alignItems: "center" }}>
+            <Box
+              sx={{
+                mt: 1,
+                my: 5,
+                display: "flex",
+                justifyContent: "space-evenly",
+                alignItems: "center",
+              }}
+            >
               <Box sx={{ width: 300 }}>
-                <FormControl fullWidth sx={{m:2}}>
-                  <InputLabel id="demo-simple-select-label">Sort Mates by</InputLabel>
+                <FormControl fullWidth sx={{ m: 2 }}>
+                  <InputLabel id="demo-simple-select-label">
+                    Sort Mates by
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -72,7 +84,7 @@ export const SortAndFilterUsers = ({
                     <MenuItem value={"rating"}>Rating</MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl component="fieldset" sx={{m:2}}>
+                <FormControl component="fieldset" sx={{ m: 2 }}>
                   <FormLabel component="legend">Order</FormLabel>
                   <RadioGroup
                     aria-label="order"
@@ -95,7 +107,7 @@ export const SortAndFilterUsers = ({
                 </FormControl>
               </Box>
               <Box sx={{ width: 300 }}>
-                <Box sx={{m:2}}>
+                <Box sx={{ m: 2 }}>
                   <Typography
                     component="h2"
                     variant="subtitle2"
@@ -115,24 +127,30 @@ export const SortAndFilterUsers = ({
                     disableSwap
                   />
                 </Box>
-                <Box sx={{m:2}}>
+                <Box sx={{ m: 2 }}>
                   <FormLabel component="legend">Select Genders</FormLabel>
                   <FormGroup>
                     <FormControlLabel
-                      control={<Checkbox name="male" onChange={handleGendersCheck} />}
+                      control={
+                        <Checkbox name="male" onChange={handleGendersCheck} />
+                      }
                       label="Male"
                     />
                     <FormControlLabel
-                      control={<Checkbox name="female" onChange={handleGendersCheck} />}
+                      control={
+                        <Checkbox name="female" onChange={handleGendersCheck} />
+                      }
                       label="Female"
                     />
                     <FormControlLabel
-                      control={<Checkbox name="other" onChange={handleGendersCheck} />}
+                      control={
+                        <Checkbox name="other" onChange={handleGendersCheck} />
+                      }
                       label="Other"
                     />
                   </FormGroup>
                 </Box>
-                <Box sx={{m:2}}>
+                <Box sx={{ m: 2 }}>
                   <Autocomplete
                     disablePortal
                     id="country"
@@ -140,12 +158,18 @@ export const SortAndFilterUsers = ({
                     value={handleCurrentCountryValue(allCountriesOptions)}
                     onChange={handleCountryChange}
                     getOptionLabel={(option) => option.name}
-                    renderInput={(params) => <TextField {...params} label="Country" />}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Country" />
+                    )}
                   />
                 </Box>
               </Box>
             </Box>
-            <Button type="submit" variant="contained" sx={{ mt: 1, mb: 2, m:"auto", display: 'block' }}>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 1, mb: 2, m: "auto", display: "block" }}
+            >
               Search
             </Button>
           </Box>

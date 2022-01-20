@@ -1,8 +1,6 @@
 import React, { useState } from "react"
-import { IconButton } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
-import { Modal, Box } from "@mui/material"
-import { Button } from "@mui/material"
+import { Modal, Box, IconButton, Button } from "@mui/material"
 
 const style = {
   position: "absolute",

@@ -1,17 +1,17 @@
 import React from "react"
-import { Link, useHistory, useRouteMatch } from "react-router-dom"
-import Button from "@mui/material/Button"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
-import Typography from "@mui/material/Typography"
-import Grid from "@mui/material/Grid"
 import { DeactivateListing } from "./DeactivateListing"
 import { AverageRating } from "../reviews/AverageRating"
-import { Avatar } from "@mui/material"
-import { Paper } from "@mui/material"
-import { Box } from "@mui/system"
+import { Link, useHistory, useRouteMatch } from "react-router-dom"
+import {
+  Grid,
+  Typography,
+  Button,
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+} from "@mui/material"
+import { Avatar, Paper, Box } from "@mui/material"
 
 export const ListingPreview = ({ listing }) => {
   const history = useHistory()
@@ -39,7 +39,7 @@ export const ListingPreview = ({ listing }) => {
               component={Paper}
               src={listing.listing_image}
               alt="profile"
-              sx={{ margin: "auto", width: 165, height: 165, mt:'20%' }}
+              sx={{ margin: "auto", width: 165, height: 165, mt: "20%" }}
             ></Avatar>
           </Box>
         )}

@@ -20,14 +20,14 @@ export const ListingAvailability = ({
     }
   }
 
-  const handleTileClassNameToAvailable = ({date, view}) => {
+  const handleTileClassNameToAvailable = ({ date, view }) => {
     if (tileClassNameToAvailable) {
-      return tileClassNameToAvailable({date, view})
-    } 
+      return tileClassNameToAvailable({ date, view })
+    }
   }
 
   const addDays = (days) => {
-    let result =  new Date()
+    let result = new Date()
     result.setDate(result.getDate() + days)
     return result
   }

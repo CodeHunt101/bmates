@@ -1,12 +1,14 @@
 import React, { useState } from "react"
-import Table from "@mui/material/Table"
-import TableBody from "@mui/material/TableBody"
-import TableCell from "@mui/material/TableCell"
-import TableContainer from "@mui/material/TableContainer"
-import TableHead from "@mui/material/TableHead"
-import TablePagination from "@mui/material/TablePagination"
-import TableRow from "@mui/material/TableRow"
-import Paper from "@mui/material/Paper"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Paper,
+} from "@mui/material"
 
 const columns = [
   { id: "username", label: "Username", minWidth: "fit-content" },
@@ -37,7 +39,11 @@ function createData(
   }
 }
 
-export const MessagesTable = ({ currentUser, handleOnRowClick, rowLocation }) => {
+export const MessagesTable = ({
+  currentUser,
+  handleOnRowClick,
+  rowLocation,
+}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
@@ -90,7 +96,10 @@ export const MessagesTable = ({ currentUser, handleOnRowClick, rowLocation }) =>
             hover
             sx={{
               cursor: "pointer",
-              backgroundColor: idx === rowLocation.idx && page === rowLocation.page && "#bbdefb",
+              backgroundColor:
+                idx === rowLocation.idx &&
+                page === rowLocation.page &&
+                "#bbdefb",
             }}
             role="checkbox"
             tabIndex={-1}

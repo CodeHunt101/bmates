@@ -1,26 +1,29 @@
 import React, { useState, useEffect } from "react"
 import { ListingAvailability } from "./ListingAvailability"
-import { useParams, useLocation, useRouteMatch, Redirect } from "react-router"
-import Autocomplete from "@mui/material/Autocomplete"
-import TextField from "@mui/material/TextField"
-import Stack from "@mui/material/Stack"
-import Box from "@mui/material/Box"
-import Grid from "@mui/material/Grid"
-import Button from "@mui/material/Button"
-import Typography from "@mui/material/Typography"
-import PeopleIcon from "@mui/icons-material/People"
-import Avatar from "@mui/material/Avatar"
-import { blue } from "@mui/material/colors"
-import CssBaseline from "@mui/material/CssBaseline"
-import Paper from "@mui/material/Paper"
-import Select from "@mui/material/Select"
-import MenuItem from "@mui/material/MenuItem"
-import InputLabel from "@mui/material/InputLabel"
-import FormControl from "@mui/material/FormControl"
-import { Input } from "@mui/material"
-import { IconButton } from "@mui/material"
-import PhotoCamera from "@mui/icons-material/PhotoCamera"
 import { Footer } from "../../components/Footer"
+import { useParams, useLocation, useRouteMatch, Redirect } from "react-router"
+import { blue } from "@mui/material/colors"
+import {
+  Input,
+  Autocomplete,
+  TextField,
+  Stack,
+  Box,
+  Grid,
+  Button,
+  Typography,
+  Avatar,
+  Paper,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  IconButton,
+} from "@mui/material"
+import {
+  People as PeopleIcon,
+  PhotoCamera as PhotoCameraIcon,
+} from "@mui/icons-material"
 
 export const ListingForm = ({
   currentUser,
@@ -45,20 +48,6 @@ export const ListingForm = ({
   const [attachedImage, setAttachedImage] = useState(null)
 
   useEffect(() => {
-    // Populates the form with the listing object provided from useLocation
-    // SHA: how to simplify
-    // if (location && location.state) {
-    //   const { listing } = location.state
-    //   setFormData({
-    //     listingType: listing.listing.listing_type,
-    //     title: listing.listing.title,
-    //     description: listing.listing.description,
-    //     topics: listing.topics.map((t) => t.id.toString()),
-    //     selectedDates: listing.available_dates.map(
-    //       (item) => new Date(item.available_date)
-    //     ),
-    //   })
-    // } else {
     if (listingId) {
       fetch(`/api/v1/listings/${listingId}`)
         .then((resp) => resp.json())
@@ -83,14 +72,11 @@ export const ListingForm = ({
         selectedDates: [],
       })
     }
-
-    // }
   }, [location, listingId])
 
   const [descriptionCharaceters, setDescriptionCharaceters] = useState(0)
 
   const handleOnChange = (e) => {
-    
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -328,7 +314,6 @@ export const ListingForm = ({
           .map((listing) => listing.listing.id.toString())
           .includes(listingId))) && (
       <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
         <Grid
           item
           sx={{ mx: "auto" }}
@@ -427,7 +412,7 @@ export const ListingForm = ({
                       aria-label="upload picture"
                       component="span"
                     >
-                      <PhotoCamera />
+                      <PhotoCameraIcon />
                     </IconButton>
                     <Input
                       accept="image/*"

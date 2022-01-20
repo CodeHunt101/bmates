@@ -59,11 +59,11 @@ class Reservation < ApplicationRecord
   def update_status
     if self.reservation_date < Date.today && ['pending', 'accepted'].include?(self.status)
       current_status = self.status
-      statusOptions = {
+      status_options = {
         pending: 'expired',
         accepted: 'closed'
       }
-      updated_status = statusOptions[current_status.to_sym]
+      updated_status = status_options[current_status.to_sym]
       self.update(status: updated_status)
     end
   end

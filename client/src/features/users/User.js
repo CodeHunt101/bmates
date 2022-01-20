@@ -1,24 +1,25 @@
 import React from "react"
 import { useRouteMatch } from "react-router"
 import { AverageRating } from "../reviews/AverageRating"
-import Button from "@mui/material/Button"
-import Card from "@mui/material/Card"
-import CardActions from "@mui/material/CardActions"
-import CardContent from "@mui/material/CardContent"
-import CardMedia from "@mui/material/CardMedia"
-import Typography from "@mui/material/Typography"
 import MaleRoundedIcon from "@mui/icons-material/MaleRounded"
 import FemaleRoundedIcon from "@mui/icons-material/FemaleRounded"
 import TransgenderRoundedIcon from "@mui/icons-material/TransgenderRounded"
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded"
-import { Avatar } from "@mui/material"
-import { Paper } from "@mui/material"
-import { Box } from "@mui/system"
-import Grid from "@mui/material/Grid"
+import {
+  Avatar,
+  Paper,
+  Box,
+  Grid,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Typography,
+} from "@mui/material"
 
 export const User = ({ user }) => {
-
-  const {path} = useRouteMatch()
+  const { path } = useRouteMatch()
   console.log(path)
   const defineGenderIcon = (gender, fontSize) => {
     if (gender) {
@@ -51,13 +52,18 @@ export const User = ({ user }) => {
     }
   }
   return (
-    <Grid item xs={12} sm={6} md={3} lg={path==='/listings/:listingId' ? 12: 3}>
-      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }} >
+    <Grid
+      item
+      xs={12}
+      sm={path === "/listings/:listingId" ? 12 : 6}
+      md={path === "/listings/:listingId" ? 12 : 3}
+      lg={path === "/listings/:listingId" ? 12 : 3}
+    >
+      <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
         {user.user_profile_picture !== null ? (
           <CardMedia
             component="img"
             sx={{
-              // 16:9
               pt: "10%",
               cursor: "pointer",
             }}
@@ -71,7 +77,7 @@ export const User = ({ user }) => {
               component={Paper}
               src={user.user_profile_picture}
               alt="profile"
-              sx={{ margin: "auto",  width: 165, height: 165, mt:'20%' }}
+              sx={{ margin: "auto", width: 165, height: 165, mt: "20%" }}
             ></Avatar>
           </Box>
         )}

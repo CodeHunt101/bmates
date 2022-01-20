@@ -2,7 +2,7 @@ div.menu {
   display: flex;
 }
 div.user-background {
-  background-image: url('../../images/background.png');
+  background-image: url("../../images/background.png");
   background-color: #e3f2fd;
 }
 
@@ -11,13 +11,13 @@ div.MuiListItemAvatar-root div.MuiAvatar-circular {
 }
 
 div#login-signup {
-  background-color: rgba(255, 255, 255)
+  background-color: rgba(255, 255, 255);
 }
 
 div#login-image {
-  background-image: url('../../images/login.jpeg');
+  background-image: url("../../images/login.jpeg");
 }
 
 div#signup-image {
-  background-image: url('../../images/signup.jpeg');
+  background-image: url("../../images/signup.jpeg");
 }
