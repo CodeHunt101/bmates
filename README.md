@@ -7,7 +7,7 @@ This is the production mode, deployed in heroku:
 https://bmates.herokuapp.com/
 
 
-To get the application up and running, please make do the following:
+To get the application up and running, please do the following:
 
 1. Install **Postgresql** as this is the database this app is configured to use. If you already have it, please go to the next step. 
 

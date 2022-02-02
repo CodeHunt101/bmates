@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
   belongs_to :country, required: false
 
+  #Validations
   validates :first_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { first_name.present? }
   validates :last_name, length: { minimum: 2, maximum: 25 }, format: {with: /^[a-z]+$/i, multiline: true}, if: -> { last_name.present? }
   validates :username, presence: true, length: { minimum: 5, maximum: 20 }
