@@ -22,8 +22,8 @@ if str
 end
 
 if Gem.respond_to?(:activate_bin_path)
-load Gem.activate_bin_path('bundler', 'bundle', version)
+load Gem.activate_bin_path('bundler', 'bundler', version)
 else
 gem "bundler", version
-load Gem.bin_path("bundler", "bundle", version)
+load Gem.bin_path("bundler", "bundler", version)
 end
